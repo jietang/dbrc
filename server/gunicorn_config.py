@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 import multiprocessing
 
 bind = "127.0.0.1:5000"
