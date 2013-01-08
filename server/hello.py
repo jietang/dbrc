@@ -26,11 +26,10 @@ messages = db.Table(
 #  - map broadcast to last file sent
 #
 
-
 #
 #
-# make screen.py more robust to kicking of server (re-register and re-subscribe)
-# redis pubsub for long poll notify?
+# redis pubsub for long poll notify, use an actual data store
+# make screen.py more robust to kicking of server (re-register and re-subscribe)?
 #
 # data model:
 # message queue
