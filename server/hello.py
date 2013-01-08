@@ -1,4 +1,5 @@
 import json
+import random
 import time
 
 from flask import Flask
@@ -20,9 +21,14 @@ messages = db.Table(
 
 # TODO
 # pairing: implement mapping from screens->paired clients, paired clients->screens, timeouts
-screen_ids = set()
+subscribing_device_ids = set()
+broadcast_id_to_device_ids = {}
 # implement message queue w/sqlalchemy with put / pop_if_exists semantics
 push_queue = []
+# use redis for this? http://toastdriven.com/blog/2011/jul/31/gevent-long-polling-you/
+device_id_to_screen_ids = {}
+screen_id_to_device_id = {}
+
 
 @app.route('/')
 def db_test():
@@ -30,36 +36,64 @@ def db_test():
     with db.engine.connect() as conn:
         return str(conn.execute(db.select([messages], messages.c.msg_id == 1)).fetchall())
 
+# push
+
 @app.route('/subscribe/<int:screen_id>')
 def subscribe(screen_id):
-    print "subscribe starting"
-    screen_ids.add(screen_id)
+    device_id = screen_id_to_device_id[screen_id]
+    subscribing_device_ids.add(device_id)
     for _ in range(20):
         found = None
         for i, msg in enumerate(push_queue):
-            if msg == screen_id:
+            if msg == device_id:
                 found = i
                 break
         if found is not None:
             msg = push_queue.pop(i)
             return json.dumps(dict(result='ok', data='http://www.google.com'))
-        print "sleeping ", screen_ids, push_queue
         time.sleep(.25)
-    return json.dumps(dict(result='resubscribe'))
 
-@app.route('/push/<int:screen_id>')
-def push(screen_id):
-    print "push ", screen_ids, screen_id
-    if screen_id in screen_ids:
-        push_queue.append(screen_id)
-        return json.dumps(dict(result='ok'))
-    else:
-        return json.dumps(dict(result='fail'))
+    # TODO generate a new screen id here if necessary, send it down
+    return json.dumps(dict(result='resubscribe', screen_id=screen_id))
+
+def generate_random_id():
+    return random.randint(0, 10000)
+
+@app.route('/create_broadcast')
+def create_broadcast():
+    global broadcast_id_to_device_ids
+    broadcast_id = generate_random_id()
+    broadcast_id_to_device_ids[broadcast_id] = set()
+    return json.dumps(dict(result='ok', broadcast_id=broadcast_id))
+
+@app.route('/add_to_broadcast/<int:broadcast_id>/<int:screen_id>')
+def add_to_broadcast(broadcast_id, screen_id):
+    global broadcasts_to_screen_ids
+    broadcast_id_to_device_ids[broadcast_id].add(screen_id_to_device_id[screen_id])
+    return json.dumps(dict(result='ok'))
+
+@app.route('/register/<int:device_id>')
+def register(device_id):
+    global device_to_screen_ids
+    global screen_id_to_device
+    screen_id = generate_random_id()
+    device_id_to_screen_ids[device_id] = set([screen_id])
+    screen_id_to_device_id[screen_id] = device_id
+    return json.dumps(dict(result='ok', screen_id=screen_id))
+
+@app.route('/push/<int:broadcast_id>')
+def push(broadcast_id):
+    result = 'fail'
+    for device_id in broadcast_id_to_device_ids.get(broadcast_id, []):
+        if device_id in subscribing_device_ids:
+            push_queue.append(device_id)
+            result = 'ok'
+    return json.dumps(dict(result=result))
 
 @app.route('/listpair')
 def listpair():
     return json.dumps(dict(result='ok',
-                           data=screen_ids))
+                           data=subscribing_device_ids))
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
