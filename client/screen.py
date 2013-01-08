@@ -1,4 +1,6 @@
 from api_util import request
+import webbrowser
+
 ID=1
 
 screen_id = request('register', ID)['screen_id']
@@ -11,4 +13,5 @@ while True:
         continue
     elif resp['result'] == 'ok':
         print "Launching: ", resp['data']
+        webbrowser.open(resp['data'])
         break

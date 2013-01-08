@@ -19,6 +19,25 @@ messages = db.Table(
     mysql_charset='utf8',
 )
 
+
+# ability to pair permanently: persist broadcast_id on remote, broadcast to device mapping on server, when devices re-subscribe they are good to go
+# ability to pair ephemerally: create broadcast with a timeout, each time a push is received we check to see if it is still active and delete it if not
+# ability to pull from a broadcast? list of files on each screen, or just last one sent?
+#  - map broadcast to last file sent
+#
+
+
+#
+#
+# make screen.py more robust to kicking of server (re-register and re-subscribe)
+# redis pubsub for long poll notify?
+#
+# data model:
+# message queue
+# map broadcast to multiple device ids
+# map device_id to current active screen_id
+#
+
 # TODO
 # pairing: implement mapping from screens->paired clients, paired clients->screens, timeouts
 subscribing_device_ids = set()
@@ -36,21 +55,19 @@ def db_test():
     with db.engine.connect() as conn:
         return str(conn.execute(db.select([messages], messages.c.msg_id == 1)).fetchall())
 
-# push
-
 @app.route('/subscribe/<int:screen_id>')
 def subscribe(screen_id):
     device_id = screen_id_to_device_id[screen_id]
     subscribing_device_ids.add(device_id)
     for _ in range(20):
         found = None
-        for i, msg in enumerate(push_queue):
+        for i, (msg, _) in enumerate(push_queue):
             if msg == device_id:
                 found = i
                 break
         if found is not None:
-            msg = push_queue.pop(i)
-            return json.dumps(dict(result='ok', data='http://www.google.com'))
+            msg, payload = push_queue.pop(i)
+            return json.dumps(dict(result='ok', data=payload))
         time.sleep(.25)
 
     # TODO generate a new screen id here if necessary, send it down
@@ -81,12 +98,12 @@ def register(device_id):
     screen_id_to_device_id[screen_id] = device_id
     return json.dumps(dict(result='ok', screen_id=screen_id))
 
-@app.route('/push/<int:broadcast_id>')
-def push(broadcast_id):
+@app.route('/push/<int:broadcast_id>/<path:payload>')
+def push(broadcast_id, payload):
     result = 'fail'
     for device_id in broadcast_id_to_device_ids.get(broadcast_id, []):
         if device_id in subscribing_device_ids:
-            push_queue.append(device_id)
+            push_queue.append((device_id, payload))
             result = 'ok'
     return json.dumps(dict(result=result))
 
