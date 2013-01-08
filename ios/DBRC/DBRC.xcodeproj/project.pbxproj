@@ -20,6 +20,8 @@
 		28E712EE169A8033002A56C3 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712ED169A8033002A56C3 /* DropboxSDK.framework */; };
 		28E712F0169A8065002A56C3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712EF169A8065002A56C3 /* QuartzCore.framework */; };
 		28E712F2169A8069002A56C3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712F1169A8069002A56C3 /* Security.framework */; };
+		28F5F51A169BB31000C8854E /* DBBroadcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5F518169BB31000C8854E /* DBBroadcast.m */; };
+		28F5F51B169BB34000C8854E /* DBPairingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5F514169BB30500C8854E /* DBPairingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,11 @@
 		28E712ED169A8033002A56C3 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		28E712EF169A8065002A56C3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		28E712F1169A8069002A56C3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		28F5F513169BB30500C8854E /* DBPairingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DBPairingViewController.h; path = ViewControllers/DBPairingViewController.h; sourceTree = "<group>"; };
+		28F5F514169BB30500C8854E /* DBPairingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DBPairingViewController.m; path = ViewControllers/DBPairingViewController.m; sourceTree = "<group>"; };
+		28F5F517169BB31000C8854E /* DBBroadcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcast.h; sourceTree = "<group>"; };
+		28F5F518169BB31000C8854E /* DBBroadcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBroadcast.m; sourceTree = "<group>"; };
+		28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcastProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +100,7 @@
 		283BE7E5169A6925005277E2 /* DBRC */ = {
 			isa = PBXGroup;
 			children = (
+				28F5F516169BB31000C8854E /* Models */,
 				283BE800169A703C005277E2 /* ViewControllers */,
 				283BE7EE169A6925005277E2 /* DBAppDelegate.h */,
 				283BE7EF169A6925005277E2 /* DBAppDelegate.m */,
@@ -118,10 +126,22 @@
 		283BE800169A703C005277E2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				28F5F513169BB30500C8854E /* DBPairingViewController.h */,
+				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
 				283BE805169A72AD005277E2 /* DBSearchViewController.h */,
 				283BE806169A72AD005277E2 /* DBSearchViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		28F5F516169BB31000C8854E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				28F5F517169BB31000C8854E /* DBBroadcast.h */,
+				28F5F518169BB31000C8854E /* DBBroadcast.m */,
+				28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,7 +212,9 @@
 			files = (
 				283BE7EC169A6925005277E2 /* main.m in Sources */,
 				283BE7F0169A6925005277E2 /* DBAppDelegate.m in Sources */,
+				28F5F51B169BB34000C8854E /* DBPairingViewController.m in Sources */,
 				283BE807169A72AD005277E2 /* DBSearchViewController.m in Sources */,
+				28F5F51A169BB31000C8854E /* DBBroadcast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
