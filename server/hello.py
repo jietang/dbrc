@@ -49,6 +49,9 @@ push_queue = []
 device_id_to_screen_ids = {}
 screen_id_to_device_id = {}
 
+@app.route('/blank/')
+def blank():
+    return "Nothing yet."
 
 @app.route('/')
 def db_test():
