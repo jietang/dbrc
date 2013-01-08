@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#import "DBBroadcast.h"
 #import "DBBroadcastProtocol.h"
 
 @interface DBPairingViewController : UIViewController <UITextFieldDelegate, DBBroadcastDelegate>
 
+@property (nonatomic, retain) DBBroadcast *broadcast;
 @property (nonatomic, retain) UITextField *textField;
+@property (nonatomic, retain) UILabel *instructions;
+@property (nonatomic, assign) BOOL screenHasBeenAdded;
 
 @end

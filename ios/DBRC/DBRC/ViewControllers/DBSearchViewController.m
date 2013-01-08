@@ -7,6 +7,7 @@
 //
 
 #import "DBSearchViewController.h"
+#import "DBPairingViewController.h"
 
 @interface DBSearchViewController ()
 
@@ -46,10 +47,10 @@
 	// Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated {
+    DBPairingViewController *vc = [[DBPairingViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark UISearchBarDelegate

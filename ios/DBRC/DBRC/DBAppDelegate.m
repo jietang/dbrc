@@ -8,6 +8,7 @@
 
 #import "DBAppDelegate.h"
 #import "DBSearchViewController.h"
+#import "DBPairingViewController.h"
 
 @implementation DBAppDelegate
 
@@ -18,8 +19,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
+    // Basic Search Controller is on bottom of the stack. Slide the Pairing
+    // controler on top.
     UIViewController *rootViewController = [[DBSearchViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    
     [self.window setRootViewController:navController];
     
     return YES;

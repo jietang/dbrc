@@ -10,7 +10,11 @@
 
 @protocol DBBroadcastDelegate <NSObject>
 
+
 @optional
+- (void)broadcastWasStarted:(DBBroadcast *)broadcast;
+- (void)broadcast:(DBBroadcast *)broadcast failedWithError:(NSError *)err;
+
 - (void)screenWasAdded:(NSString *)screen;
 - (void)screenAddFailed:(NSString *)screen withError:(NSString *)err;
 

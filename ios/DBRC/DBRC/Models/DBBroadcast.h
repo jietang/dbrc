@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol DBBroadcastDelegate;
+
 @interface DBBroadcast : NSObject
 
-+(DBBroadcast *)sharedBroadcast;
+@property (nonatomic, assign) id<DBBroadcastDelegate> delegate;
+@property (nonatomic, assign) NSInteger broadcastId;
 
+- (void)startBroadcast;
 - (void)addScreenToBroadcast:(NSString *)screenOrDeviceId;
 - (void)push:(NSString *)urlStr withParams:(NSDictionary *)params;
 
