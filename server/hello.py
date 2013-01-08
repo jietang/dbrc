@@ -76,7 +76,7 @@ def subscribe(screen_id):
         time.sleep(.25)
 
     # TODO generate a new screen id here if necessary, send it down
-    return json.dumps(dict(result='resubscribe', screen_id=screen_id))
+    return Response(json.dumps(dict(result='resubscribe', screen_id=screen_id)), mimetype="text/json")
 
 def generate_random_id():
     return random.randint(0, 10000)
@@ -92,7 +92,7 @@ def create_broadcast():
 def add_to_broadcast(broadcast_id, screen_id):
     global broadcasts_to_screen_ids
     broadcast_id_to_device_ids[broadcast_id].add(screen_id_to_device_id[screen_id])
-    return json.dumps(dict(result='ok'))
+    return Response(json.dumps(dict(result='ok')), mimetype="text/json")
 
 @app.route('/register/<int:device_id>')
 def register(device_id):
@@ -110,7 +110,7 @@ def push(broadcast_id, payload):
         if device_id in subscribing_device_ids:
             push_queue.append((device_id, payload))
             result = 'ok'
-    return json.dumps(dict(result=result))
+    return Response(json.dumps(dict(result=result)), mimetype="text/json")
 
 @app.route('/listpair')
 def listpair():
