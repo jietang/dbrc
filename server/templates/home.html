@@ -1,0 +1,37 @@
+<html>
+	<head>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	<script src="/static/jquery.cookie.js" type="text/javascript"></script>
+	<script>
+$(function() {
+	DEVICE_ID = $.cookie("DEVICE_ID");
+	if (DEVICE_ID) {
+		alert("Detected DEVICE_ID: " + DEVICE_ID);
+	} else {
+		DEVICE_ID = Math.floor(Math.random() * 100000000) + 1;
+		$.cookie("DEVICE_ID", DEVICE_ID);
+		alert("DEVICE_ID doesn't exist, generating: " + DEVICE_ID);		
+	}
+
+	IS_REGISTERED = $.cookie("IS_REGISTERED");
+	if (!IS_REGISTERED) {
+		$.post('/register/' + DEVICE_ID, '',
+			function(msg) { // callback
+				if (msg.status  == 'OK') {
+					alert("OK!");
+				} else {
+					alert("Not OK!");
+				}
+			}, 'json')
+			.error(function() {
+				alert('An ajax error occurred.');
+			});
+		});
+	}
+	</script>
+	</head>
+	<body>
+	<h1>Hello, {{user.nickname}}!</h1>
+	</body>
+</html>
+

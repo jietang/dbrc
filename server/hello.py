@@ -1,6 +1,7 @@
 import json
 import time
 
+from flask import render_template
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -26,7 +27,10 @@ push_queue = []
 
 @app.route('/')
 def db_test():
-    print "db_test"
+    user = { 'nickname': 'FakeUser' }
+    return render_template("home.html",
+        title = 'Home',
+        user = user)
     with db.engine.connect() as conn:
         return str(conn.execute(db.select([messages], messages.c.msg_id == 1)).fetchall())
 
