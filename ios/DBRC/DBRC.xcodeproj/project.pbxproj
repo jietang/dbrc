@@ -16,6 +16,12 @@
 		283BE7F2169A6925005277E2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BE7F1169A6925005277E2 /* Default.png */; };
 		283BE7F4169A6925005277E2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BE7F3169A6925005277E2 /* Default@2x.png */; };
 		283BE7F6169A6925005277E2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BE7F5169A6925005277E2 /* Default-568h@2x.png */; };
+		283BE807169A72AD005277E2 /* DBSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283BE806169A72AD005277E2 /* DBSearchViewController.m */; };
+		28E712EE169A8033002A56C3 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712ED169A8033002A56C3 /* DropboxSDK.framework */; };
+		28E712F0169A8065002A56C3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712EF169A8065002A56C3 /* QuartzCore.framework */; };
+		28E712F2169A8069002A56C3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712F1169A8069002A56C3 /* Security.framework */; };
+		28F5F51A169BB31000C8854E /* DBBroadcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5F518169BB31000C8854E /* DBBroadcast.m */; };
+		28F5F51B169BB34000C8854E /* DBPairingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5F514169BB30500C8854E /* DBPairingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +38,16 @@
 		283BE7F1169A6925005277E2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		283BE7F3169A6925005277E2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		283BE7F5169A6925005277E2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		283BE805169A72AD005277E2 /* DBSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBSearchViewController.h; path = ViewControllers/DBSearchViewController.h; sourceTree = "<group>"; };
+		283BE806169A72AD005277E2 /* DBSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBSearchViewController.m; path = ViewControllers/DBSearchViewController.m; sourceTree = "<group>"; };
+		28E712ED169A8033002A56C3 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
+		28E712EF169A8065002A56C3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		28E712F1169A8069002A56C3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		28F5F513169BB30500C8854E /* DBPairingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DBPairingViewController.h; path = ViewControllers/DBPairingViewController.h; sourceTree = "<group>"; };
+		28F5F514169BB30500C8854E /* DBPairingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DBPairingViewController.m; path = ViewControllers/DBPairingViewController.m; sourceTree = "<group>"; };
+		28F5F517169BB31000C8854E /* DBBroadcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcast.h; sourceTree = "<group>"; };
+		28F5F518169BB31000C8854E /* DBBroadcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBroadcast.m; sourceTree = "<group>"; };
+		28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcastProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,9 +55,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28E712F2169A8069002A56C3 /* Security.framework in Frameworks */,
+				28E712F0169A8065002A56C3 /* QuartzCore.framework in Frameworks */,
 				283BE7E0169A6925005277E2 /* UIKit.framework in Frameworks */,
 				283BE7E2169A6925005277E2 /* Foundation.framework in Frameworks */,
 				283BE7E4169A6925005277E2 /* CoreGraphics.framework in Frameworks */,
+				28E712EE169A8033002A56C3 /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +70,9 @@
 		283BE7D0169A6925005277E2 = {
 			isa = PBXGroup;
 			children = (
+				28E712F1169A8069002A56C3 /* Security.framework */,
+				28E712EF169A8065002A56C3 /* QuartzCore.framework */,
+				28E712ED169A8033002A56C3 /* DropboxSDK.framework */,
 				283BE7E5169A6925005277E2 /* DBRC */,
 				283BE7DE169A6925005277E2 /* Frameworks */,
 				283BE7DC169A6925005277E2 /* Products */,
@@ -78,6 +100,8 @@
 		283BE7E5169A6925005277E2 /* DBRC */ = {
 			isa = PBXGroup;
 			children = (
+				28F5F516169BB31000C8854E /* Models */,
+				283BE800169A703C005277E2 /* ViewControllers */,
 				283BE7EE169A6925005277E2 /* DBAppDelegate.h */,
 				283BE7EF169A6925005277E2 /* DBAppDelegate.m */,
 				283BE7E6169A6925005277E2 /* Supporting Files */,
@@ -97,6 +121,27 @@
 				283BE7F5169A6925005277E2 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		283BE800169A703C005277E2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				28F5F513169BB30500C8854E /* DBPairingViewController.h */,
+				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
+				283BE805169A72AD005277E2 /* DBSearchViewController.h */,
+				283BE806169A72AD005277E2 /* DBSearchViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		28F5F516169BB31000C8854E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				28F5F517169BB31000C8854E /* DBBroadcast.h */,
+				28F5F518169BB31000C8854E /* DBBroadcast.m */,
+				28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,6 +212,9 @@
 			files = (
 				283BE7EC169A6925005277E2 /* main.m in Sources */,
 				283BE7F0169A6925005277E2 /* DBAppDelegate.m in Sources */,
+				28F5F51B169BB34000C8854E /* DBPairingViewController.m in Sources */,
+				283BE807169A72AD005277E2 /* DBSearchViewController.m in Sources */,
+				28F5F51A169BB31000C8854E /* DBBroadcast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +285,11 @@
 		283BE7FA169A6925005277E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DBRC/DBRC-Prefix.pch";
 				INFOPLIST_FILE = "DBRC/DBRC-Info.plist";
@@ -248,6 +301,11 @@
 		283BE7FB169A6925005277E2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DBRC/DBRC-Prefix.pch";
 				INFOPLIST_FILE = "DBRC/DBRC-Info.plist";
@@ -275,6 +333,7 @@
 				283BE7FB169A6925005277E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

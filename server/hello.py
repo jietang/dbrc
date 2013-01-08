@@ -2,7 +2,9 @@ import json
 import random
 import time
 
+from flask import render_template
 from flask import Flask
+from flask import Response
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -47,10 +49,16 @@ push_queue = []
 device_id_to_screen_ids = {}
 screen_id_to_device_id = {}
 
+@app.route('/blank/')
+def blank():
+    return "Nothing yet."
 
 @app.route('/')
 def db_test():
-    print "db_test"
+    user = { 'nickname': 'FakeUser' }
+    return render_template("home.html",
+        title = 'Home',
+        user = user)
     with db.engine.connect() as conn:
         return str(conn.execute(db.select([messages], messages.c.msg_id == 1)).fetchall())
 
@@ -70,7 +78,7 @@ def subscribe(screen_id):
         time.sleep(.25)
 
     # TODO generate a new screen id here if necessary, send it down
-    return json.dumps(dict(result='resubscribe', screen_id=screen_id))
+    return Response(json.dumps(dict(result='resubscribe', screen_id=screen_id)), mimetype="text/json")
 
 def generate_random_id():
     return random.randint(0, 10000)
@@ -80,13 +88,13 @@ def create_broadcast():
     global broadcast_id_to_device_ids
     broadcast_id = generate_random_id()
     broadcast_id_to_device_ids[broadcast_id] = set()
-    return json.dumps(dict(result='ok', broadcast_id=broadcast_id))
+    return Response(json.dumps(dict(result='ok', broadcast_id=broadcast_id)), mimetype="text/json")
 
 @app.route('/add_to_broadcast/<int:broadcast_id>/<int:screen_id>')
 def add_to_broadcast(broadcast_id, screen_id):
     global broadcasts_to_screen_ids
     broadcast_id_to_device_ids[broadcast_id].add(screen_id_to_device_id[screen_id])
-    return json.dumps(dict(result='ok'))
+    return Response(json.dumps(dict(result='ok')), mimetype="text/json")
 
 @app.route('/register/<int:device_id>')
 def register(device_id):
@@ -104,7 +112,7 @@ def push(broadcast_id, payload):
         if device_id in subscribing_device_ids:
             push_queue.append((device_id, payload))
             result = 'ok'
-    return json.dumps(dict(result=result))
+    return Response(json.dumps(dict(result=result)), mimetype="text/json")
 
 @app.route('/listpair')
 def listpair():
