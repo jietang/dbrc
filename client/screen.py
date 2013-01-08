@@ -14,4 +14,4 @@ while True:
     elif resp['result'] == 'ok':
         print "Launching: ", resp['data']
         webbrowser.open(resp['data'])
-        break
+        continue
