@@ -1,37 +1,89 @@
 <html>
 	<head>
+	<style>
+body {
+	margin: 0;
+	padding: 0;
+}
+
+#device_id, #screen_id {
+	font-weight: bold;
+}
+	</style>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 	<script src="/static/jquery.cookie.js" type="text/javascript"></script>
 	<script>
-$(function() {
-	DEVICE_ID = $.cookie("DEVICE_ID");
-	if (DEVICE_ID) {
-		alert("Detected DEVICE_ID: " + DEVICE_ID);
-	} else {
-		DEVICE_ID = Math.floor(Math.random() * 100000000) + 1;
-		$.cookie("DEVICE_ID", DEVICE_ID);
-		alert("DEVICE_ID doesn't exist, generating: " + DEVICE_ID);		
-	}
+function autoHeight() {
+	var browserHeight = $(window).height();
+	var dashHeight = $("#dash").height();
+	var contentHeight = browserHeight - dashHeight;
+	$("#content").height(contentHeight);
+}
 
-	IS_REGISTERED = $.cookie("IS_REGISTERED");
-	if (!IS_REGISTERED) {
-		$.get('/register/' + DEVICE_ID, '',
-			function(msg) { // callback
-				if (msg.result == 'ok') {
-					alert("Got screen ID: " + msg.screen_id);
-				} else {
-					alert("Error: " + msg.result);
-				}
-			}, 'json')
-			.error(function() {
-				alert('An ajax error occurred.');
-			});
+function listenBroadcast() {
+	$.get('/subscribe/' + SCREEN_ID, '',
+		function(msg) {
+			if (msg.result == 'ok') {
+				$('#content').attr('src', msg.data);
+				listenBroadcast();
+			} else if (msg.result == 'resubscribe') {
+				listenBroadcast();
+			} else {
+				alert("Error: " + msg.result);
+			}
+		}, 'json')
+		.error(function() {
+			alert('An ajax error occurred.');
+		});
+		
+}
+
+function onGotScreenId() {
+	$('#screen_id').html(SCREEN_ID);
+	listenBroadcast();
+}
+
+function getScreenId() {
+	$.get('/register/' + DEVICE_ID, '',
+		function(msg) { // callback
+			if (msg.result == 'ok') {
+				SCREEN_ID = msg.screen_id;
+				$.cookie("screen_id", SCREEN_ID);
+				onGotScreenId();
+			} else {
+				alert("Error: " + msg.result);
+			}
+		}, 'json')
+		.error(function() {
+			alert('An ajax error occurred.');
+		});
+}
+
+$(function() {
+	DEVICE_ID = $.cookie("device_id");
+	if (!DEVICE_ID) {
+		DEVICE_ID = Math.floor(Math.random() * 100000000) + 1;
+		$.cookie("device_id", DEVICE_ID);
 	}
+	$('#device_id').html(DEVICE_ID);
+
+	SCREEN_ID = $.cookie("screen_id");
+	if (SCREEN_ID) {
+		onGotScreenId();
+	} else {
+		getScreenId();
+	}
+	autoHeight();
 });
 	</script>
 	</head>
 	<body>
-	<h1>Hello, {{user.nickname}}!</h1>
+	<div id=dash>
+		<b>Screen</b>
+		<div>Device ID: <span id=device_id>Unknown</span></div>
+		<div>Screen ID: <span id=screen_id>Unknown</span></div>
+	</div>
+	<iframe id=content src="/blank/" style="width:100%;"></iframe>
 	</body>
 </html>
 
