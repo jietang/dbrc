@@ -15,19 +15,19 @@ $(function() {
 
 	IS_REGISTERED = $.cookie("IS_REGISTERED");
 	if (!IS_REGISTERED) {
-		$.post('/register/' + DEVICE_ID, '',
+		$.get('/register/' + DEVICE_ID, '',
 			function(msg) { // callback
-				if (msg.status  == 'OK') {
-					alert("OK!");
+				if (msg.result == 'ok') {
+					alert("Got screen ID: " + msg.screen_id);
 				} else {
-					alert("Not OK!");
+					alert("Error: " + msg.result);
 				}
 			}, 'json')
 			.error(function() {
 				alert('An ajax error occurred.');
 			});
-		});
 	}
+});
 	</script>
 	</head>
 	<body>
