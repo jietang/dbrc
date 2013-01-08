@@ -1,34 +1,41 @@
-# setup environment
+# Setup environment
+
+Linux:
 sudo apt-get update
-sudo apt-get install git python-pip emacs23-nox
+sudo apt-get install git python-pip libevent-dev python-dev redis
 sudo pip install virtualenv
 
-# setup app folder
+Mac:
+brew install git libevent redis
+easy_install pip
+pip install virtualenv
+
+# Setup repo, set up virtualenv, install libraries into virtualenv
 mkdir dbrc
 cd dbrc
 git clone git@github.com:jietang/dbrc.git source
 virtualenv env
 . env/bin/activate
-pip install flask flask-sqlalchemy
+pip install flask flask-sqlalchemy redis gunicorn gevent
 
-# mysql
-sudo apt-get install mysql-server
-sudo service mysql start
 
-# mysql mac
+# running debug server
+python source/server/hello.py
+
+# prod server
+gunicorn -c gunicorn_config.py hello:app
+
+# running client scripts
+python source/client/screen.py - runs a screen that registers and subscribes in a loop
+python source/client/remote.py <screen_id> <optional url> - runs a remote that creates a broadcast, adds <screen_id> to broadcast, and opens up the url
+
+
+
+# (OLD) migration
+# python -c 'from hello import db; db.create_all()'
+
+# (OLD) mysql mac
 brew install mysql
 mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
 mysql_secure_installation
 mysql.server start
-
-# migration
-python -c 'from hello import db; db.create_all()'
-
-# running server
-python source/server/hello.py
-
-# prod server
-sudo apt-get install libevent
-pip install gunicorn gevent
-
-gunicorn -c gunicorn_config.py hello:app
