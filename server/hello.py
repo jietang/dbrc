@@ -1,6 +1,7 @@
 import json
 import random
 import time
+import redis
 
 from flask import render_template
 from flask import Flask
@@ -8,6 +9,7 @@ from flask import Response
 from flask import request
 from flask.ext.sqlalchemy import SQLAlchemy
 
+redis_session = redis.StrictRedis(host='localhost', port=6379, db=0)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:dbrcftw@localhost/dbrc?charset=utf8'
 db = SQLAlchemy(app)
