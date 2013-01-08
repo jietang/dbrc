@@ -4,6 +4,7 @@ import time
 
 from flask import render_template
 from flask import Flask
+from flask import Response
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -88,7 +89,7 @@ def create_broadcast():
     global broadcast_id_to_device_ids
     broadcast_id = generate_random_id()
     broadcast_id_to_device_ids[broadcast_id] = set()
-    return json.dumps(dict(result='ok', broadcast_id=broadcast_id))
+    return Response(json.dumps(dict(result='ok', broadcast_id=broadcast_id)), mimetype="text/json")
 
 @app.route('/add_to_broadcast/<int:broadcast_id>/<int:screen_id>')
 def add_to_broadcast(broadcast_id, screen_id):

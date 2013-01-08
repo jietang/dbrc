@@ -7,6 +7,7 @@
 //
 
 #import "DBAppDelegate.h"
+#import "DBSearchViewController.h"
 
 @implementation DBAppDelegate
 
@@ -16,8 +17,28 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    UIViewController *rootViewController = [[DBSearchViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    [self.window setRootViewController:navController];
+    
     return YES;
 }
+
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    /* Gets called into by dropbox to authenticate our DBSesssion */
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    // Add whatever other url handling code your app requires here
+    return NO;
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -45,5 +66,6 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
 
 @end
