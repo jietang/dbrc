@@ -15,27 +15,27 @@ def dbrc_endpoint(fn):
             kwargs[k] = v
         try:
             response = fn(*args, **kwargs)
+            if isinstance(response, (list, int, set, basestring, dict, tuple)):
+                response_contents = json.dumps(response)
+                response = flask.Response(response_contents, mimetype="text/json")
+                print '\t', colorize(response_contents, 'yellow')
+            else:
+                reponse = flask.Response("%s" % response, mimetype="text/html")
+            return response
         except AssertionError, e:
-            flask.make_response('Server Assertion Error: ' + e.message, 400)
-        if isinstance(response, (list, int, set, basestring, dict, tuple)):
-            response_contents = json.dumps(response)
-            response = flask.Response(response_contents, mimetype="text/json")
-            print '\t', colorize(response_contents, 'yellow')
-        else:
-            reponse = flask.Response("%s" % response, mimetype="text/html")
-        return response
+            return flask.make_response('Server Assertion Error: ' + e.message, 400)
     inner.__name__ = fn.__name__
     return inner
 
-def reg_endpoint(path, method):
-    app.route(path)(dbrc_endpoint(method))
+def reg_endpoint(path, method, methods=tuple(["GET", "POST", "DELETE"])):
+    app.route(path, methods=methods)(dbrc_endpoint(method))
 
 
 reg_endpoint('/', lambda: 'nothing here for now')
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens', controllers.subscriptions)
-reg_endpoint('/screens', controllers.post_screen)
+reg_endpoint('/screens/', controllers.post_screen)
 reg_endpoint('/screens/<int:screen_id>', controllers.long_poll)
 reg_endpoint('/screens/<int:screen_id>/broadcasts', controllers.subscriptions)
 
