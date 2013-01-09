@@ -23,6 +23,9 @@ def dbrc_endpoint(fn):
                 # print '\t', colorize(response_contents, 'yellow')
             else:
                 response = flask.Response("%s" % response, mimetype="text/html")
+
+            # CORS header
+            response.headers['Access-Control-Allow-Origin'] = '*'
             return response
         except AssertionError, e:
             return flask.make_response('Server Assertion Error: ' + e.message, 400)
