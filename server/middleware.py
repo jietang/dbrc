@@ -9,8 +9,8 @@ def dbrc_endpoint(fn):
         print 'request for', colorize(flask.request.path, 'red'), \
                'args:', colorize(args, 'cyan'), \
                'kwargs:', colorize(kwargs, 'bright blue')
-        print colorize(flask.request.args, 'green')
-        for k, v in flask.request.args.iteritems():
+        print colorize(flask.request.values, 'green')
+        for k, v in flask.request.values.iteritems():
             assert k not in kwargs, 'cannot take a duped param'
             kwargs[k] = v
         try:

@@ -1,9 +1,19 @@
 from environment import redis_session as _r
-import random
-import Queue
-import uuid
 from threading import Thread
+import Queue
+import random
+import json
 import time
+import uuid
+from environment import redis_session
+
+def _rset(key, value):
+    redis_session.set(key, json.dumps(value))
+
+def _rget(key):
+    to_ret = redis_session.get(key)
+    if to_ret:
+        return json.loads(to_ret)
 
 def blocking_listen(channel, timeout=None):
     #TODO: timeouts are kinda tricky
@@ -31,15 +41,15 @@ def blocking_listen(channel, timeout=None):
         _r.publish(kill_channel, '')
         return {"result": "resubscribe", "screen_id": "1"}
     else:
-        return to_ret
+        return json.loads(to_ret)
 
 
 def generate_random_id():
-    n = _r.get('id_sample_range')
+    n = _rget('id_sample_range') or 10
     while True:
         candidate_id = random.randrange(0, n, 1)
-        if (not _r.get('screen_info_%s' % candidate_id) and
-            not _r.get('broadcast_info_%s' % candidate_id)):
+        if (not _rget('screen_info_%s' % candidate_id) and
+            not _rget('broadcast_info_%s' % candidate_id)):
             return candidate_id
         n *= 10
-        _r.set('id_sample_range', n)
+        _rset('id_sample_range', n)
