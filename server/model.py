@@ -1,4 +1,4 @@
-from lib import blocking_listen, _rset, _rget
+from lib import blocking_listen, _rset, _rget, _r
 
 import time
 

@@ -5,13 +5,12 @@ import random
 import json
 import time
 import uuid
-from environment import redis_session
 
 def _rset(key, value):
-    redis_session.set(key, json.dumps(value))
+    _r.set(key, json.dumps(value))
 
 def _rget(key):
-    to_ret = redis_session.get(key)
+    to_ret = _r.get(key)
     if to_ret:
         return json.loads(to_ret)
 
@@ -32,7 +31,7 @@ def blocking_listen(channel, timeout=None):
         p.subscribe(kill_channel)
         for m in p.listen():
             if m['type'] == 'message':
-                myq.put(m['data'])
+                myq.put(json.dumps(m['data']))
                 return
     Thread(target=wait_thing, args=(timeout,)).start()
     Thread(target=get_signal).start()
@@ -41,7 +40,7 @@ def blocking_listen(channel, timeout=None):
         _r.publish(kill_channel, '')
         return {"result": "resubscribe", "screen_id": "1"}
     else:
-        return json.loads(to_ret)
+        return {"result": "ok", "data": to_ret}
 
 
 def generate_random_id():
