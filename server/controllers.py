@@ -54,11 +54,13 @@ def post_screen():
     assert flask.request.method == 'POST', \
         'must POST a new screen'
     device_id = flask.request.json.get('device_id')
+    device_name = flask.request.json.get('device_name')
     assert device_id, 'must provide a device id'
+    assert device_name, 'must provide a device name'
     screen_id = generate_random_id()
 
-    info = flask.request.json.get('info')    
-    return {"screen_id": model.register_device(device_id, screen_id)}
+    pairing_info = flask.request.json.get('pairing_info')
+    return {"screen_id": model.register_device(device_id, device_name, screen_id, pairing_info)}
 
 
 def long_poll(screen_id):

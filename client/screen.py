@@ -13,11 +13,13 @@ DUMMY_SSIDS = [{'strength': -82, 'ssid': 'GreeMobile', 'bssid': '88:75:56:1:e7:2
 # add a 'application/json' content-type header
 r = requests.post('http://%s:%d/screens/' % (HOST, PORT),
                   headers={'content-type': 'application/json'},
-                  data=json.dumps({'device_id': ID,
-                        'info': {
-                            'connected': DUMMY_CONNECTED,
-                            'nearby': DUMMY_SSIDS,
-                        }})
+                  data=json.dumps({
+                      'device_id': ID,
+                      'device_name': 'device_%d' % ID,
+                      'pairing_info': {
+                          'connected': DUMMY_CONNECTED,
+                          'nearby': DUMMY_SSIDS,
+                          }})
     )
 screen_id = r.json()["screen_id"]
 print "current screen id: ", screen_id
