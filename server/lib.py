@@ -1,10 +1,10 @@
+from environment import redis_session
 from threading import Thread
 import Queue
 import random
 import json
 import time
 import uuid
-from environment import redis_session
 
 def _rset(key, value):
     redis_session.set(key, json.dumps(value))
@@ -31,7 +31,7 @@ def blocking_listen(channel, timeout=None):
         p.subscribe(kill_channel)
         for m in p.listen():
             if m['type'] == 'message':
-                myq.put(m['data'])
+                myq.put(json.dumps(m['data']))
                 return
     Thread(target=wait_thing, args=(timeout,)).start()
     Thread(target=get_signal).start()

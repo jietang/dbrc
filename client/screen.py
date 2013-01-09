@@ -1,10 +1,13 @@
 from api_util import request
+import json
 import webbrowser
 import time
+import requests
 
 ID=1
 
-screen_id = request('screens', ID)['screen_id']
+r = requests.post('http://127.0.0.1:5000/screens/', data={'device_id': ID})
+screen_id = r.json()
 print "current screen id: ", screen_id
 
 while True:
@@ -19,6 +22,6 @@ while True:
         print "resubscribing"
         continue
     elif resp['result'] == 'ok':
-        print "Launching: ", resp['data']['url']
-        webbrowser.open(resp['data']['url'])
+        print "Launching: ", json.loads(resp['data'])
+        webbrowser.open(json.loads(resp['data']))
         continue
