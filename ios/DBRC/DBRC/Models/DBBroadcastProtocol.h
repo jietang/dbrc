@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol DBBroadcastDelegate <NSObject>
+@class DBBroadcast;
 
+@protocol DBBroadcastDelegate <NSObject>
 
 @optional
 - (void)broadcastWasStarted:(DBBroadcast *)broadcast;

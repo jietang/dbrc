@@ -10,6 +10,8 @@
 #import "DBBroadcast.h"
 #import "DBBroadcastProtocol.h"
 
+#define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
+//#define BASE_URL @"http://127.0.0.1:5000/"
 
 @implementation DBBroadcast
 
@@ -29,8 +31,9 @@
 }
 
 - (void)createBroadcast {
-    NSURL *url = [NSURL URLWithString:@"http://0.0.0.0:5000/create_broadcast"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:@"broadcasts/"]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
     
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -42,32 +45,58 @@
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                                                      NSLog(@"%@", [error userInfo]);
+                                                                                     NSLog(@"%@", JSON);
                                                                                      [self.delegate broadcast:self failedWithError:error];
                                                                                  }];
     [op start];
 }
 
-- (void)addScreenToBroadcast:(NSString *)screenOrDeviceId {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://0.0.0.0:5000/add_to_broadcast/%d/%@", self.broadcastId, screenOrDeviceId, nil]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+- (void)addScreenToBroadcast:(NSString *)screenId {
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/screens/", self.broadcastId, nil]]];
+    NSData *postData = [self encodeDictionary:[NSDictionary dictionaryWithObject:screenId
+                                                                          forKey:@"screen_id"]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
     
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                     NSLog(@"Success! Added screen %@ to broadcast %d", screenOrDeviceId, self.broadcastId);
-                                                                                     [self.delegate screenWasAdded:screenOrDeviceId];
+                                                                                     NSLog(@"Success! Added screen %@ to broadcast %d", screenId, self.broadcastId);
+                                                                                     [self.delegate screenWasAdded:screenId];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                                                      NSLog(@"%@", [error userInfo]);
-                                                                                     NSLog(@"Failure! Couldn't add screen %@ to broadcast %d", screenOrDeviceId, self.broadcastId);
-                                                                                     [self.delegate screenAddFailed:screenOrDeviceId withError:nil];
+                                                                                     NSLog(@"%@", error);
+                                                                                     
+                                                                                     NSLog(@"Failure! Couldn't add screen %@ to broadcast %d", screenId, self.broadcastId);
+                                                                                     [self.delegate screenAddFailed:screenId withError:nil];
                                                                                  }];
     
     [op start];
 }
 
 - (void)push:(NSString *)urlStr withParams:(NSDictionary *)params {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://0.0.0.0:5000/push/%d/%@", self.broadcastId, urlStr, nil]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/", self.broadcastId, nil]]];
+    // Massaging json into expected format...a mess for now
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:urlStr
+                                                         forKey:@"url"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:jsonDict
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    NSString *jsonStr = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
+    
+    NSData *htmlEncoded = [self encodeDictionary:[NSDictionary dictionaryWithObject:jsonStr forKey:@"data"]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//    [request setHTTPBody:postData];
+    [request setValue:@"application/x-www-form-urlencoded charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:htmlEncoded];
     
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -79,6 +108,20 @@
                                                                                  }];
     
     [op start];
+}
+
+
+# pragma mark URL Helpers
+- (NSData*)encodeDictionary:(NSDictionary*)dictionary {
+    NSMutableArray *parts = [[NSMutableArray alloc] init];
+    for (NSString *key in dictionary) {
+        NSString *encodedValue = [[dictionary objectForKey:key] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *encodedKey = [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *part = [NSString stringWithFormat: @"%@=%@", encodedKey, encodedValue];
+        [parts addObject:part];
+    }
+    NSString *encodedDictionary = [parts componentsJoinedByString:@"&"];
+    return [encodedDictionary dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 

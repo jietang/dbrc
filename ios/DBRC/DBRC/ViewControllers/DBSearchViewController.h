@@ -9,10 +9,17 @@
 #import <UIKit/UIKit.h>
 #import <DropboxSDK/DropboxSDK.h>
 
-@interface DBSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, DBRestClientDelegate>
+#import "DBBroadcastProtocol.h"
+
+@class DBBroadcast;
+
+@interface DBSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, DBRestClientDelegate, DBBroadcastDelegate>
 
 @property (nonatomic, retain) UISearchBar *searchBar;
+@property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) DBSession *dbSession;
 @property (nonatomic, retain) DBRestClient *rc;
+@property (nonatomic, retain) DBBroadcast *broadcast;
+@property (nonatomic, retain) NSArray *currentSearchResults;
 
 @end

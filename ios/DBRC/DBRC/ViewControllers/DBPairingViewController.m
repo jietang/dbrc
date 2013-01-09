@@ -21,10 +21,14 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"Pair";
-        self.broadcast = [[DBBroadcast alloc] init];
-        self.broadcast.delegate = self;
-        [self.broadcast startBroadcast];
-        self.screenHasBeenAdded = NO;
+    }
+    return self;
+}
+
+- (id)initWithBroadcast:(DBBroadcast *)broadcast {
+    if (self = [super init]) {
+        self.title = @"Pair";
+        self.broadcast = broadcast;
     }
     return self;
 }
@@ -63,30 +67,12 @@
 
 #pragma mark UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (self.screenHasBeenAdded) {
-        [self.broadcast push:self.textField.text withParams:nil];
-    }
-    else {
-        [self.broadcast addScreenToBroadcast:self.textField.text];
-        return YES;
-    }
+    [self.broadcast addScreenToBroadcast:self.textField.text];
+    return YES;
 }
 
-#pragma mark DBBroadcastDelegate
-- (void)screenWasAdded:(NSString *)screen {
-    NSLog(@"Screen was added!");
-    self.screenHasBeenAdded = YES;
-    self.instructions.text = @"Tell the screen to go to a url";
-    self.textField.text = @"";
-}
-
-- (void)screenAddFailed:(NSString *)screen withError:(NSString *)err {
-    NSLog(@"Failed to add screen");
-}
 
 # pragma mark DBBroadcastDelegate
-- (void)broadcastWasStarted:(DBBroadcast *)broadcast {
 
-}
 
 @end

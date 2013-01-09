@@ -13,9 +13,12 @@
 
 @interface DBPairingViewController : UIViewController <UITextFieldDelegate, DBBroadcastDelegate>
 
+
 @property (nonatomic, retain) DBBroadcast *broadcast;
 @property (nonatomic, retain) UITextField *textField;
 @property (nonatomic, retain) UILabel *instructions;
-@property (nonatomic, assign) BOOL screenHasBeenAdded;
+
+
+- (id)initWithBroadcast:(DBBroadcast *)broadcast;
 
 @end
