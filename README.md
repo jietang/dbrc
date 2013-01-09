@@ -25,7 +25,7 @@ _post something to a broadcast channel_
 
 uses a message type. valid types: "_link_", "_action_"
 
-data: `{"data": {"url": some_url, "message_type": message type}}`
+data: `{"data": '{"url": some_url, "message_type": message type}'}`
 
 response: `<status code>`
 
@@ -81,7 +81,7 @@ _long poll: listen for a message_
 
 data: `<optional> {"timeout": seconds}`
 
-response: a JSON ball posted to `/broadcasts/<int:id>` by a remote. right now, the json dict is guarenteed to have a "method_type" field set to "link" or "action"
+response: a (stringified) JSON ball posted to `/broadcasts/<int:id>` by a remote. right now, the json dict is guarenteed to have a "method_type" field set to "link" or "action"
 
 .
 `/screens/<int:id>/broadcasts`
