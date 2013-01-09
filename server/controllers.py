@@ -50,11 +50,14 @@ def subscriptions(broadcast_id=None, screen_id=None):
         return model.remove_from_broadcast(screen_id, broadcast_id)
 
 
-def post_screen(device_id=None):
+def post_screen():
     assert flask.request.method == 'POST', \
         'must POST a new screen'
+    device_id = flask.request.json.get('device_id')
     assert device_id, 'must provide a device id'
     screen_id = generate_random_id()
+
+    info = flask.request.json.get('info')    
     return {"screen_id": model.register_device(device_id, screen_id)}
 
 
