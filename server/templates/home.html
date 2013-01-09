@@ -5,8 +5,10 @@ body {
 	margin: 0;
 	padding: 0;
 }
-
-#device_id, #screen_id {
+#error {
+	color: #f00;
+}
+#device_id, #screen_id, #url {
 	font-weight: bold;
 }
 	</style>
@@ -21,19 +23,20 @@ function autoHeight() {
 }
 
 function listenBroadcast() {
-	$.get('/subscribe/' + SCREEN_ID, '',
+	$.get('/screens/' + SCREEN_ID, '',
 		function(msg) {
 			if (msg.result == 'ok') {
-				$('#content').attr('src', msg.data);
+				$('#url').html(msg.data.url);
+				$('#content').attr('src', msg.data.url);
 				listenBroadcast();
 			} else if (msg.result == 'resubscribe') {
 				listenBroadcast();
 			} else {
-				alert("Error: " + msg.result);
+				$('#error').html("Error: " + msg.result);
 			}
 		}, 'json')
 		.error(function() {
-			alert('An ajax error occurred.');
+			$('#error').html('An ajax error occurred.');
 		});
 		
 }
@@ -44,18 +47,19 @@ function onGotScreenId() {
 }
 
 function getScreenId() {
-	$.get('/register/' + DEVICE_ID, '',
+	// registers this device
+	$.post('/screens/', 'device_id=' + DEVICE_ID,
 		function(msg) { // callback
-			if (msg.result == 'ok') {
+			if (msg.screen_id) {
 				SCREEN_ID = msg.screen_id;
 				$.cookie("screen_id", SCREEN_ID);
 				onGotScreenId();
 			} else {
-				alert("Error: " + msg.result);
+				$('#error').html("Error: " + String(msg));
 			}
 		}, 'json')
 		.error(function() {
-			alert('An ajax error occurred.');
+			$('#error').html('An ajax error occurred.');
 		});
 }
 
@@ -73,8 +77,36 @@ $(function() {
 	} else {
 		getScreenId();
 	}
+
 	autoHeight();
 });
+
+function genKeyEvent(type, char) {
+	var pressEvent = document.createEvent('KeyboardEvent');
+	pressEvent.initKeyEvent(type, true, true, null, 
+				false, false, false, false, 
+				0, char);
+	return pressEvent;
+}
+
+function pressChar(char)
+{
+	try {
+		var c = char.charCodeAt(0);
+		$('#error').html("Key: " + c);
+		var element = $('#content')[0].contentWindow.document.activeElement;
+		element.dispatchEvent(genKeyEvent("keypress", c));
+	} catch (e) {
+		alert("Your browser does not support this example!");
+	}
+}
+
+function callTest() {
+	setTimeout(function(){
+		pressChar('s');
+		pressChar('\t');
+	}, 3000);
+}
 	</script>
 	</head>
 	<body>
@@ -82,8 +114,11 @@ $(function() {
 		<b>Screen</b>
 		<div>Device ID: <span id=device_id>Unknown</span></div>
 		<div>Screen ID: <span id=screen_id>Unknown</span></div>
+		<div>Dropcast URL: <span id=url>[None]</span></div>
+		<div id=error></div>
+		<div><a href="javascript:void(0)" onclick="callTest()">Test simulated keyboard event</a></div>
 	</div>
-	<iframe id=content src="/blank/" style="width:100%;"></iframe>
+	<iframe id=content src="/static/test.html" style="width:100%;"></iframe>
 	</body>
 </html>
 

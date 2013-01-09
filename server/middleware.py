@@ -35,7 +35,11 @@ def dbrc_endpoint(fn):
 def reg_endpoint(path, method, methods=tuple(["GET", "POST", "DELETE"])):
     app.route(path, methods=methods)(dbrc_endpoint(method))
 
-reg_endpoint('/', lambda: 'nothing here for now')
+from flask import render_template
+@app.route('/')
+def home():
+	return render_template('home.html')
+
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens/', controllers.subscriptions)
