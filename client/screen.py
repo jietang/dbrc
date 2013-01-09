@@ -1,4 +1,4 @@
-from api_util import request
+from api_util import request, HOST, PORT
 import json
 import webbrowser
 import time
@@ -6,7 +6,7 @@ import requests
 
 ID=1
 
-r = requests.post('http://127.0.0.1:5000/screens/', data={'device_id': ID})
+r = requests.post('http://%s:%d/screens/' % (HOST, PORT), data={'device_id': ID})
 screen_id = r.json()["screen_id"]
 print "current screen id: ", screen_id
 
