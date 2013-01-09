@@ -17,7 +17,7 @@ def dbrc_endpoint(fn):
                 assert k not in kwargs, 'cannot take a duped param'
                 kwargs[k] = v
             response = fn(*args, **kwargs)
-            if isinstance(response, (list, int, set, basestring, dict, tuple)):
+            if isinstance(response, (list, int, set, basestring, dict, tuple)) or response is None:
                 response_contents = json.dumps(response)
                 response = flask.Response(response_contents, mimetype="text/json")
                 # print '\t', colorize(response_contents, 'yellow')

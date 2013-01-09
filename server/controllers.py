@@ -1,8 +1,7 @@
 import flask
+import json
 
-from lib import (
-    generate_random_id,
-    )
+from lib import generate_random_id
 import model
 
 
@@ -20,6 +19,11 @@ def post_to_broadcast(broadcast_id, data=None):
         'must use POST to publish things'
     assert data, \
         'must supply a data parameter to publish things'
+    try:
+        data = json.loads(data)
+    except ValueError, e:
+        # asserts cause a 400 to fire. this is a hack, but it's hack week.
+        assert False, "'data' must be a valid JSON string"
     return {"publish_response": model.publish(broadcast_id, data)}
 
 
@@ -35,9 +39,10 @@ def subscriptions(broadcast_id=None, screen_id=None):
         elif broadcast_id:
             return model.get_broadcast(broadcast_id)['screens']
         elif screen_id:
-            return model.get_screen(broadcast_id)['broadcases']
+            return model.get_screen(screen_id)['broadcasts']
     elif method == "POST":
         assert screen_id, 'need to specify a screen_id'
+        print 'adding screen %s to broadcast %s' % (screen_id, broadcast_id)
         return model.add_to_broadcast(screen_id, broadcast_id)
     elif method == "DELETE":
         assert screen_id, 'need to specify a screen_id'
