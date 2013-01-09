@@ -71,11 +71,6 @@ def broadcast(broadcast_id):
         return Response(status=404)
 
     if request.method == 'POST':
-        print dir(request)
-        print 'received payload: ', request.data
-        print 'received payload: ', request.json
-        print 'received payload: ', request.args
-        print 'received payload: ', request.form
         payload = request.json
         result = 'fail'
         for screen_id in broadcast_id_to_screen_ids[broadcast_id]:
@@ -137,6 +132,9 @@ def screen(screen_id):
     else:
         return Response(status=404)
 
+
+def generate_random_id():
+    return random.randint(0, 10000)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
