@@ -10,7 +10,7 @@ def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast'
     broadcast_id = generate_random_id()
-    start_broadcast(broadcast_id)
+    model.start_broadcast(broadcast_id)
     return broadcast_id
 
 
@@ -20,6 +20,7 @@ def post_to_broadcast(broadcast_id, data=None):
     assert data, \
         'must supply a data parameter to publish things'
     model.publish(broadcast_id, data)
+    return 'ok'
 
 
 def subscriptions(broadcast_id=None, screen_id=None):
@@ -54,4 +55,4 @@ def post_screen(device_id=None):
 def long_poll(screen_id):
     assert flask.request.method == "GET", \
         "this method only supports a long-poll GET"
-    screen_listen(screen_id)
+    return model.screen_listen(screen_id)
