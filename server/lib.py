@@ -3,6 +3,7 @@ import random
 import Queue
 import uuid
 from threading import Thread
+import time
 
 def blocking_listen(channel, timeout=None):
     #TODO: timeouts are kinda tricky
@@ -23,7 +24,7 @@ def blocking_listen(channel, timeout=None):
             if m['type'] == 'message':
                 myq.put(m['data'])
                 return
-    Thread(target=wait_thing).start()
+    Thread(target=wait_thing, args=(timeout,)).start()
     Thread(target=get_signal).start()
     to_ret = myq.get()
     if to_ret == 'END':

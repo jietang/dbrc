@@ -10,7 +10,7 @@ def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast'
     broadcast_id = generate_random_id()
-    start_broadcast(broadcast_id)
+    model.start_broadcast(broadcast_id)
     return broadcast_id
 
 
@@ -46,7 +46,7 @@ def subscriptions(broadcast_id=None, screen_id=None):
 def post_screen(device_id):
     assert flask.request.model == 'POST', \
         'must POST a new screen'
-    assert devive_id, 'must provide a device id'
+    assert device_id, 'must provide a device id'
     screen_id = generate_random_id()
     return model.register_device(device_id, screen_id)
 
@@ -54,4 +54,4 @@ def post_screen(device_id):
 def long_poll(screen_id):
     assert flask.request.method == "GET", \
         "this method only supports a long-poll GET"
-    screen_listen(screen_id)
+    model.screen_listen(screen_id)
