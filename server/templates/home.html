@@ -26,8 +26,8 @@ function listenBroadcast() {
 	$.get('/screens/' + SCREEN_ID, '',
 		function(msg) {
 			if (msg.result == 'ok') {
-				$('#url').html(msg.data.url);
-				$('#content').attr('src', msg.data.url);
+				$('#url').html(JSON.parse(msg.data).url);
+				$('#content').attr('src', JSON.parse(msg.data).url);
 				listenBroadcast();
 			} else if (msg.result == 'resubscribe') {
 				listenBroadcast();
