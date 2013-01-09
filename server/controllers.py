@@ -8,10 +8,11 @@ import model
 
 def post_broadcast():
     assert flask.request.method == 'POST', \
-        'must use POST to start a broadcast'
+        'must use POST to start a broadcast, got %s' \
+        % flask.request.method
     broadcast_id = generate_random_id()
     model.start_broadcast(broadcast_id)
-    return broadcast_id
+    return {"broadcast_id": broadcast_id}
 
 
 def post_to_broadcast(broadcast_id, data=None):
@@ -19,8 +20,7 @@ def post_to_broadcast(broadcast_id, data=None):
         'must use POST to publish things'
     assert data, \
         'must supply a data parameter to publish things'
-    model.publish(broadcast_id, data)
-    return 'ok'
+    return {"publish_response": model.publish(broadcast_id, data)}
 
 
 def subscriptions(broadcast_id=None, screen_id=None):
@@ -49,7 +49,7 @@ def post_screen(device_id=None):
         'must POST a new screen'
     assert device_id, 'must provide a device id'
     screen_id = generate_random_id()
-    return model.register_device(device_id, screen_id)
+    return {"screen_id": model.register_device(device_id, screen_id)}
 
 
 def long_poll(screen_id):

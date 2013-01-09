@@ -1,5 +1,6 @@
 from lib import blocking_listen, _rset, _rget
-
+from environment import redis_session
+import json
 import time
 
 
@@ -17,7 +18,7 @@ def get_screen_id(device_id):
     return _rget('device_to_screen_id_%s' % device_id)
 
 def screen_listen(screen_id):
-    return blocking_listen('screen_channel_%s' % screen_id, 2)
+    return blocking_listen('screen_channel_%s' % screen_id, timeout=10)
 
 def get_screen(screen_id):
     return _rget('screen_info_%s' % screen_id)
@@ -33,9 +34,11 @@ def get_broadcast(broadcast_id):
     return _rget('broadcast_info_%s' % broadcast_id)
 
 def publish(broadcast_id, data):
+    print "publishing..."
     broadcast_info = get_broadcast(broadcast_id)
+    print 'broadcast...', broadcast_info
     for screen_id in broadcast_info['screens']:
-        _r.publish('screen_channel_%s' % screen_id, data)
+        redis_session.publish('screen_channel_%s' % screen_id, json.dumps(data))
 
 ## SUBSCRIPTION ##
 def add_to_broadcast(screen_id, broadcast_id):

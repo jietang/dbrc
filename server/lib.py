@@ -1,4 +1,3 @@
-from environment import redis_session as _r
 from threading import Thread
 import Queue
 import random
@@ -27,7 +26,7 @@ def blocking_listen(channel, timeout=None):
             time.sleep(timeout)
             myq.put('END')
     def get_signal():
-        p = _r.pubsub()
+        p = redis_session.pubsub()
         p.subscribe(channel)
         p.subscribe(kill_channel)
         for m in p.listen():
@@ -38,10 +37,10 @@ def blocking_listen(channel, timeout=None):
     Thread(target=get_signal).start()
     to_ret = myq.get()
     if to_ret == 'END':
-        _r.publish(kill_channel, '')
+        redis_session.publish(kill_channel, '')
         return {"result": "resubscribe", "screen_id": "1"}
     else:
-        return json.loads(to_ret)
+        return {"result": "ok", "data": json.loads(to_ret)}
 
 
 def generate_random_id():
