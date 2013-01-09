@@ -48,4 +48,4 @@ reg_endpoint('/screens/<int:screen_id>', controllers.long_poll)
 reg_endpoint('/screens/<int:screen_id>/broadcasts', controllers.subscriptions)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=False, host='0.0.0.0')
+    app.run(port=80, debug=False, host='0.0.0.0')
