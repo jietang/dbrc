@@ -23,5 +23,5 @@ while True:
         continue
     elif resp['result'] == 'ok':
         print "Launching: ", json.loads(resp['data'])
-        webbrowser.open(json.loads(resp['data']['url']))
+        webbrowser.open(json.loads(resp['data']))
         continue
