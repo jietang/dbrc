@@ -43,7 +43,8 @@ def subscriptions(broadcast_id=None, screen_id=None):
     elif method == "POST":
         assert screen_id, 'need to specify a screen_id'
         print 'adding screen %s to broadcast %s' % (screen_id, broadcast_id)
-        return model.add_to_broadcast(screen_id, broadcast_id)
+        model.add_to_broadcast(screen_id, broadcast_id)
+        return {'broadcast_id': broadcast_id, 'screen_id': screen_id}
     elif method == "DELETE":
         assert screen_id, 'need to specify a screen_id'
         return model.remove_from_broadcast(screen_id, broadcast_id)
