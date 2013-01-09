@@ -23,9 +23,11 @@ POST
 -
 _post something to a broadcast channel_
 
-data: the information you would like to post as a JSON object
+uses a message type. valid types: "_link_", "_action_"
 
-response: just a status code
+data: `{"data": {"url": some_url, "message_type": message type}}`
+
+response: `<status code>`
 
 .
 `/broadcasts/<int:id>/screens`
@@ -37,15 +39,16 @@ _get the list of screens subscribed to the broadcast_
 
 data: nothing
 
-response: list of `screen_id`s that are subscribed to this broadcast
+response: `{"<screen_id>": <subscription_timestamp>, "<screen_id>", <subscription_timestamp>, ...}`
+
 
 POST
 -
-_subscribed a screen to a broadcast_
+_subscribe a screen to a broadcast_
 
 data: `{"screen_id": screen_id}`
 
-response: (status code)
+response: `<status code>`
 
 DELETE
 -
@@ -66,7 +69,7 @@ _create a new screen, and associate it with a unique device\_id_
 
 data: `{"device_id": device_id}`
 
-response: `broadcast_id`
+response: `{"broadcast_id": broadcast_id}`
 
 .
 `/screens/<int:screen_id>`
@@ -78,7 +81,7 @@ _long poll: listen for a message_
 
 data: `<optional> {"timeout": seconds}`
 
-response: a JSON ball posted to `/broadcasts/<int:id>` by a remote
+response: a JSON ball posted to `/broadcasts/<int:id>` by a remote. right now, the json dict is guarenteed to have a "method_type" field set to "link" or "action"
 
 .
 `/screens/<int:id>/broadcasts`
@@ -86,11 +89,11 @@ response: a JSON ball posted to `/broadcasts/<int:id>` by a remote
 
 GET
 -
-_a list of all broadcast streams this screen is subscribed to_
+_gets all broadcast streams this screen is subscribed to_
 
 data: nothing
 
-response: list of `broadcast_id`s that this screen listens to
+response: `{"<broadcast_id>": <subscription_timestamp>, "<broadcast_id>", <subscription_timestamp>, ...}`
 
 POST
 -
@@ -106,4 +109,4 @@ _remove a screen from a broadcast_
 
 data: `{"broadcast_id": broadcast_id}`
 
-response: (status code)
+response: `<status code>`
