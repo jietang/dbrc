@@ -36,9 +36,10 @@ def get_broadcast(broadcast_id):
 def publish(broadcast_id, data):
     print "publishing..."
     broadcast_info = get_broadcast(broadcast_id)
-    print 'broadcast...', broadcast_info
+    data = json.dumps(data)
+    print 'broadcastint to ', broadcast_info, '\n\tdata: ', data
     for screen_id in broadcast_info['screens']:
-        redis_session.publish('screen_channel_%s' % screen_id, json.dumps(data))
+        redis_session.publish(('screen_channel_%s' % screen_id), data)
 
 ## SUBSCRIPTION ##
 def add_to_broadcast(screen_id, broadcast_id):
