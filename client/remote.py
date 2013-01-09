@@ -19,5 +19,5 @@ if r.status_code != 200:
 
 print 'added screen %s to broadcast %s' % (screen_id, broadcast_id)
 time.sleep(1.0)
-r = requests.post('http://%s:%d/broadcasts/%s/' % (HOST, PORT, broadcast_id), data={'data': json.dumps(url)})
+r = requests.post('http://%s:%d/broadcasts/%s/' % (HOST, PORT, broadcast_id), data={'data': json.dumps(dict(url=url))})
 print 'pushed %s to broadcast %s' % (url, broadcast_id)

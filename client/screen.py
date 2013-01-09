@@ -22,6 +22,6 @@ while True:
         print "resubscribing"
         continue
     elif resp['result'] == 'ok':
-        print "Launching: ", json.loads(resp['data'])
-        webbrowser.open(json.loads(resp['data']))
+        print "Launching: ", json.loads(resp['data'])['url']
+        webbrowser.open(json.loads(resp['data'])['url'])
         continue
