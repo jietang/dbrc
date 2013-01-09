@@ -57,18 +57,31 @@ def broadcasts():
     if request.method == 'POST':
         new_broadcast = generate_random_id()
         broadcast_id_to_screen_ids[new_broadcast] = set()
-        return Response(json.dumps(new_broadcast), mimetype="test/json")
+        return Response(json.dumps({'broadcast_id': new_broadcast}), mimetype="text/json")
     else:
         broadcast_urls = ['/broadcasts/' + str(broadcast_id) for broadcast_id in broadcast_id_to_screen_ids.keys()]
         return Response(json.dumps(broadcast_urls), mimetype="text/json")
 
 
-@app.route('/broadcasts/<int:broadcast_id>')
+@app.route('/broadcasts/<int:broadcast_id>', methods=['GET', 'POST'])
 def broadcast(broadcast_id):
-    if broadcast_id in broadcast_id_to_screen_ids.keys():
-        return Response(json.dumps(broadcast_id), mimetype="text/json")
-    else:
+    if broadcast_id not in broadcast_id_to_screen_ids.keys():
         return Response(status=404)
+
+    if request.method == 'POST':
+        print dir(request)
+        print 'received payload: ', request.data
+        print 'received payload: ', request.json
+        print 'received payload: ', request.args
+        print 'received payload: ', request.form
+        payload = request.json
+        result = 'fail'
+        for screen_id in broadcast_id_to_screen_ids[broadcast_id]:
+            push_queue.append((screen_id, payload))
+            result = 'ok'
+        return Response(json.dumps(dict(result=result)), mimetype="text/json")
+    else:
+        return Response(json.dumps({'broadcast_id': broadcast_id}), mimetype="text/json")
 
 
 @app.route('/broadcasts/<int:broadcast_id>/screens/', methods=['GET', 'POST'])
@@ -96,7 +109,7 @@ def screens():
         screen_id = generate_random_id()
         device_id_to_screen_ids[device_id] = set([screen_id])
         screen_id_to_device_id[screen_id] = device_id
-        return Response(json.dumps(screen_id), mimetype="text/json")
+        return Response(json.dumps({'screen_id': screen_id}), mimetype="text/json")
     else:
         screen_urls = ['/screens/' + str(screen_id) for screen_id in screen_id_to_device_id.keys()]
         return Response(json.dumps(screen_urls), mimetype="text/json")
@@ -104,8 +117,21 @@ def screens():
 
 @app.route('/screens/<int:screen_id>', methods=['GET'])
 def screen(screen_id):
+    # The long poll
     if screen_id in screen_id_to_device_id.keys():
-        return Response(json.dumps(screen_id), mimetype="text/json")
+        for _ in range(20):
+            found = None
+            for i, (msg_screen_id, _) in enumerate(push_queue):
+                if screen_id == msg_screen_id:
+                    found = i
+                    break
+            if found is not None:
+                screen_id, payload = push_queue.pop(i)
+                return json.dumps(dict(result='ok', data=payload))
+            time.sleep(.25)
+
+        # TODO generate a new screen id here if necessary, send it down
+        return Response(json.dumps(dict(result='resubscribe', screen_id=screen_id)), mimetype="text/json")
     else:
         return Response(status=404)
 
@@ -172,10 +198,9 @@ def register(device_id):
 @app.route('/push/<int:broadcast_id>/<path:payload>')
 def push(broadcast_id, payload):
     result = 'fail'
-    for device_id in broadcast_id_to_screen_ids.get(broadcast_id, []):
-        if device_id in subscribing_device_ids:
-            push_queue.append((device_id, payload))
-            result = 'ok'
+    for screen_id in broadcast_id_to_screen_ids[broadcast_id]:
+        push_queue.append((screen_id, payload))
+        result = 'ok'
     return Response(json.dumps(dict(result=result)), mimetype="text/json")
 
 
