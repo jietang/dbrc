@@ -52,6 +52,9 @@ push_queue = []
 device_id_to_screen_ids = {}
 screen_id_to_device_id = {}
 
+@app.route('/')
+def home():
+	return render_template('home.html')
 
 # New routes
 @app.route('/broadcasts/', methods=['GET', 'POST'])
@@ -97,7 +100,6 @@ def broadcasts_screens(broadcast_id):
     else:
         screen_urls = ['/screens/' + str(screen_id) for screen_id in broadcast_id_to_screen_ids[broadcast_id]]
         return Response(json.dumps(screen_urls), mimetype="text/json")
-
 
 @app.route('/screens/', methods=['GET', 'POST'])
 def screens():
