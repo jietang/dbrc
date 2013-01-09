@@ -38,7 +38,6 @@ def publish(broadcast_id, data):
         _r.publish('screen_channel_%s' % screen_id, data)
 
 ## SUBSCRIPTION ##
-
 def add_to_broadcast(screen_id, broadcast_id):
     broadcast_info = _r.get('broadcast_info_%s' % broadcast_id)
     screen_info = _r.get('screen_info_%s' % screen_id)

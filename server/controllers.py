@@ -20,6 +20,7 @@ def post_to_broadcast(broadcast_id, data=None):
     assert data, \
         'must supply a data parameter to publish things'
     model.publish(broadcast_id, data)
+    return 'ok'
 
 
 def subscriptions(broadcast_id=None, screen_id=None):
