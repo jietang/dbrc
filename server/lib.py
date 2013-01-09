@@ -29,7 +29,7 @@ def blocking_listen(channel, timeout=None):
     to_ret = myq.get()
     if to_ret == 'END':
         _r.publish(kill_channel, '')
-        return {"error_message": "request timed out"}
+        return {"result": "resubscribe", "screen_id": "1"}
     else:
         return to_ret
 

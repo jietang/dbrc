@@ -54,4 +54,4 @@ def post_screen(device_id):
 def long_poll(screen_id):
     assert flask.request.method == "GET", \
         "this method only supports a long-poll GET"
-    model.screen_listen(screen_id)
+    return model.screen_listen(screen_id)
