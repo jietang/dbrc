@@ -70,8 +70,7 @@ def crossdomain(origin=None, methods=None, headers=None,
             h['Access-Control-Allow-Origin'] = origin
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
-            if headers is not None:
-                h['Access-Control-Allow-Headers'] = headers
+            h['Access-Control-Allow-Headers'] = 'Content-Type'
             return resp
 
         f.provide_automatic_options = False
@@ -79,7 +78,7 @@ def crossdomain(origin=None, methods=None, headers=None,
     return decorator
 
 
-def reg_endpoint(path, method, methods=tuple(["GET", "POST", "DELETE"])):
+def reg_endpoint(path, method, methods=tuple(["OPTIONS", "GET", "POST", "DELETE"])):
     app.route(path, methods=methods)(crossdomain(origin='*')(dbrc_endpoint(method)))
 
 from flask import render_template
