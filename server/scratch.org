@@ -1,0 +1,20 @@
+* screen
+** register
+*** request: {"device_id"}
+*** response: {"screen_id": int}
+** listen
+*** request: {"screen_id"}
+*** response: {"link": <string>, "view_data": <string>}
+
+* broadcast
+** create_broadcast
+*** request: {}
+*** reponse: {"broadcast_id"}
+** push
+*** request: {"broadcast_id": <int>, "payload": <json>}
+
+* rpc
+** add_to_broadcast
+*** request: {"screen_id": <optional list>, "device_id"}
+*** response: 200
+
