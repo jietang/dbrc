@@ -67,3 +67,10 @@ def long_poll(screen_id):
     assert flask.request.method == "GET", \
         "this method only supports a long-poll GET"
     return model.screen_listen(screen_id)
+
+
+def known_hosts(broadcast_id):
+    assert flask.request.method == "GET", \
+        "this method only supports a long-poll GET"
+
+    return []
