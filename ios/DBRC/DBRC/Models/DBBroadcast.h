@@ -20,5 +20,9 @@
 - (void)push:(NSString *)urlStr withParams:(NSDictionary *)params;
 - (void)fetchLikelyScreens;
 - (void)fetchKnownScreens;
+- (void)broadcastCredentials;
+
++ (NSString *)appKey;
++ (NSString *)appSecret;
 
 @end
