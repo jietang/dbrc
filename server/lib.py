@@ -17,6 +17,9 @@ def _rget(key):
 def blocking_listen(channel, timeout=None):
     #TODO: timeouts are kinda tricky
     assert timeout < 60 * 5, 'maximum 5 minute timeout'
+    current_queue = non_blocking_listen(channel)
+    if current_queue:
+        return {"result": "ok", "data": current_queue[-1]}
     myq = Queue.Queue()
     kill_channel = '%s' % uuid.uuid4()
     def wait_thing(timeout):
@@ -31,7 +34,7 @@ def blocking_listen(channel, timeout=None):
         p.subscribe(kill_channel)
         for m in p.listen():
             if m['type'] == 'message':
-                myq.put(json.dumps(m['data']))
+                myq.put(m['data'])
                 return
     Thread(target=wait_thing, args=(timeout,)).start()
     Thread(target=get_signal).start()
@@ -40,8 +43,23 @@ def blocking_listen(channel, timeout=None):
         redis_session.publish(kill_channel, '')
         return {"result": "resubscribe", "screen_id": "1"}
     else:
-        return {"result": "ok", "data": json.loads(to_ret)}
+        # pop off the element from the queue if we're about to send it down
+        screen_queue = _rget("queue_%s" % channel) or []
+        try:
+            screen_queue.remove(to_ret)
+        except ValueError:
+            pass
+        else:
+            _rset('queue_%s' % channel, screen_queue)
+        
+        return {"result": "ok", "data": to_ret}
 
+
+def non_blocking_listen(channel):
+    myq = _rget("queue_%s" % channel) or []
+    if myq:
+        _rset("queue_%s" % channel, [])
+    return myq
 
 def generate_random_id():
     n = _rget('id_sample_range') or 10

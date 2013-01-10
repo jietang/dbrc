@@ -1,4 +1,4 @@
-from lib import blocking_listen, _rset, _rget
+from lib import blocking_listen, non_blocking_listen, _rset, _rget
 from environment import redis_session
 import json
 import time
@@ -36,8 +36,19 @@ def get_screen_id(device_id):
 def screen_listen(screen_id):
     return blocking_listen('screen_channel_%s' % screen_id, timeout=10)
 
+def screen_get_queue(screen_id):
+    return non_blocking_listen('screen_channel_%s' % screen_id, timeout=10)
+
 def get_screen(screen_id):
     return _rget('screen_info_%s' % screen_id)
+
+def _send_to_screen(screen_id, data):
+    print 'broadcasting to ', screen_id, '\n\tdata: ', data
+    screen_channel = 'screen_channel_%s' % screen_id
+    redis_session.publish((screen_channel), data)
+    screen_queue = _rget('screen_message_queue_%s' % screen_channel) or []
+    screen_queue.append(data)
+    _rset('queue_%s' % screen_channel, screen_queue[:100])
 
 ## BROADCAST ##
 
@@ -64,8 +75,7 @@ def publish(broadcast_id, data):
     broadcast_info = get_broadcast(broadcast_id)
     data = json.dumps(data)
     for screen_id in broadcast_info['screens']:
-        print 'broadcasting to ', screen_id, '\n\tdata: ', data
-        redis_session.publish(('screen_channel_%s' % screen_id), data)
+        _send_to_screen(screen_id, data)
 
 ## SUBSCRIPTION ##
 def add_to_broadcast(screen_id, broadcast_id):
@@ -105,7 +115,7 @@ def known_screens_for_broadcast(broadcast_id):
     print remote_info
     devices_data = []
     for device_id in remote_info['devices'].keys():
-        # For each device, get its current screen and the device naem
+       # For each device, get its current screen and the device naem
         devices_data.append({
             'screen_id': _rget('device_to_screen_id_%s' % (device_id, )),
             'device_name': _rget('device_to_device_name_%s' % (device_id, )),

@@ -1,5 +1,4 @@
 import flask
-import json
 
 from lib import generate_random_id
 import model
@@ -23,14 +22,12 @@ def post_broadcast():
     return {"broadcast_id": broadcast_id}
 
 
-def post_to_broadcast(broadcast_id, data=None):
+def post_to_broadcast(broadcast_id):
     assert flask.request.method == 'POST', \
         'must use POST to publish things'
-    assert data, \
-        'must supply a data parameter to publish things'
     try:
-        data = json.loads(data)
-    except ValueError, e:
+        data = flask.request.json
+    except ValueError:
         # asserts cause a 400 to fire. this is a hack, but it's hack week.
         assert False, "'data' must be a valid JSON string"
     return {"publish_response": model.publish(broadcast_id, data)}
@@ -83,7 +80,9 @@ def likely_screens(broadcast_id):
     likely_devices = []
     for device_id in device_ids:
         device_pairing_info = model.get_device_pairing_info(device_id)
-        print pairing_info, device_pairing_info
+        if not device_pairing_info:
+            continue
+
         if pairing_info.get('connected', {}).get('ssid', None) in [d['ssid'] for d in device_pairing_info.get('nearby', {})]:
             likely_devices.append(device_id)
     return [_prepare_device_info(device_id) for device_id in likely_devices]
@@ -93,6 +92,10 @@ def long_poll(screen_id):
         "this method only supports a long-poll GET"
     return model.screen_listen(screen_id)
 
+def fast_poll(screen_id):
+    assert flask.request.method == "GET", \
+        "this method only supports GET"
+    return model.screen_get_queue(screen_id)
 
 def known_hosts(broadcast_id):
     assert flask.request.method == "GET", \
