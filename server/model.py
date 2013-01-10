@@ -92,6 +92,8 @@ def add_to_broadcast(screen_id, broadcast_id):
     remote_id = _rget('remote_to_broadcast_id_%s' % (broadcast_id, ))
     device_id = _rget('screen_to_device_id_%s' % (screen_id, ))
     remote_info = _rget('remote_info_%s' % (remote_id, ))
+    if not remote_info:
+        remote_info = {'devices': {}}
     remote_info['devices'][device_id] = start_time
 
     _rset('screen_info_%s' % screen_id, screen_info)
