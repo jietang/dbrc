@@ -17,6 +17,9 @@ def _rget(key):
 def blocking_listen(channel, timeout=None):
     #TODO: timeouts are kinda tricky
     assert timeout < 60 * 5, 'maximum 5 minute timeout'
+    current_queue = non_blocking_listen(channel):
+    if current_queue:
+        return current_queue[-1]
     myq = Queue.Queue()
     kill_channel = '%s' % uuid.uuid4()
     def wait_thing(timeout):
@@ -42,6 +45,12 @@ def blocking_listen(channel, timeout=None):
     else:
         return {"result": "ok", "data": json.loads(to_ret)}
 
+
+def non_blocking_listen(channel):
+    myq = _rget("queue_%s" % channel) or []
+    if myq:
+        _rset("queue_%s" % channel)
+    return myq
 
 def generate_random_id():
     n = _rget('id_sample_range') or 10
