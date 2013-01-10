@@ -43,7 +43,7 @@ def get_screen(screen_id):
     return _rget('screen_info_%s' % screen_id)
 
 def _send_to_screen(screen_id, data):
-    print 'broadcasting to ', screen_id, '\n\tdata: ', data
+    print 'broadcasting to', screen_id, '\n\tdata: ', data
     screen_channel = 'screen_channel_%s' % screen_id
     redis_session.publish((screen_channel), data)
     screen_queue = _rget('screen_message_queue_%s' % screen_channel) or []
