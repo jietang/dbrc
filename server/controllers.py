@@ -83,7 +83,9 @@ def likely_screens(broadcast_id):
     likely_devices = []
     for device_id in device_ids:
         device_pairing_info = model.get_device_pairing_info(device_id)
-        print pairing_info, device_pairing_info
+        if not device_pairing_info:
+            continue
+
         if pairing_info.get('connected', {}).get('ssid', None) in [d['ssid'] for d in device_pairing_info.get('nearby', {})]:
             likely_devices.append(device_id)
     return [_prepare_device_info(device_id) for device_id in likely_devices]
