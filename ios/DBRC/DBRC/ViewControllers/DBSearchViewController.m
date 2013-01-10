@@ -28,6 +28,13 @@
                                                       root:kDBRootDropbox];
         [DBSession setSharedSession:self.dbSession];
         
+//        for (NSString *userId in self.dbSession.userIds) {
+//            DBSession *session  = [DBSession sharedSession];
+//            NSLog(@" Credentials for: %@", userId);
+//            MPOAuthCredentialConcreteStore *credentials = [session credentialStoreForUserId:userId];
+//            NSLog(@"%@", credentials);
+//        }
+        
         self.broadcast = [[DBBroadcast alloc] init];
         self.broadcast.delegate = self;
         
