@@ -22,10 +22,10 @@
 - (void)urlStrWasPushed:(NSString *)urlStr withParams:(NSDictionary *)params;
 - (void)urlStrPushFailed:(NSString *) withParams:(NSDictionary *)params andErr:(NSError *)err;
 
-- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyHosts:(NSArray *)likelyHosts;
-- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyHosts:(NSError *)error;
+- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyScreens:(NSArray *)likelyHosts;
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyScreens:(NSError *)error;
 
-- (void)broadcast:(DBBroadcast *)broadcast receivedKnownHosts:(NSArray *)likelyHosts;
-- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownHosts:(NSError *)error;
+- (void)broadcast:(DBBroadcast *)broadcast receivedKnownScreens:(NSArray *)likelyHosts;
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownScreens:(NSError *)error;
 
 @end

@@ -47,7 +47,7 @@ def start_broadcast(broadcast_id, remote_id):
     _rset('broadcast_to_remote_id_%s' % (remote_id, ), broadcast_id)
     _rset('broadcast_info_%s' % broadcast_id,
            {"init_time": time.time(), "screens": {}})
-    _rset('remote_info_%s' % (remote_id, ), {'screens': {}})
+    _rset('remote_info_%s' % (remote_id, ), {'devices': {}})
     return broadcast_id
 
 def get_broadcast(broadcast_id):
@@ -81,8 +81,9 @@ def add_to_broadcast(screen_id, broadcast_id):
     # Create a record of the fact that this device has conencted
     # to this creen
     remote_id = _rget('remote_to_broadcast_id_%s' % (broadcast_id, ))
+    device_id = _rget('screen_to_device_id_%s' % (screen_id, ))
     remote_info = _rget('remote_info_%s' % (remote_id, ))
-    remote_info['screens'][screen_id] = start_time
+    remote_info['devices'][device_id] = start_time
 
     _rset('screen_info_%s' % screen_id, screen_info)
     _rset('remote_info_%s' % (remote_id, ), remote_info)
@@ -101,4 +102,13 @@ def remove_from_broadcast(screen_id, broadcast_id):
 def known_screens_for_broadcast(broadcast_id):
     remote_id = _rget('remote_to_broadcast_id_%s' % (broadcast_id, ))
     remote_info = _rget('remote_info_%s' % (remote_id, ))
-    return [_rget('screen_info_%s' % (screen_id, )) for screen_id in remote_info['screens'].keys()]
+    print remote_info
+    devices_data = []
+    for device_id in remote_info['devices'].keys():
+        # For each device, get its current screen and the device naem
+        devices_data.append({
+            'screen_id': _rget('device_to_screen_id_%s' % (device_id, )),
+            'device_name': _rget('device_to_device_name_%s' % (device_id, )),
+            })
+
+    return devices_data
