@@ -1,6 +1,7 @@
 import sys
 import time
 import json
+import random
 
 from api_util import HOST, PORT
 import requests
@@ -12,9 +13,10 @@ url = 'http://www.xkcd.com'
 if len(sys.argv) > 2:
     url = sys.argv[2]
 
+ID = random.randrange(0, 10000)
 
 screen_id = int(sys.argv[1])
-broadcast_id = requests.post(url='http://%s:%d/broadcasts/' % (HOST, PORT), headers={'content-type': 'application/json'}, data=json.dumps({'connected': DUMMY_CONNECTED})).json()['broadcast_id']
+broadcast_id = requests.post(url='http://%s:%d/broadcasts/' % (HOST, PORT), headers={'content-type': 'application/json'}, data=json.dumps({'remote_id': ID, 'connected': DUMMY_CONNECTED})).json()['broadcast_id']
 print 'have broadcast with id', broadcast_id
 
 print "querying for likely hosts: "

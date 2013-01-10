@@ -5,11 +5,12 @@ from lib import generate_random_id
 import model
 
 
-def post_broadcast(remote_id=None):
+def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast, got %s' \
         % flask.request.method
 
+    remote_id = flask.request.json and flask.request.json.get('remote_id')
     assert remote_id != None, 'must post with remote_id'
     broadcast_id = generate_random_id()
     model.start_broadcast(broadcast_id, remote_id)
