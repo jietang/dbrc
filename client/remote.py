@@ -9,14 +9,6 @@ from api_util import HOST, PORT
 import requests
 
 
-config = ConfigParser.ConfigParser()
-config.read(os.path.expanduser('~/.dbrc_config'))
-
-APP_KEY = config.get('secrets','app_key')
-APP_SECRET = config.get('secrets','app_secret')
-ACCESS_TOKEN = config.get('secrets','access_token')
-ACCESS_TOKEN_SECRET = config.get('secrets','access_token_secret')
-
 ID = getnode()/100000
 
 
@@ -64,6 +56,14 @@ time.sleep(1.0)
 while True:
     url = raw_input('URL to visit (q to quit, enter for xkcd, p for pair): ')
     if url == 'p':
+        config = ConfigParser.ConfigParser()
+        config.read(os.path.expanduser('~/.dbrc_config'))
+
+        APP_KEY = config.get('secrets','app_key')
+        APP_SECRET = config.get('secrets','app_secret')
+        ACCESS_TOKEN = config.get('secrets','access_token')
+        ACCESS_TOKEN_SECRET = config.get('secrets','access_token_secret')
+        
         data = dict(type='pairing', app_key=APP_KEY,app_secret=APP_SECRET,access_token=ACCESS_TOKEN,access_token_secret=ACCESS_TOKEN_SECRET)
         print data
     else:
