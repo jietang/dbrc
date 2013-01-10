@@ -13,7 +13,7 @@
 
 //#define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
 
-#define BASE_URL @"http://127.0.0.1/"
+#define BASE_URL @"http://127.0.0.1:5000/"
 
 @implementation DBBroadcast
 
@@ -49,6 +49,7 @@
     }
     
     NSMutableDictionary *infoDict = [NSMutableDictionary dictionary];
+    [infoDict setObject:@"111111" forKey:@"remote_id"];
     [infoDict setObject:connectedDict forKey:@"connected"];
     [infoDict setObject:[NSArray array] forKey:@"nearby"];
     
@@ -139,38 +140,40 @@
     [op start];
 }
 
-- (void)fetchKnownHosts {
-    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/known_hosts/", self.broadcastId, nil]]];
+- (void)fetchKnownScreens {
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/known_screens/", self.broadcastId, nil]]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                     NSArray *likelyHosts = (NSArray *)JSON;
-                                                                                     NSLog(@"Success! Found %d known hosts for broadcast %d",
-                                                                                           [likelyHosts count],
+                                                                                     NSArray *knownScreens = (NSArray *)JSON;
+                                                                                     NSLog(@"Success! Found %d known screens for broadcast %d",
+                                                                                           [knownScreens count],
                                                                                            self.broadcastId, nil);
+                                                                                     [self.delegate broadcast:self receivedKnownScreens:knownScreens];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                                                      NSLog(@"%@", [error userInfo]);
-                                                                                     NSLog(@"Failure! Couldn't find known hosts for broadcast %d", self.broadcastId);
+                                                                                     NSLog(@"Failure! Couldn't find known screens for broadcast %d", self.broadcastId);
                                                                                  }];
     [op start];
 }
 
-- (void)fetchLikelyHosts {
-    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/likely_hosts/", self.broadcastId, nil]]];
+- (void)fetchLikelyScreens {
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/likely_screens/", self.broadcastId, nil]]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                     NSArray *likelyHosts = (NSArray *)JSON;
+                                                                                     NSArray *likelyScreens = (NSArray *)JSON;
                                                                                      NSLog(@"Success! Found %d likely hosts for broadcast %d",
-                                                                                           [likelyHosts count],
+                                                                                           [likelyScreens count],
                                                                                            self.broadcastId, nil);
+                                                                                     [self.delegate broadcast:self receivedLikelyScreens:likelyScreens];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                                                      NSLog(@"%@", [error userInfo]);
-                                                                                     NSLog(@"Failure! Couldn't find likely hosts for broadcast %d", self.broadcastId);
+                                                                                     NSLog(@"Failure! Couldn't find likely screens for broadcast %d", self.broadcastId);
                                                                                  }];
     [op start];
 }

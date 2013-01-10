@@ -100,4 +100,4 @@ def known_hosts(broadcast_id):
     assert flask.request.method == "GET", \
         "this method only supports a GET"
     # Get the device running the broadcast, then get its previous screens
-    return models.known_screens_for_broadcast(broadcast_id)
+    return model.known_screens_for_broadcast(broadcast_id)

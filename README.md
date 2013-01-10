@@ -64,12 +64,24 @@ response: (status code)
 
 
 .
-`/broadcasts/<int:id>/likely_screens`
+`/broadcasts/<int:id>/likely_screens/`
 =
 
 GET
 -
 _get a list of screens that are nearby the given broadcast based on pairing info_
+
+data: nothing
+
+response: `[{"screen_id": screen_id, "device_name": device_name}, ...]`
+
+.
+`/broadcasts/<int:id>/known_screens/`
+=
+
+GET
+-
+_get a list of screens have previously paired with the remote that created this broadcast_
 
 data: nothing
 

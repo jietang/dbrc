@@ -81,19 +81,26 @@ def crossdomain(origin=None, methods=None, headers=None,
 def reg_endpoint(path, method, methods=tuple(["OPTIONS", "GET", "POST", "DELETE"])):
     app.route(path, methods=methods)(crossdomain(origin='*')(dbrc_endpoint(method)))
 
+# the screen webpage
 from flask import render_template
 @app.route('/')
-def home():
+def screen():
 	return render_template('home.html')
 
+# this is necessary for frame-busting-busting
 @app.route('/204/')
 def view204():
 	return '', 204
 
+# the remote webpage
+@app.route('/remote/')
+def remote():
+	return render_template('remote.html')
+
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens/', controllers.subscriptions)
-reg_endpoint('/broadcasts/<int:broadcast_id>/known_hosts/', controllers.known_hosts)
+reg_endpoint('/broadcasts/<int:broadcast_id>/known_screens/', controllers.known_hosts)
 reg_endpoint('/broadcasts/<int:broadcast_id>/likely_screens/', controllers.likely_screens)
 reg_endpoint('/screens/', controllers.post_screen)
 reg_endpoint('/screens/<int:screen_id>', controllers.long_poll)
