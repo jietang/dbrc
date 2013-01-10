@@ -24,14 +24,14 @@ function onError(msg) {
 }
 
 function hackFrameBusting() {
-	$("#content")[0].contentDocument.designMode = "on";
+	//$("#content")[0].contentDocument.designMode = "on";
 }
 
 function autoHeight() {
 	var browserHeight = $(window).height();
 	var dashHeight = $("#dash").height();
 	var contentHeight = browserHeight - dashHeight;
-	$("#content").height(contentHeight);
+	$("#content_div").height(contentHeight);
 }
 
 var lastCastTimer = null;
@@ -46,6 +46,7 @@ function onIframeLoad(){
 	if (lastCastTimer)
 		clearTimeout(lastCastTimer);
 	$('body').css('background-color', '#fff');
+	$("#content_div").scrollTop(0);
 	//$('#dash').slideUp();
 }
 
@@ -157,20 +158,32 @@ function pressChar(char)
 	}
 }
 
-function callTest() {
+function testKey() {
 	setTimeout(function(){
 		pressChar('s');
 		pressChar('\t');
 	}, 3000);
 }
+
+function scrollDown() {
+	var div = $("#content_div");
+	div.animate({scrollTop: div.scrollTop() + 0.5 * div.height()}, 200);
+}
+
+function scrollUp() {
+	var div = $("#content_div");
+	div.animate({scrollTop: div.scrollTop() - 0.5 * div.height()}, 200);
+}
 	</script>
 	</head>
 	<body>
 	<table id=dash width=100%>
-		<tr><td nowrap align=left><a href="javascript:void(0)" onclick="callTest()">Test simulated keyboard event</a> | Dropcast URL: <span id=url>[None]</span></td><td nowrap align=right>Device ID: <span id=device_id>Unknown</span> Screen ID: <span id=screen_id>Unknown</span></td></tr>
+		<tr><td nowrap align=left><a href="javascript:void(0)" onclick="testKey()">Test sim key</a> | <a href="javascript:void(0)" onclick="scrollDown()">Test sim down</a> | <a href="javascript:void(0)" onclick="scrollUp()">Test sim up</a> | Dropcast URL: <span id=url>[None]</span></td><td nowrap align=right>Device ID: <span id=device_id>Unknown</span> Screen ID: <span id=screen_id>Unknown</span></td></tr>
 		<tr><td id=error></td></tr>
 	</table>
-	<iframe id=content src="/static/test.html" style="width:100%;" sandbox></iframe>
+	<div id=content_div style="width: 100%; overflow: auto;">
+	<iframe id=content src="/static/test.html" style="width:100%; height: 2300px" scrolling="no"></iframe>
+	</div>
 	</body>
 </html>
 
