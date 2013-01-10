@@ -76,4 +76,5 @@ while True:
     r = requests.post('http://%s:%d/broadcasts/%s/' % (HOST, PORT, broadcast_id),
                       headers={'content-type':'application/json'},
                       data=json.dumps(data))
+    print r.json()
     print 'pushed %s to broadcast %s' % (url, broadcast_id)

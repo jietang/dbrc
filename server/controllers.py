@@ -30,7 +30,7 @@ def post_to_broadcast(broadcast_id):
     except ValueError:
         # asserts cause a 400 to fire. this is a hack, but it's hack week.
         assert False, "'data' must be a valid JSON string"
-    return {"publish_response": model.publish(broadcast_id, data)}
+    return {"screen_ids": model.publish(broadcast_id, data)}
 
 def delete_screen_from_broadcast(broadcast_id, screen_id):
     assert flask.request.method == 'DELETE'

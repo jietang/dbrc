@@ -73,8 +73,11 @@ def publish(broadcast_id, data):
     print "publishing..."
     broadcast_info = get_broadcast(broadcast_id)
     data = json.dumps(data)
+    screen_ids = []
     for screen_id in broadcast_info['screens']:
         _send_to_screen(screen_id, data)
+        screen_ids.append(screen_id)
+    return screen_ids
 
 ## SUBSCRIPTION ##
 def add_to_broadcast(screen_id, broadcast_id):

@@ -38,7 +38,7 @@ response: `broadcast_id`
 
 POST
 -
-_post something to a broadcast channel_
+_post something to a broadcast channel. returns list of screen_ids successfully published to (mostly for debug purposes)_
 
 uses a message type. valid types: "pairing", "url"
 
@@ -50,7 +50,7 @@ data: `json.dumps({"type": "pairing", "app_key": app_key, "app_secret": app_secr
 
 headers: `{'content-type': 'application/json'}
 
-response: `<status code>`
+response: `{'screen_ids': [screen_id1,...]}`
 
 .
 `/broadcasts/<int:id>/screens/`
