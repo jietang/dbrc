@@ -4,16 +4,18 @@ import json
 import time
 
 
-
 ## SCREEN ##
 def get_all_device_ids():
     return redis_session.smembers('device_ids')
+
+def get_device_pairing_info(device_id):
+    return _rget('device_to_pairing_info_%s' % device_id)
 
 def register_device(device_id, device_name, screen_id, pairing_info):
     redis_session.sadd('device_ids', device_id)
     _rset('device_to_screen_id_%s' % device_id, screen_id)
     _rset('device_to_device_name_%s' % device_id, device_name)
-    _rset('device_to_pairing_info_%s' % screen_id, pairing_info)
+    _rset('device_to_pairing_info_%s' % device_id, pairing_info)
     _rset('screen_to_device_id_%s' % screen_id, device_id)
     _rset('screen_info_%s' % screen_id,
            {"init_time": time.time(), "broadcasts": {}})
@@ -40,6 +42,12 @@ def start_broadcast(broadcast_id):
 
 def get_broadcast(broadcast_id):
     return _rget('broadcast_info_%s' % broadcast_id)
+
+def set_broadcast_pairing_info(broadcast_id, connected):
+    _rset('broadcast_pairing_info_%s' % broadcast_id, dict(connected=connected))
+
+def get_broadcast_pairing_info(broadcast_id):
+    return _rget('broadcast_pairing_info_%s' % broadcast_id)
 
 def publish(broadcast_id, data):
     print "publishing..."

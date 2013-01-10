@@ -6,6 +6,7 @@ from api_util import HOST, PORT
 import requests
 
 DUMMY_CONNECTED = {'strength': '-59', 'ssid': 'Dropbox', 'bssid': '0:b:86:74:9a:98'}
+DUMMY_CONNECTED = {'strength': '-59', 'ssid': 'MyFancyNetwork', 'bssid': '0:b:86:74:9a:98'}
 
 url = 'http://www.xkcd.com'
 if len(sys.argv) > 2:
@@ -17,7 +18,7 @@ broadcast_id = requests.post(url='http://%s:%d/broadcasts/' % (HOST, PORT), head
 print 'have broadcast with id', broadcast_id
 
 print "querying for likely hosts: "
-print requests.get(url='http://%s:%d/broadcasts/%s/likely_hosts' % (HOST, PORT, broadcast_id)).json()
+print requests.get(url='http://%s:%d/broadcasts/%s/likely_screens/' % (HOST, PORT, broadcast_id)).json()
 
 r = requests.post('http://%s:%d/broadcasts/%s/screens/' % (HOST, PORT, broadcast_id), data={'screen_id': screen_id})
 if r.status_code != 200:

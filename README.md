@@ -3,15 +3,19 @@ DBRC Spec
 
 The main concept we're using for DBRC are the idea of __remotes__ and __screens__. A remote is a device that sets up a broadcast, a screen can subscribe to one or more broadcasts to be controller by the remote. The API is very straightforward.
 
+connection info refers to: `{'bssid': <bssid>, 'ssid': <ssid>, 'strength': <signal strength>}`
+
 .
-`/broadcasts`
+`/broadcasts/`
 =
 
 POST
 -
 _create a new broadcast channel_
 
-data: nothing
+data: `{'remote_id': remote id, <optional>'connected': connection info}`
+
+headers: `{'content-type': 'application/json'}`
 
 response: `broadcast_id`
 
@@ -60,6 +64,27 @@ response: (status code)
 
 
 .
+`/broadcasts/<int:id>/likely_screens`
+=
+
+GET
+-
+_get a list of screens that are nearby the given broadcast based on pairing info_
+
+data: nothing
+
+response: `[{"screen_id": screen_id, "device_name": device_name}, ...]`
+
+
+POST
+-
+_subscribe a screen to a broadcast_
+
+data: `{"screen_id": screen_id}`
+
+response: `<status code>`
+
+.
 `/screens`
 =
 
@@ -67,7 +92,11 @@ POST
 -
 _create a new screen, and associate it with a unique device\_id_
 
-data: `{"device_id": device_id}`
+data: `{"device_id": device_id, "device_name": device_name,
+
+<optional> "pairing_info": {"connected": connection info, "nearby": [... connection info]}}`
+
+headers: `{"content-type": "application/json"}`
 
 response: `{"broadcast_id": broadcast_id}`
 
