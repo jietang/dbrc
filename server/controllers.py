@@ -9,9 +9,14 @@ def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast, got %s' \
         % flask.request.method
-    #flask.request.json.get('connected') # store the broadcast connected info, check if json null
     broadcast_id = generate_random_id()
     model.start_broadcast(broadcast_id)
+
+    if flask.request.json:
+        connected = flask.request.json.get('connected')
+        if connected:
+            model.set_broadcast_pairing_info(broadcast_id, connected)
+
     return {"broadcast_id": broadcast_id}
 
 
@@ -66,14 +71,19 @@ def post_screen():
 def _prepare_device_info(device_id):
     return dict(screen_id=model.get_screen_id(device_id), device_name=model.get_device_name(device_id))
 
-def likely_hosts(broadcast_id):
-    devices = model.get_all_device_ids()
-    return [_prepare_device_info(device_id) for device_id in devices]
+def likely_screens(broadcast_id):
+    pairing_info = model.get_broadcast_pairing_info(broadcast_id)
+    device_ids = model.get_all_device_ids()
+    if not pairing_info or not device_ids:
+        return []
 
-    # get all devices
-    # for all devices, look up their pairing info
-    #  match their pairing info against the info for the given broadcast
-    #  ordering algorithm
+    likely_devices = []
+    for device_id in device_ids:
+        device_pairing_info = model.get_device_pairing_info(device_id)
+        print pairing_info, device_pairing_info
+        if pairing_info.get('connected', {}).get('ssid', None) in [d['ssid'] for d in device_pairing_info.get('nearby', {})]:
+            likely_devices.append(device_id)
+    return [_prepare_device_info(device_id) for device_id in likely_devices]
 
 def long_poll(screen_id):
     assert flask.request.method == "GET", \
