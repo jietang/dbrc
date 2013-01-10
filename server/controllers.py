@@ -9,7 +9,7 @@ def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast, got %s' \
         % flask.request.method
-    #flask.request.json.get('connected') # store the broadcast connected info
+    #flask.request.json.get('connected') # store the broadcast connected info, check if json null
     broadcast_id = generate_random_id()
     model.start_broadcast(broadcast_id)
     return {"broadcast_id": broadcast_id}
@@ -79,3 +79,10 @@ def long_poll(screen_id):
     assert flask.request.method == "GET", \
         "this method only supports a long-poll GET"
     return model.screen_listen(screen_id)
+
+
+def known_hosts(broadcast_id):
+    assert flask.request.method == "GET", \
+        "this method only supports a long-poll GET"
+
+    return []
