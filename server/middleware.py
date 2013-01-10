@@ -86,6 +86,10 @@ from flask import render_template
 def home():
 	return render_template('home.html')
 
+@app.route('/204/')
+def view204():
+	return '', 204
+
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens/', controllers.subscriptions)

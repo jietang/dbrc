@@ -38,8 +38,8 @@ var lastCastTimer = null;
 var lastCastUrl = null;
 
 function onIframeFail() {
-	onError("Iframe failed to load. Attempting new tab.");
-	window.open(lastCastUrl);
+	onError("Iframe failed to load.");
+	//window.open(lastCastUrl);
 }
 
 function onIframeLoad(){
@@ -54,7 +54,7 @@ window.onbeforeunload = function() { prevent_bust++ }
 setInterval(function() {
 	if (prevent_bust > 0) {
 		prevent_bust -= 2
-		window.top.location = 'http://www.recbro.com/204/'
+		window.top.location = '/204/'
 	}
 }, 1)
 
