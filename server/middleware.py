@@ -93,7 +93,7 @@ def view204():
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens/', controllers.subscriptions)
-reg_endpoint('/broadcasts/<int:broadcast_id>/known_hosts/', controllers.known_hosts)
+reg_endpoint('/broadcasts/<int:broadcast_id>/known_screens/', controllers.known_hosts)
 reg_endpoint('/broadcasts/<int:broadcast_id>/likely_screens/', controllers.likely_screens)
 reg_endpoint('/screens/', controllers.post_screen)
 reg_endpoint('/screens/<int:screen_id>', controllers.long_poll)
