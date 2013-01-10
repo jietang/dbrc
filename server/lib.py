@@ -17,7 +17,7 @@ def _rget(key):
 def blocking_listen(channel, timeout=None):
     #TODO: timeouts are kinda tricky
     assert timeout < 60 * 5, 'maximum 5 minute timeout'
-    current_queue = non_blocking_listen(channel):
+    current_queue = non_blocking_listen(channel)
     if current_queue:
         return current_queue[-1]
     myq = Queue.Queue()
