@@ -6,13 +6,21 @@ import time
 
 
 ## SCREEN ##
+def get_all_device_ids():
+    return redis_session.smembers('device_ids')
 
 def register_device(device_id, device_name, screen_id, pairing_info):
+    redis_session.sadd('device_ids', device_id)
     _rset('device_to_screen_id_%s' % device_id, screen_id)
+    _rset('device_to_device_name_%s' % device_id, device_name)
+    _rset('device_to_pairing_info_%s' % screen_id, pairing_info)
     _rset('screen_to_device_id_%s' % screen_id, device_id)
     _rset('screen_info_%s' % screen_id,
            {"init_time": time.time(), "broadcasts": {}})
     return screen_id
+
+def get_device_name(device_id):
+    return _rget('device_to_device_name_%s' % device_id)
 
 def get_screen_id(device_id):
     return _rget('device_to_screen_id_%s' % device_id)

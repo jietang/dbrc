@@ -9,6 +9,7 @@ def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast, got %s' \
         % flask.request.method
+    #flask.request.json.get('connected') # store the broadcast connected info
     broadcast_id = generate_random_id()
     model.start_broadcast(broadcast_id)
     return {"broadcast_id": broadcast_id}
@@ -62,6 +63,17 @@ def post_screen():
     pairing_info = flask.request.json.get('pairing_info')
     return {"screen_id": model.register_device(device_id, device_name, screen_id, pairing_info)}
 
+def _prepare_device_info(device_id):
+    return dict(screen_id=model.get_screen_id(device_id), device_name=model.get_device_name(device_id))
+
+def likely_hosts(broadcast_id):
+    devices = model.get_all_device_ids()
+    return [_prepare_device_info(device_id) for device_id in devices]
+
+    # get all devices
+    # for all devices, look up their pairing info
+    #  match their pairing info against the info for the given broadcast
+    #  ordering algorithm
 
 def long_poll(screen_id):
     assert flask.request.method == "GET", \

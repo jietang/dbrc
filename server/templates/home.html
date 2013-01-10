@@ -5,6 +5,7 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
 #error {
 	color: #f00;
 }
@@ -15,6 +16,17 @@ body {
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 	<script src="/static/jquery.cookie.js" type="text/javascript"></script>
 	<script>
+
+function onError(msg) {
+	$('body').css('background-color', '#fdd');
+	$('#error').html(msg);
+	//$('#dash').show();
+}
+
+function hackFrameBusting() {
+	$("#content")[0].contentDocument.designMode = "on";
+}
+
 function autoHeight() {
 	var browserHeight = $(window).height();
 	var dashHeight = $("#dash").height();
@@ -22,21 +34,63 @@ function autoHeight() {
 	$("#content").height(contentHeight);
 }
 
+var lastCastTimer = null;
+var lastCastUrl = null;
+
+function onIframeFail() {
+	onError("Iframe failed to load. Attempting new tab.");
+	window.open(lastCastUrl);
+}
+
+function onIframeLoad(){
+	if (lastCastTimer)
+		clearTimeout(lastCastTimer);
+	$('body').css('background-color', '#fff');
+	//$('#dash').slideUp();
+}
+
+var prevent_bust = 0
+window.onbeforeunload = function() { prevent_bust++ }
+setInterval(function() {
+	if (prevent_bust > 0) {
+		prevent_bust -= 2
+		window.top.location = 'http://www.recbro.com/204/'
+	}
+}, 1)
+
+var reconnectFails = 0;
+
+function reconnect() {
+	$('#error').html('');
+	$('body').css('background-color', '#fff');
+	listenBroadcast();
+}
+
 function listenBroadcast() {
 	$.get('/screens/' + SCREEN_ID, '',
 		function(msg) {
+			reconnectFails = 0;
 			if (msg.result == 'ok') {
-				$('#url').html(JSON.parse(msg.data).url);
-				$('#content').attr('src', JSON.parse(msg.data).url);
+				lastCastUrl = JSON.parse(msg.data).url;
+				$('#url').html(lastCastUrl);
+				$('#content').attr('src', lastCastUrl);
+				$('body').css("background-color","#ddf");
+				if (lastCastTimer)
+					clearTimeout(lastCastTimer);
+				lastCastTimer = setTimeout(onIframeFail, 10000);
 				listenBroadcast();
+				$('#error').html('');
 			} else if (msg.result == 'resubscribe') {
 				listenBroadcast();
 			} else {
-				$('#error').html("Error: " + msg.result);
+				onError("Ajax error: " + msg.result);
 			}
 		}, 'json')
 		.error(function() {
-			$('#error').html('An ajax error occurred.');
+			var secs = Math.pow(2, Math.min(reconnectFails, 6));
+			++reconnectFails;
+			onError('Ajax error: Connection failed. Reconnecting in ' + secs + ' seconds (attempt #' + reconnectFails + ')...');
+			setTimeout(reconnect, secs * 1000);
 		});
 		
 }
@@ -55,11 +109,11 @@ function getScreenId() {
 				$.cookie("screen_id", SCREEN_ID);
 				onGotScreenId();
 			} else {
-				$('#error').html("Error: " + String(msg));
+				onError("Ajax error: " + String(msg));
 			}
 		}, 'json')
 		.error(function() {
-			$('#error').html('An ajax error occurred.');
+			onError('Ajax error: Connection failed.');
 		});
 }
 
@@ -79,6 +133,8 @@ $(function() {
 	}
 
 	autoHeight();
+	$('#content').load(onIframeLoad);
+	hackFrameBusting();
 });
 
 function genKeyEvent(type, char) {
@@ -93,7 +149,7 @@ function pressChar(char)
 {
 	try {
 		var c = char.charCodeAt(0);
-		$('#error').html("Key: " + c);
+		$('#error').html("You pressed: code=" + c + " char=" + char);
 		var element = $('#content')[0].contentWindow.document.activeElement;
 		element.dispatchEvent(genKeyEvent("keypress", c));
 	} catch (e) {
@@ -110,15 +166,11 @@ function callTest() {
 	</script>
 	</head>
 	<body>
-	<div id=dash>
-		<b>Screen</b>
-		<div>Device ID: <span id=device_id>Unknown</span></div>
-		<div>Screen ID: <span id=screen_id>Unknown</span></div>
-		<div>Dropcast URL: <span id=url>[None]</span></div>
-		<div id=error></div>
-		<div><a href="javascript:void(0)" onclick="callTest()">Test simulated keyboard event</a></div>
-	</div>
-	<iframe id=content src="/static/test.html" style="width:100%;"></iframe>
+	<table id=dash width=100%>
+		<tr><td nowrap align=left><a href="javascript:void(0)" onclick="callTest()">Test simulated keyboard event</a> | Dropcast URL: <span id=url>[None]</span></td><td nowrap align=right>Device ID: <span id=device_id>Unknown</span> Screen ID: <span id=screen_id>Unknown</span></td></tr>
+		<tr><td id=error></td></tr>
+	</table>
+	<iframe id=content src="/static/test.html" style="width:100%;" sandbox></iframe>
 	</body>
 </html>
 
