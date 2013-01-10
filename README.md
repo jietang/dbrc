@@ -9,9 +9,9 @@ For pairing using remote.py you'll need to create a "~/.dbrc_config" file with t
 
 [secrets]
 
-APP_KEY=""
+APP_KEY="gafchy215r87od1"
 
-APP_SECRET=""
+APP_SECRET="0bhl35g2fcybyvh"
 
 ACCESS_TOKEN=""
 
