@@ -18,10 +18,10 @@ ID = random.randrange(0, 10000)
 broadcast_id = requests.post(url='http://%s:%d/broadcasts/' % (HOST, PORT), headers={'content-type': 'application/json'}, data=json.dumps({'remote_id': ID, 'connected': DUMMY_CONNECTED})).json()['broadcast_id']
 print 'have broadcast with id', broadcast_id
 
-likely_screens = requests.get(url='http://%s:%d/broadcasts/%s/likely_screens/' % (HOST, PORT, broadcast_id)).json()
+#likely_screens = requests.get(url='http://%s:%d/broadcasts/%s/likely_screens/' % (HOST, PORT, broadcast_id)).json()
 
-for i, entry in enumerate(likely_screens):
-    print "%d) %s" % (i+1, entry['device_name'])
+#for i, entry in enumerate(likely_screens):
+#    print "%d) %s" % (i+1, entry['device_name'])
 
 screen_id = int(sys.argv[1])
 

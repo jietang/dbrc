@@ -72,7 +72,8 @@ function listenBroadcast() {
 		function(msg) {
 			reconnectFails = 0;
 			if (msg.result == 'ok') {
-				$('#error').html('');				
+				$('#error').html('');
+				//alert(msg.data);
 				var data = JSON.parse(msg.data);
 				if (data.url) {
 					lastCastUrl = data.url;
@@ -111,7 +112,29 @@ function onGotScreenId() {
 
 function getScreenId() {
 	// registers this device
-	$.post('/screens/', 'device_id=' + DEVICE_ID,
+
+$.ajax({
+    type: "POST",
+    url: '/screens/',
+    contentType: "application/json; charset=utf-8",
+    data: '{"device_id":'+ DEVICE_ID
+				+ ', "device_name": "device_' + DEVICE_ID + '"}',
+    dataType: "json",
+    success: function(msg) { // callback
+			if (msg.screen_id) {
+				SCREEN_ID = msg.screen_id;
+				$.cookie("screen_id", SCREEN_ID);
+				onGotScreenId();
+			} else {
+				onError("Ajax error: " + String(msg));
+			}
+		},
+    error: function() {
+			onError('Ajax error: Connection failed.');
+		}
+});
+/*	$.post('/screens/', "{'device_id':"+ DEVICE_ID
+				+ ", 'device_name': 'device_" + DEVICE_ID + "'}",
 		function(msg) { // callback
 			if (msg.screen_id) {
 				SCREEN_ID = msg.screen_id;
@@ -123,7 +146,7 @@ function getScreenId() {
 		}, 'json')
 		.error(function() {
 			onError('Ajax error: Connection failed.');
-		});
+		});*/
 }
 
 $(function() {
