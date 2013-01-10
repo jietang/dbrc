@@ -73,26 +73,18 @@ data: `{"screen_id": screen_id}`
 
 response: `<status code>`
 
+.
+`/broadcasts/<int:broadcast_id>/screens/<int:screen_id>`
+=
+
 DELETE
 -
 _remove a screen from a broadcast_
 
-data: `{"screen_id": screen_id}`
+data: nothing
 
 response: (status code)
 
-
-.
-`/broadcasts/<int:id>/likely_screens/`
-=
-
-GET
--
-_get a list of screens that are nearby the given broadcast based on pairing info_
-
-data: nothing
-
-response: `[{"screen_id": screen_id, "device_name": device_name}, ...]`
 
 .
 `/broadcasts/<int:id>/known_screens/`
@@ -100,11 +92,11 @@ response: `[{"screen_id": screen_id, "device_name": device_name}, ...]`
 
 GET
 -
-_get a list of screens have previously paired with the remote that created this broadcast_
+_get a list of screens have previously paired with the remote that created this broadcast. known is True/False, depending on whether we have explicitly paired with this device in the past._
 
 data: nothing
 
-response: `[{"screen_id": screen_id, "device_name": device_name}, ...]`
+response: `[{"screen_id": screen_id, "device_name": device_name, "known": True/False}, ...]`
 
 
 POST
@@ -163,10 +155,14 @@ data: `{"broadcast_id": broadcast_id}`
 
 response: (status code)
 
+.
+`/screens/<int:screen_id>/broadcasts/<int:broadcast_id>`
+=
+
 DELETE
 -
 _remove a screen from a broadcast_
 
-data: `{"broadcast_id": broadcast_id}`
+data: nothing
 
 response: `<status code>`

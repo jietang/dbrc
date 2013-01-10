@@ -58,7 +58,6 @@ def start_broadcast(broadcast_id, remote_id):
     _rset('broadcast_to_remote_id_%s' % (remote_id, ), broadcast_id)
     _rset('broadcast_info_%s' % broadcast_id,
            {"init_time": time.time(), "screens": {}})
-    _rset('remote_info_%s' % (remote_id, ), {'devices': {}})
     return broadcast_id
 
 def get_broadcast(broadcast_id):
@@ -103,22 +102,44 @@ def remove_from_broadcast(screen_id, broadcast_id):
     broadcast_info = _rget('broadcast_info_%s' % broadcast_id)
     screen_info = _rget('screen_info_%s' % screen_id)
 
-    broadcast_info['screens'].pop(screen_id)
-    screen_info['broadcasts'].pop(broadcast_id)
+    remote_id = _rget('screen_to_device_id_%s' % (screen_id,))
+    remote_info = _rget('remote_info_%s' % (remote_id,))
 
-    _rset('screen_info_%s' % screen_id, screen_info)
-    return _rset('broadcast_info_%s' % broadcast_id, broadcast_info)
+    ret = None
+    try:
+        broadcast_info['screens'].pop(screen_id)
+    except KeyError:
+        pass
+    else:
+        ret = _rset('broadcast_info_%s' % broadcast_id, broadcast_info)
+
+    try:
+        screen_info['broadcasts'].pop(broadcast_id)
+    except KeyError:
+        pass
+    else:
+        _rset('screen_info_%s' % screen_id, screen_info)
+
+    try:
+        remote_info['devices'].pop(str(remote_id))
+    except KeyError:
+        pass
+    else:
+        _rset("remote_info_%s" % (remote_id,), remote_info)
+
+    return ret
 
 def known_screens_for_broadcast(broadcast_id):
     remote_id = _rget('remote_to_broadcast_id_%s' % (broadcast_id, ))
     remote_info = _rget('remote_info_%s' % (remote_id, ))
-    print remote_info
     devices_data = []
     for device_id in remote_info['devices'].keys():
-       # For each device, get its current screen and the device naem
+        # TODO expiration for known devices?
+        # For each device, get its current screen and the device naem
         devices_data.append({
             'screen_id': _rget('device_to_screen_id_%s' % (device_id, )),
             'device_name': _rget('device_to_device_name_%s' % (device_id, )),
+            'known': True,
             })
 
     return devices_data

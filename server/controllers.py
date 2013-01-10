@@ -32,10 +32,13 @@ def post_to_broadcast(broadcast_id):
         assert False, "'data' must be a valid JSON string"
     return {"publish_response": model.publish(broadcast_id, data)}
 
+def delete_screen_from_broadcast(broadcast_id, screen_id):
+    assert flask.request.method == 'DELETE'
+    return model.remove_from_broadcast(screen_id, broadcast_id)    
 
 def subscriptions(broadcast_id=None, screen_id=None):
     method = flask.request.method
-    assert method in ('GET', 'DELETE', 'POST')
+    assert method in ('GET', 'POST')
     if method == "GET":
         assert broadcast_id or screen_id, \
             'provide a broadcast or a screen'
@@ -51,9 +54,6 @@ def subscriptions(broadcast_id=None, screen_id=None):
         print 'adding screen %s to broadcast %s' % (screen_id, broadcast_id)
         model.add_to_broadcast(screen_id, broadcast_id)
         return {'broadcast_id': broadcast_id, 'screen_id': screen_id}
-    elif method == "DELETE":
-        assert screen_id, 'need to specify a screen_id'
-        return model.remove_from_broadcast(screen_id, broadcast_id)
 
 
 def post_screen():
@@ -69,7 +69,7 @@ def post_screen():
     return {"screen_id": model.register_device(device_id, device_name, screen_id, pairing_info)}
 
 def _prepare_device_info(device_id):
-    return dict(screen_id=model.get_screen_id(device_id), device_name=model.get_device_name(device_id))
+    return dict(screen_id=model.get_screen_id(device_id), device_name=model.get_device_name(device_id),known=False)
 
 def likely_screens(broadcast_id):
     pairing_info = model.get_broadcast_pairing_info(broadcast_id)
@@ -97,8 +97,11 @@ def fast_poll(screen_id):
         "this method only supports GET"
     return model.screen_get_queue(screen_id)
 
-def known_hosts(broadcast_id):
+def known_screens(broadcast_id):
     assert flask.request.method == "GET", \
         "this method only supports a GET"
     # Get the device running the broadcast, then get its previous screens
-    return model.known_screens_for_broadcast(broadcast_id)
+    known_devices = model.known_screens_for_broadcast(broadcast_id)
+    known_device_ids = set(x['screen_id'] for x in known_devices)
+    likely_devices = likely_screens(broadcast_id)
+    return known_devices + [x for x in likely_devices if x['screen_id'] not in known_device_ids]

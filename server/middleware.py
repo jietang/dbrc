@@ -100,11 +100,13 @@ def remote():
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens/', controllers.subscriptions)
-reg_endpoint('/broadcasts/<int:broadcast_id>/known_screens/', controllers.known_hosts)
+reg_endpoint('/broadcasts/<int:broadcast_id>/screens/<int:screen_id>', controllers.delete_screen_from_broadcast)
+reg_endpoint('/broadcasts/<int:broadcast_id>/known_screens/', controllers.known_screens)
 reg_endpoint('/broadcasts/<int:broadcast_id>/likely_screens/', controllers.likely_screens)
 reg_endpoint('/screens/', controllers.post_screen)
 reg_endpoint('/screens/<int:screen_id>', controllers.long_poll)
 reg_endpoint('/screens/<int:screen_id>/broadcasts', controllers.subscriptions)
+reg_endpoint('/screens/<int:screen_id>/broadcasts/<int:broadcast_id>', controllers.delete_screen_from_broadcast)
 
 if __name__ == '__main__':
     app.run(port=80, debug=True, host='0.0.0.0')

@@ -4,7 +4,10 @@ import webbrowser
 import time
 import requests
 
-ID=1
+from uuid import getnode
+
+ID = getnode()/100000
+
 
 DUMMY_CONNECTED = {'strength': '-59', 'ssid': 'Dropbox', 'bssid': '0:b:86:74:9a:98'}
 
