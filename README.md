@@ -34,7 +34,7 @@ data: `{"data": '{"url": some_url, "message_type": message type}'}`
 response: `<status code>`
 
 .
-`/broadcasts/<int:id>/screens`
+`/broadcasts/<int:id>/screens/`
 =
 
 GET
