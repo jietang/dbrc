@@ -89,6 +89,7 @@ def home():
 reg_endpoint('/broadcasts/', controllers.post_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/', controllers.post_to_broadcast)
 reg_endpoint('/broadcasts/<int:broadcast_id>/screens/', controllers.subscriptions)
+reg_endpoint('/broadcasts/<int:broadcast_id>/likely_hosts', controllers.likely_hosts)
 reg_endpoint('/screens/', controllers.post_screen)
 reg_endpoint('/screens/<int:screen_id>', controllers.long_poll)
 reg_endpoint('/screens/<int:screen_id>/broadcasts', controllers.subscriptions)
