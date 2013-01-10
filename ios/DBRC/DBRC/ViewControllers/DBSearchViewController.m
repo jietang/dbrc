@@ -91,7 +91,7 @@
 }
 
 - (void)addPair {
-    [self.broadcast fetchKnownHosts];
+    [self.broadcast fetchKnownScreens];
 }
 
 #pragma mark UISearchBarDelegate
@@ -132,21 +132,21 @@
     NSLog(@"Failed to add screen");
 }
 
-- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyHosts:(NSArray *)likelyHosts {
-    [self.broadcast fetchKnownHosts];
+- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyScreens:(NSArray *)likelyHosts {
+    [self.broadcast fetchKnownScreens];
 }
 
-- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyHosts:(NSError *)error {
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyScreens:(NSError *)error {
     
 }
 
-- (void)broadcast:(DBBroadcast *)broadcast receivedKnownHosts:(NSArray *)likelyHosts {
+- (void)broadcast:(DBBroadcast *)broadcast receivedKnownScreens:(NSArray *)likelyHosts {
     DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownHosts:(NSError *)error {
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownScreens:(NSError *)error {
     
 }
 
