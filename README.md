@@ -5,6 +5,15 @@ The main concept we're using for DBRC are the idea of __remotes__ and __screens_
 
 connection info refers to: `{'bssid': <bssid>, 'ssid': <ssid>, 'strength': <signal strength>}`
 
+For pairing using remote.py you'll need to create a "~/.dbrc_config" file with the following sections:
+
+[secrets]
+APP_KEY=<app_key>
+APP_SECRET=<app_secret>
+ACCESS_TOKEN=<access_token>
+ACCESS_TOKEN_SECRET=<access_token_secret>
+
+
 .
 `/broadcasts/`
 =
@@ -27,9 +36,15 @@ POST
 -
 _post something to a broadcast channel_
 
-uses a message type. valid types: "_link_", "_action_"
+uses a message type. valid types: "pairing", "url"
 
-data: `{"data": '{"url": some_url, "message_type": message type}'}`
+pairing is for sending app token information to the TV, url is for putting an image url on a screen.
+
+data: `json.dumps({"type": "url", "url": some_url})`
+
+data: `json.dumps({"type": "pairing", "app_key": app_key, "app_secret": app_secret, "access_token": access_token, "access_token_secret": access_token_secret})`
+
+headers: `{'content-type': 'application/json'}
 
 response: `<status code>`
 

@@ -1,5 +1,4 @@
 import flask
-import json
 
 from lib import generate_random_id
 import model
@@ -23,14 +22,12 @@ def post_broadcast():
     return {"broadcast_id": broadcast_id}
 
 
-def post_to_broadcast(broadcast_id, data=None):
+def post_to_broadcast(broadcast_id):
     assert flask.request.method == 'POST', \
         'must use POST to publish things'
-    assert data, \
-        'must supply a data parameter to publish things'
     try:
-        data = json.loads(data)
-    except ValueError, e:
+        data = flask.request.json
+    except ValueError:
         # asserts cause a 400 to fire. this is a hack, but it's hack week.
         assert False, "'data' must be a valid JSON string"
     return {"publish_response": model.publish(broadcast_id, data)}
