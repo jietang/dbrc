@@ -49,7 +49,7 @@ def blocking_listen(channel, timeout=None):
 def non_blocking_listen(channel):
     myq = _rget("queue_%s" % channel) or []
     if myq:
-        _rset("queue_%s" % channel)
+        _rset("queue_%s" % channel, [])
     return myq
 
 def generate_random_id():
