@@ -23,18 +23,11 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.dbSession = [[DBSession alloc] initWithAppKey:@"gafchy215r87od1"
-                                                 appSecret:@"0bhl35g2fcybyvh"
+        self.dbSession = [[DBSession alloc] initWithAppKey:[DBBroadcast appKey]
+                                                 appSecret:[DBBroadcast appSecret]
                                                       root:kDBRootDropbox];
         [DBSession setSharedSession:self.dbSession];
-        
-//        for (NSString *userId in self.dbSession.userIds) {
-//            DBSession *session  = [DBSession sharedSession];
-//            NSLog(@" Credentials for: %@", userId);
-//            MPOAuthCredentialConcreteStore *credentials = [session credentialStoreForUserId:userId];
-//            NSLog(@"%@", credentials);
-//        }
-        
+
         self.broadcast = [[DBBroadcast alloc] init];
         self.broadcast.delegate = self;
         
@@ -125,6 +118,7 @@
 
 - (void)broadcast:(DBBroadcast *)broadcast addedScreen:(NSString *)screen {
     NSLog(@"Screen was added!");
+    [self.broadcast broadcastCredentials];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -147,6 +141,14 @@
 }
 
 - (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownScreens:(NSError *)error {
+    
+}
+
+- (void)broadcastPushedCredentials:(DBBroadcast *)broadcast {
+    
+}
+
+- (void)broadcastFailedToPushCredentials:(DBBroadcast *)broadcast withError:(NSError *)error {
     
 }
 

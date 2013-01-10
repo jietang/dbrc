@@ -28,4 +28,7 @@
 - (void)broadcast:(DBBroadcast *)broadcast receivedKnownScreens:(NSArray *)likelyHosts;
 - (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownScreens:(NSError *)error;
 
+- (void)broadcastPushedCredentials:(DBBroadcast *)broadcast;
+- (void)broadcastFailedToPushCredentials:(DBBroadcast *)broadcast withError:(NSError *)error;
+
 @end

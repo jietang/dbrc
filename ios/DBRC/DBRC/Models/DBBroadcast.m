@@ -7,13 +7,15 @@
 //
 #import "AFJSONRequestOperation.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import <DropboxSDK/DropboxSDK.h>
 
 #import "DBBroadcast.h"
 #import "DBBroadcastProtocol.h"
 
-//#define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
 
-#define BASE_URL @"http://127.0.0.1:5000/"
+#define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
+
+//#define BASE_URL @"http://127.0.0.1:5000/"
 
 @implementation DBBroadcast
 
@@ -21,6 +23,14 @@
 #pragma mark Object Lifecycle
 /* After initing a DBBroadcast, it must be "started". This will create a broadcasting
    session on the server. */
++ (NSString *)appKey {
+    return @"gafchy215r87od1";
+}
+
++ (NSString *)appSecret {
+    return @"0bhl35g2fcybyvh";
+}
+
 - (id)init {
     if (self = [super init]) {
 
@@ -119,15 +129,11 @@
                                                          error:nil];
     NSString *jsonStr = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
     
-    NSData *htmlEncoded = [self encodeDictionary:[NSDictionary dictionaryWithObject:jsonStr forKey:@"data"]];
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//    [request setHTTPBody:postData];
-    [request setValue:@"application/x-www-form-urlencoded charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:htmlEncoded];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
     
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -176,6 +182,43 @@
                                                                                      NSLog(@"Failure! Couldn't find likely screens for broadcast %d", self.broadcastId);
                                                                                  }];
     [op start];
+}
+
+- (void)broadcastCredentials {
+    NSMutableDictionary *postDict = [NSMutableDictionary dictionary];
+    DBSession *session = [DBSession sharedSession];
+    if ([session.userIds count]) {
+        NSString *userId = [session.userIds objectAtIndex:0];
+        MPOAuthCredentialConcreteStore *credentials = [session credentialStoreForUserId:userId];
+        [postDict setValue:@"pairing" forKey:@"type"];
+        [postDict setValue:[DBBroadcast appKey] forKey:@"app_key"];
+        [postDict setValue:[DBBroadcast appSecret] forKey:@"app_secret"];
+        [postDict setValue:[credentials accessToken]  forKey:@"access_token"];
+        [postDict setValue:[credentials accessTokenSecret]  forKey:@"access_token_secret"];
+    }
+    
+    if ([postDict count]) {
+        NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/", self.broadcastId, nil]]];
+        NSData *postData = [NSJSONSerialization dataWithJSONObject:postDict
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:nil];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:[NSString stringWithFormat:@"%d", postData.length] forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+        AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+                                                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                                                         NSLog(@"Success! Pushed %@ to %d", postDict, self.broadcastId);
+                                                                                     }
+                                                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                                                         NSLog(@"%@", [error userInfo]);
+                                                                                         NSLog(@"Failure! Couldn't push %@ to broadcast %d", postDict, self.broadcastId);
+                                                                                     }];
+        [op start];
+    }
 }
 
 
