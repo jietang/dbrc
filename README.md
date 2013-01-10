@@ -64,6 +64,27 @@ response: (status code)
 
 
 .
+`/broadcasts/<int:id>/likely_screens`
+=
+
+GET
+-
+_get a list of screens that are nearby the given broadcast based on pairing info_
+
+data: nothing
+
+response: `[{"screen_id": screen_id, "device_name": device_name}, ...]`
+
+
+POST
+-
+_subscribe a screen to a broadcast_
+
+data: `{"screen_id": screen_id}`
+
+response: `<status code>`
+
+.
 `/screens`
 =
 
