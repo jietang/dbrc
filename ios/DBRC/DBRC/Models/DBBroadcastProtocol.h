@@ -16,10 +16,16 @@
 - (void)broadcastWasStarted:(DBBroadcast *)broadcast;
 - (void)broadcast:(DBBroadcast *)broadcast failedWithError:(NSError *)err;
 
-- (void)screenWasAdded:(NSString *)screen;
-- (void)screenAddFailed:(NSString *)screen withError:(NSString *)err;
+- (void)broadcast:(DBBroadcast *)broadcast addedScreen:(NSString *)screen;
+- (void)broadcast:(DBBroadcast *)broadcast failedToAddScreen:(NSString *)screen withError:error;
 
 - (void)urlStrWasPushed:(NSString *)urlStr withParams:(NSDictionary *)params;
 - (void)urlStrPushFailed:(NSString *) withParams:(NSDictionary *)params andErr:(NSError *)err;
+
+- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyHosts:(NSArray *)likelyHosts;
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyHosts:(NSError *)error;
+
+- (void)broadcast:(DBBroadcast *)broadcast receivedKnownHosts:(NSArray *)likelyHosts;
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownHosts:(NSError *)error;
 
 @end
