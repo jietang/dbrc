@@ -6,12 +6,14 @@
 //  Copyright (c) 2013 Dropbox. All rights reserved.
 //
 #import "AFJSONRequestOperation.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
 
 #import "DBBroadcast.h"
 #import "DBBroadcastProtocol.h"
 
-#define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
-//#define BASE_URL @"http://127.0.0.1:5000/"
+//#define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
+
+#define BASE_URL @"http://127.0.0.1/"
 
 @implementation DBBroadcast
 
@@ -27,25 +29,54 @@
 }
 
 - (void)startBroadcast {
+    self.broadcastId = -1;
     [self createBroadcast];
 }
 
 - (void)createBroadcast {
+    // Get the wifi data, plug it into a json dict
+    NSDictionary *ssidInfo = [self fetchSSIDInfo];
+    NSString *ssid = [ssidInfo objectForKey:@"SSID"];
+    NSString *bssid = [ssidInfo objectForKey:@"BSSID"];
+    NSMutableDictionary *connectedDict;
+    if (ssid && bssid) {
+        connectedDict =[NSMutableDictionary dictionary];
+        [connectedDict setObject:ssid forKey:@"ssid"];
+        [connectedDict setObject:bssid forKey:@"bssid"];
+    }
+    else {
+        connectedDict = [NSMutableDictionary dictionary];
+    }
+    
+    NSMutableDictionary *infoDict = [NSMutableDictionary dictionary];
+    [infoDict setObject:connectedDict forKey:@"connected"];
+    [infoDict setObject:[NSArray array] forKey:@"nearby"];
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:infoDict
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    NSLog(@"Posting: %@", [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding]);
+    
+    // Build the url, attach the json
     NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:@"broadcasts/"]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
     
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                     NSLog(@"Success!");
+                                                                                     NSLog(@"Succcessfully created a broadcast!");
                                                                                      NSLog(@"%@", JSON);
                                                                                      NSDictionary *jsonDict = (NSDictionary *)JSON;
                                                                                      self.broadcastId = [(NSNumber *)[jsonDict objectForKey:@"broadcast_id"] intValue];
                                                                                      [self.delegate broadcastWasStarted:self];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                                                     NSLog(@"Failed to create broadcast.");
                                                                                      NSLog(@"%@", [error userInfo]);
                                                                                      NSLog(@"%@", JSON);
+                                                                                     self.broadcastId = 0;
                                                                                      [self.delegate broadcast:self failedWithError:error];
                                                                                  }];
     [op start];
@@ -65,14 +96,13 @@
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                                                                      NSLog(@"Success! Added screen %@ to broadcast %d", screenId, self.broadcastId);
-                                                                                     [self.delegate screenWasAdded:screenId];
+                                                                                     [self.delegate broadcast:self addedScreen:screenId];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                                                     NSLog(@"Failure! Couldn't add screen %@ to broadcast %d", screenId, self.broadcastId);
                                                                                      NSLog(@"%@", [error userInfo]);
                                                                                      NSLog(@"%@", error);
-                                                                                     
-                                                                                     NSLog(@"Failure! Couldn't add screen %@ to broadcast %d", screenId, self.broadcastId);
-                                                                                     [self.delegate screenAddFailed:screenId withError:nil];
+                                                                                     [self.delegate broadcast:self failedToAddScreen:screenId withError:nil];
                                                                                  }];
     
     [op start];
@@ -106,7 +136,42 @@
                                                                                      NSLog(@"%@", [error userInfo]);
                                                                                      NSLog(@"Failure! Couldn't push %@ to broadcast %d", urlStr, self.broadcastId);
                                                                                  }];
-    
+    [op start];
+}
+
+- (void)fetchKnownHosts {
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/known_hosts/", self.broadcastId, nil]]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"GET"];
+    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+                                                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                                                     NSArray *likelyHosts = (NSArray *)JSON;
+                                                                                     NSLog(@"Success! Found %d known hosts for broadcast %d",
+                                                                                           [likelyHosts count],
+                                                                                           self.broadcastId, nil);
+                                                                                 }
+                                                                                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                                                     NSLog(@"%@", [error userInfo]);
+                                                                                     NSLog(@"Failure! Couldn't find known hosts for broadcast %d", self.broadcastId);
+                                                                                 }];
+    [op start];
+}
+
+- (void)fetchLikelyHosts {
+    NSURL *url = [NSURL URLWithString:[BASE_URL stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/likely_hosts/", self.broadcastId, nil]]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"GET"];
+    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+                                                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                                                     NSArray *likelyHosts = (NSArray *)JSON;
+                                                                                     NSLog(@"Success! Found %d likely hosts for broadcast %d",
+                                                                                           [likelyHosts count],
+                                                                                           self.broadcastId, nil);
+                                                                                 }
+                                                                                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                                                     NSLog(@"%@", [error userInfo]);
+                                                                                     NSLog(@"Failure! Couldn't find likely hosts for broadcast %d", self.broadcastId);
+                                                                                 }];
     [op start];
 }
 
@@ -124,5 +189,22 @@
     return [encodedDictionary dataUsingEncoding:NSUTF8StringEncoding];
 }
 
+
+# pragma mark Wifi Helpers
+- (id)fetchSSIDInfo
+{
+    NSArray *ifs = (__bridge id)CNCopySupportedInterfaces();
+    NSLog(@"%s: Supported interfaces: %@", __func__, ifs);
+    id info = nil;
+    for (NSString *ifnam in ifs) {
+        info = (__bridge id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        NSLog(@"%s: %@ => %@", __func__, ifnam, info);
+        if (info && [info count]) {
+            break;
+        }
+    }
+    
+    return info;
+}
 
 @end

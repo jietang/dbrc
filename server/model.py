@@ -7,7 +7,7 @@ import time
 
 ## SCREEN ##
 
-def register_device(device_id, screen_id):
+def register_device(device_id, device_name, screen_id, pairing_info):
     _rset('device_to_screen_id_%s' % device_id, screen_id)
     _rset('screen_to_device_id_%s' % screen_id, device_id)
     _rset('screen_info_%s' % screen_id,

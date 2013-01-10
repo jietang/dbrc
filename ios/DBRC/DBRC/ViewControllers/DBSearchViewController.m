@@ -12,6 +12,11 @@
 
 @interface DBSearchViewController ()
 
+@property (nonatomic, retain) NSDate *requestStarted;
+
+- (void)startTimingRequest;
+- (void)stopTimingRequest;
+
 @end
 
 @implementation DBSearchViewController
@@ -39,6 +44,7 @@
 
 - (void)appActive {
     if (!self.broadcast.broadcastId) {
+        self.navigationItem.rightBarButtonItem = nil;
         [self.broadcast startBroadcast];
     }
 }
@@ -54,7 +60,6 @@
                                                   style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
     
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
@@ -78,6 +83,10 @@
     }
 }
 
+- (void)addPair {
+    [self.broadcast fetchKnownHosts];
+}
+
 #pragma mark UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSString *searchString = searchBar.text;
@@ -97,22 +106,41 @@
 
 #pragma mark DBBroadcastDelegate
 - (void)broadcastWasStarted:(DBBroadcast *)broadcast {
-    DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:navController animated:YES completion:nil];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                               target:self
+                                                                               action:@selector(addPair)];
+    self.navigationItem.rightBarButtonItem = addButton;
 }
 
 - (void)broadcast:(DBBroadcast *)broadcast failedWithError:(NSError *)err {
     NSLog(@"%@err", err);
 }
 
-- (void)screenWasAdded:(NSString *)screen {
+- (void)broadcast:(DBBroadcast *)broadcast addedScreen:(NSString *)screen {
     NSLog(@"Screen was added!");
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)screenAddFailed:(NSString *)screen withError:(NSString *)err {
+- (void)broadcast:(DBBroadcast *)broadcast failedToAddScreen:(NSString *)screen withError:(id)error {
     NSLog(@"Failed to add screen");
+}
+
+- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyHosts:(NSArray *)likelyHosts {
+    [self.broadcast fetchKnownHosts];
+}
+
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyHosts:(NSError *)error {
+    
+}
+
+- (void)broadcast:(DBBroadcast *)broadcast receivedKnownHosts:(NSArray *)likelyHosts {
+    DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownHosts:(NSError *)error {
+    
 }
 
 # pragma mark UITableView DataSource / Delegates
@@ -133,14 +161,26 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     DBMetadata *metadata = [self.currentSearchResults objectAtIndex:indexPath.row];
+    [self startTimingRequest];
     [self.rc loadSharableLinkForFile:metadata.path];
 }
 
 - (void)restClient:(DBRestClient*)restClient loadedSharableLink:(NSString *)link forFile:(NSString *)path {
     NSLog(@"Got link: %@\nFor File:%@", link, path, nil);
+    [self stopTimingRequest];
     [self.broadcast push:link withParams:nil];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow]
                                   animated:YES];
+}
+
+# pragma mark Timing Helper
+- (void)startTimingRequest {
+    // 78247
+    self.requestStarted = [NSDate date];
+}
+
+- (void)stopTimingRequest {
+    NSLog(@"Request duration: %f", [[NSDate date] timeIntervalSinceDate:self.requestStarted]);
 }
 
 @end
