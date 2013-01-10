@@ -4,14 +4,14 @@ DBRC Spec
 The main concept we're using for DBRC are the idea of __remotes__ and __screens__. A remote is a device that sets up a broadcast, a screen can subscribe to one or more broadcasts to be controller by the remote. The API is very straightforward.
 
 .
-`/broadcasts`
+`/broadcasts/`
 =
 
 POST
 -
 _create a new broadcast channel_
 
-data: nothing
+data: {"device_id": "<device_id>"}
 
 response: `broadcast_id`
 
