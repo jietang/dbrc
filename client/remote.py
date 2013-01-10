@@ -37,8 +37,8 @@ likely_screens = requests.get(url='http://%s:%d/broadcasts/%s/likely_screens/' %
 for i, entry in enumerate(likely_screens):
     print "%d) %s" % (i+1, entry['device_name'])
 
-inp = raw_input('Link with one of these (number or "no")? ')
-if inp == "no":
+inp = raw_input('Link with one of these (number or "" to skip)? ')
+if inp == "":
     screen_id = raw_input('Enter screen id: ')
 else:
     screen_id = likely_screens[int(inp)-1]['screen_id']
