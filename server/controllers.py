@@ -5,11 +5,12 @@ from lib import generate_random_id
 import model
 
 
-def post_broadcast():
+def post_broadcast(remote_id=None):
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast, got %s' \
         % flask.request.method
-    remote_id = flask.request.json.get('remote_id')
+
+    assert remote_id != None, 'must post with remote_id'
     broadcast_id = generate_random_id()
     model.start_broadcast(broadcast_id, remote_id)
     return {"broadcast_id": broadcast_id}
@@ -83,6 +84,6 @@ def long_poll(screen_id):
 
 def known_hosts(broadcast_id):
     assert flask.request.method == "GET", \
-        "this method only supports a long-poll GET"
-
-    return []
+        "this method only supports a GET"
+    # Get the device running the broadcast, then get its previous screens
+    return models.known_screens_for_broadcast(broadcast_id)
