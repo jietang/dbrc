@@ -9,8 +9,9 @@ def post_broadcast():
     assert flask.request.method == 'POST', \
         'must use POST to start a broadcast, got %s' \
         % flask.request.method
+    remote_id = flask.request.json.get('remote_id')
     broadcast_id = generate_random_id()
-    model.start_broadcast(broadcast_id)
+    model.start_broadcast(broadcast_id, remote_id)
 
     if flask.request.json:
         connected = flask.request.json.get('connected')
