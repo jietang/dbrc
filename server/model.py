@@ -133,7 +133,7 @@ def known_screens_for_broadcast(broadcast_id):
     remote_id = _rget('remote_to_broadcast_id_%s' % (broadcast_id, ))
     remote_info = _rget('remote_info_%s' % (remote_id, ))
     devices_data = []
-    for device_id in remote_info['devices'].keys():
+    for device_id in remote_info.get('devices', {}).keys():
         # TODO expiration for known devices?
         # For each device, get its current screen and the device naem
         devices_data.append({
