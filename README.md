@@ -8,9 +8,13 @@ connection info refers to: `{'bssid': <bssid>, 'ssid': <ssid>, 'strength': <sign
 For pairing using remote.py you'll need to create a "~/.dbrc_config" file with the following sections:
 
 [secrets]
+
 APP_KEY=<app_key>
+
 APP_SECRET=<app_secret>
+
 ACCESS_TOKEN=<access_token>
+
 ACCESS_TOKEN_SECRET=<access_token_secret>
 
 
