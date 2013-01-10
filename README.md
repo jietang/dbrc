@@ -13,7 +13,7 @@ POST
 -
 _create a new broadcast channel_
 
-data: `{<optional>'connected': connection info}`
+data: `{'remote_id': remote id, <optional>'connected': connection info}`
 
 headers: `{'content-type': 'application/json'}`
 
@@ -71,7 +71,7 @@ POST
 -
 _create a new screen, and associate it with a unique device\_id_
 
-data: `{"device_id": device_id, "device_name": device_name, 
+data: `{"device_id": device_id, "device_name": device_name,
 
 <optional> "pairing_info": {"connected": connection info, "nearby": [... connection info]}}`
 
