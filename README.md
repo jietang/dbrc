@@ -11,7 +11,8 @@ POST
 -
 _create a new broadcast channel_
 
-data: nothing
+data: `{<optional>'connected': {'bssid': <bssid>, 'ssid': <ssid>, 'strength': <signal strength>}}`
+headers: `{'content-type': 'application/json'}`
 
 response: `broadcast_id`
 
@@ -67,8 +68,8 @@ POST
 -
 _create a new screen, and associate it with a unique device\_id_
 
-data: `{"device_id": device_id}`
-
+data: `{"device_id": device_id, "device_name": device_name, <optional> "pairing_info": {"connected": {"ssid": ssid, "bssid": bssid, "strength": strength}}}`
+headers: `{"content-type": "application/json"}
 response: `{"broadcast_id": broadcast_id}`
 
 .
