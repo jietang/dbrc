@@ -18,5 +18,7 @@
 - (void)startBroadcast;
 - (void)addScreenToBroadcast:(NSString *)screenId;
 - (void)push:(NSString *)urlStr withParams:(NSDictionary *)params;
+- (void)fetchLikelyHosts;
+- (void)fetchKnownHosts;
 
 @end
