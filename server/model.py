@@ -87,8 +87,8 @@ def add_to_broadcast(screen_id, broadcast_id):
     start_time = time.time()
 
     # Update start times for the broadcast and screen info
-    broadcast_info['screens'][screen_id] = start_time
-    screen_info['broadcasts'][broadcast_id] = start_time
+    broadcast_info['screens'][str(screen_id)] = start_time
+    screen_info['broadcasts'][str(broadcast_id)] = start_time
 
     # Create a record of the fact that this device has conencted
     # to this creen
@@ -107,32 +107,21 @@ def remove_from_broadcast(screen_id, broadcast_id):
     broadcast_info = _rget('broadcast_info_%s' % broadcast_id)
     screen_info = _rget('screen_info_%s' % screen_id)
 
-    remote_id = _rget('screen_to_device_id_%s' % (screen_id,))
-    remote_info = _rget('remote_info_%s' % (remote_id,))
-
-    ret = None
     try:
-        broadcast_info['screens'].pop(screen_id)
+        broadcast_info['screens'].pop(str(screen_id))
     except KeyError:
         pass
     else:
-        ret = _rset('broadcast_info_%s' % broadcast_id, broadcast_info)
+        _rset('broadcast_info_%s' % broadcast_id, broadcast_info)
 
     try:
-        screen_info['broadcasts'].pop(broadcast_id)
+        screen_info['broadcasts'].pop(str(broadcast_id))
     except KeyError:
         pass
     else:
         _rset('screen_info_%s' % screen_id, screen_info)
 
-    try:
-        remote_info['devices'].pop(str(remote_id))
-    except KeyError:
-        pass
-    else:
-        _rset("remote_info_%s" % (remote_id,), remote_info)
-
-    return ret
+    return {'broadcast_id': broadcast_id, 'screen_id': screen_id}
 
 def known_screens_for_broadcast(broadcast_id):
     remote_id = _rget('remote_to_broadcast_id_%s' % (broadcast_id, ))
@@ -141,9 +130,9 @@ def known_screens_for_broadcast(broadcast_id):
     if remote_info:
         for device_id in remote_info.get('devices', {}).keys():
             # TODO expiration for known devices?
-            # For each device, get its current screen and the device naem
+            # For each device, get its current screen and the device name
             devices_data.append({
-                'screen_id': _rget('device_to_screen_id_%s' % (device_id, )),
+                'screen_id': str(_rget('device_to_screen_id_%s' % (device_id, ))),
                 'device_name': _rget('device_to_device_name_%s' % (device_id, )),
                 'known': True,
                 })

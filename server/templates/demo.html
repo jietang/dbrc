@@ -7,7 +7,6 @@
 	<script>
 
 	function onError(msg) {
-		$('body').css('background-color', '#fdd');
 		$('#error').html(msg);
 	//$('#dash').show();
 	}
@@ -34,7 +33,6 @@
 	function onIframeLoad(){
 		if (lastCastTimer)
 			clearTimeout(lastCastTimer);
-		$('body').css('background-color', '#fff');
 		$("#content_div").scrollTop(0);
 		//$('#dash').slideUp();
 	}
@@ -52,7 +50,6 @@
 
 	function reconnect() {
 		$('#error').html('');
-		$('body').css('background-color', '#fff');
 		listenBroadcast();
 	}
 
@@ -80,21 +77,23 @@
 					if (data.type == 'url') {
 						lastCastUrl = data.url;
 						if (IMG_RX.test(lastCastUrl)) {
-							$('.slideshow').show();
-							$('#img_tools').show();
+							//$('.slideshow').show();
+							//$('#img_tools').show();
 							$('#content').hide();
-							$('.slideshow').prepend('<img src="' + lastCastUrl + '">');
+							/*$('.slideshow').prepend('<img src="' + lastCastUrl + '">');
 							$('.slideshow').cycle(SLIDESHOW_OPTIONS);
-							$('.slideshow').cycle('pause');
+							$('.slideshow').cycle('pause');*/
+							$('#img').attr('src', lastCastUrl);
+							$('#img').show();
 							$("#content_div").scrollTop(0);
 						} else {
-							$('.slideshow').hide();
-							$('#img_tools').hide();
+							//$('.slideshow').hide();
+							$('#img').hide();
+							//$('#img_tools').hide();
 							$('#content').show();
 							$('#content').attr('src', lastCastUrl);
 						}
 						$('#url').html(lastCastUrl);
-						$('body').css("background-color","#ddf");
 						if (lastCastTimer)
 							clearTimeout(lastCastTimer);
 						//lastCastTimer = setTimeout(onIframeFail, 10000);
@@ -129,42 +128,8 @@
 	}
 
 	function getScreenId() {
-		// registers this device
-
-		$.ajax({
-			type: "POST",
-			url: '/screens/',
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify({ device_id: DEVICE_ID,
-				device_name: 'device_' + DEVICE_ID }),
-			dataType: "json",
-		success: function(msg) { // callback
-			if (msg.screen_id) {
-				SCREEN_ID = msg.screen_id;
-				$.cookie("screen_id", SCREEN_ID);
-				onGotScreenId();
-			} else {
-				onError("Ajax error: " + String(msg));
-			}
-		},
-		error: function() {
-			onError('Ajax error: Connection failed.');
-		}
-	});
-	/*	$.post('/screens/', "{'device_id':"+ DEVICE_ID
-					+ ", 'device_name': 'device_" + DEVICE_ID + "'}",
-			function(msg) { // callback
-				if (msg.screen_id) {
-					SCREEN_ID = msg.screen_id;
-					$.cookie("screen_id", SCREEN_ID);
-					onGotScreenId();
-				} else {
-					onError("Ajax error: " + String(msg));
-				}
-			}, 'json')
-			.error(function() {
-				onError('Ajax error: Connection failed.');
-			});*/
+	        SCREEN_ID = 9064;
+		onGotScreenId();
 	}
 
 	$(function() {
@@ -175,12 +140,7 @@
 		}
 		$('#device_id').html(DEVICE_ID);
 
-		SCREEN_ID = $.cookie("screen_id");
-		if (SCREEN_ID) {
-			onGotScreenId();
-		} else {
-			getScreenId();
-		}
+		getScreenId();
 
 		autoHeight();
 		$('#content').load(onIframeLoad);
@@ -235,11 +195,6 @@
 			background-color: #eee;
 		}
 
-		body {
-			margin: 0;
-			padding: 0;
-		}
-
 		#error {
 			color: #f00;
 		}
@@ -267,6 +222,7 @@
 		    font-family: sans-serif;
 			background: #cccccf;
 			color: #333;
+            width: 100%;
 		}
 		#logo {
 			display: inline-block;
@@ -283,33 +239,8 @@
 		}
 	</style>
 </head>
-		<!--table id=dash width=100% style="border-bottom: 1px solid #000;">
-			<tr>
-				<td nowrap align=left>
-					<a href="javascript:void(0)" onclick="testKey()">Test sim key</a> 
-					| 
-					<a href="javascript:void(0)" onclick="scrollIframe(0.5)">Test sim down</a> 
-					|
-					<a href="javascript:void(0)" onclick="scrollIframe(-0.5)">Test sim up</a> 
-					<span style="display:none" id=img_tools>
-						| 
-						<a id="next" href="javascript:void(0)">Prev</a> 
-						| 
-						<a id="prev" href="javascript:void(0)">Next</a>
-					</span> 
-					| 
-					Dropcast URL: 
-					<span id=url>[None]</span>
-				</td>
-				<td nowrap align=right>Device ID: 
-					<span id=device_id>Unknown</span> 
-					Screen ID: <span id=screen_id>Unknown</span>
-				</td>
-			</tr>
-			<tr><td id=error></td></tr>
-		</table-->
 
-<body style="width:100%">
+<body>
 	<div id='container'>
 		<div id="header">
 			<div id="logo">
@@ -323,7 +254,7 @@
 						<span class="info-label">Screen ID:</span>
 						<span id="screen_id">[Unknown]</span>
 					</div>
-					<div class="info">
+					<div class="info" style="display: none">
 						<span class="info-label">Dropcast URL:</span>
 						<span id="url">[None]</span>
 					</div>
@@ -333,7 +264,8 @@
 
 		<div id="content-div">
 			<div class="slideshow"></div>
-			<iframe id=content src="/static/test.html" style="width:100%; height: 2300px; border: 0" scrolling="no"></iframe>
+			<img id=img style="width: 1024px; height: auto; display: none;" src="">
+			<iframe id=content src="/static/test.html" style="width:100%; height: 85%; border: 0" scrolling="yes"></iframe>
 		</div>
 	</div>
 </body>

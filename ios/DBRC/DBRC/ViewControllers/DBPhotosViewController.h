@@ -10,16 +10,23 @@
 #import <DropboxSDK/DropboxSDK.h>
 
 #import "DBBroadcastProtocol.h"
+#import "DBBroadcastClientProtocol.h"
+#import "DBPhotos.h"
 
+
+@class DBBroadcastClient;
 @class DBBroadcast;
 
-@interface DBSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, DBRestClientDelegate, DBBroadcastDelegate>
+@interface DBPhotosViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+UISearchBarDelegate, DBRestClientDelegate, DBBroadcastDelegate, DBPhotosDelegate, DBBroadcastClientProtocol>
 
 @property (nonatomic, retain) UISearchBar *searchBar;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) DBSession *dbSession;
 @property (nonatomic, retain) DBRestClient *rc;
 @property (nonatomic, retain) DBBroadcast *broadcast;
+@property (nonatomic, retain) DBBroadcastClient *broadcastClient;
 @property (nonatomic, retain) NSArray *currentSearchResults;
+@property (nonatomic, retain) DBPhotos *photos;
 
 @end

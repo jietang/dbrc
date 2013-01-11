@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Dropbox. All rights reserved.
 //
 
-#import "DBSearchViewController.h"
+#import "DBPhotosViewController.h"
 #import "DBPairingViewController.h"
 #import "DBBroadcast.h"
+#import "DBBroadcastClient.h"
 
-@interface DBSearchViewController ()
+@interface DBPhotosViewController ()
 
 @property (nonatomic, retain) NSDate *requestStarted;
 
@@ -19,7 +20,7 @@
 
 @end
 
-@implementation DBSearchViewController
+@implementation DBPhotosViewController
 
 - (id)init {
     if (self = [super init]) {
@@ -30,10 +31,16 @@
 
         self.broadcast = [[DBBroadcast alloc] init];
         self.broadcast.delegate = self;
+        self.broadcastClient = [[DBBroadcastClient alloc] initWithBroadcast:self.broadcast];
+        self.broadcastClient.delegate = self;
         
         NSNotificationCenter *ctr = [NSNotificationCenter defaultCenter];
         [ctr addObserver:self selector:@selector(appClosed) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [ctr addObserver:self selector:@selector(appActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        
+        self.photos = [[DBPhotos alloc] init];
+        self.photos.delegate = self;
+        [self.photos fetchPhotos];
     }
     return self;
 }
@@ -52,16 +59,17 @@
 - (void)loadView {
     [super loadView];
     self.title = @"Dropbox";
+    self.navigationController.navigationBar.tintColor = [UIColor blueColor];
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
     self.searchBar.delegate = self;
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 300)
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)
                                                   style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    [self.view addSubview:self.searchBar];
+//    [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
 }
 
@@ -84,7 +92,9 @@
 }
 
 - (void)addPair {
-    [self.broadcast fetchKnownScreens];
+    DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark UISearchBarDelegate
@@ -110,6 +120,7 @@
                                                                                target:self
                                                                                action:@selector(addPair)];
     self.navigationItem.rightBarButtonItem = addButton;
+    
 }
 
 - (void)broadcast:(DBBroadcast *)broadcast failedWithError:(NSError *)err {
@@ -118,7 +129,7 @@
 
 - (void)broadcast:(DBBroadcast *)broadcast addedScreen:(NSString *)screen {
     NSLog(@"Screen was added!");
-    [self.broadcast broadcastCredentials];
+    [self.broadcastClient broadcastCredentials];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -126,23 +137,6 @@
     NSLog(@"Failed to add screen");
 }
 
-- (void)broadcast:(DBBroadcast *)broadcast receivedLikelyScreens:(NSArray *)likelyHosts {
-    [self.broadcast fetchKnownScreens];
-}
-
-- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveLikelyScreens:(NSError *)error {
-    
-}
-
-- (void)broadcast:(DBBroadcast *)broadcast receivedKnownScreens:(NSArray *)likelyHosts {
-    DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)broadcast:(DBBroadcast *)broadcast failedToReceiveKnownScreens:(NSError *)error {
-    
-}
 
 - (void)broadcastPushedCredentials:(DBBroadcast *)broadcast {
     
@@ -171,20 +165,38 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     DBMetadata *metadata = [self.currentSearchResults objectAtIndex:indexPath.row];
     [self startTimingRequest];
-    [self.rc loadSharableLinkForFile:metadata.path];
+    DBSession *session = [DBSession sharedSession];
+    if ([[session userIds] count]) {
+        NSString *userId = [session.userIds objectAtIndex:0];
+        MPOAuthCredentialConcreteStore *credentials = [session credentialStoreForUserId:userId];
+        NSMutableString *urlString = [NSMutableString stringWithString:@"https://api-content.dropbox.com/1/thumbnails/dropbox"];
+        [urlString appendString:[metadata.path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [urlString appendString:@"?oauth_signature_method=PLAINTEXT"];
+        [urlString appendFormat:@"&oauth_consumer_key=%@", [DBBroadcast appKey]];
+        [urlString appendFormat:@"&oauth_token=%@", [credentials accessToken]];
+        [urlString appendFormat:@"&oauth_signature=%@%%26%@", [DBBroadcast appSecret], [credentials accessTokenSecret], nil];
+        [urlString appendString:@"&size=1280x960"];
+        
+        [self.broadcastClient push:urlString withParams:nil];
+    }
 }
 
 - (void)restClient:(DBRestClient*)restClient loadedSharableLink:(NSString *)link forFile:(NSString *)path {
     NSLog(@"Got link: %@\nFor File:%@", link, path, nil);
     [self stopTimingRequest];
-    [self.broadcast push:link withParams:nil];
+    [self.broadcastClient push:link withParams:nil];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow]
                                   animated:YES];
 }
 
+#pragma mark DBPhotos delegate
+- (void)dbPhotos:(DBPhotos *)dbPhotos photosWereFetched:(NSArray *)photos {
+    self.currentSearchResults = photos;
+    [self.tableView reloadData];
+}
+
 # pragma mark Timing Helper
 - (void)startTimingRequest {
-    // 78247
     self.requestStarted = [NSDate date];
 }
 

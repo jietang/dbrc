@@ -38,7 +38,7 @@ response: `broadcast_id`
 
 POST
 -
-_post something to a broadcast channel. returns list of screen_ids successfully published to (mostly for debug purposes)_
+_post something to a broadcast channel. returns list of screen_ids successfully published to (mostly for debug purposes).._
 
 uses a message type. valid types: "pairing", "url"
 
@@ -83,7 +83,7 @@ _remove a screen from a broadcast_
 
 data: nothing
 
-response: (status code)
+response: `{"broadcast_id": broadcast_id, "screen_id": screen_id}`
 
 
 .
@@ -165,4 +165,4 @@ _remove a screen from a broadcast_
 
 data: nothing
 
-response: `<status code>`
+response: `{"broadcast_id": broadcast_id, "screen_id": screen_id}`

@@ -10,14 +10,18 @@
 
 #import "DBBroadcast.h"
 #import "DBBroadcastProtocol.h"
+#import "DBBroadcastClient.h"
+#import "DBBroadcastClientProtocol.h"
 
-@interface DBPairingViewController : UIViewController <UITextFieldDelegate, DBBroadcastDelegate>
+@interface DBPairingViewController : UIViewController <UITextFieldDelegate, DBBroadcastDelegate,
+UITableViewDataSource, UITableViewDelegate, DBBroadcastClientProtocol>
 
 
 @property (nonatomic, retain) DBBroadcast *broadcast;
-@property (nonatomic, retain) UITextField *textField;
-@property (nonatomic, retain) UILabel *instructions;
-
+@property (nonatomic, retain) DBBroadcastClient *broadcastClient;
+@property (nonatomic, retain) UITableView *devicesTableView;
+@property (nonatomic, retain) NSArray *knownDevices;
+@property (nonatomic, retain) NSDictionary *connectedDevices;
 
 - (id)initWithBroadcast:(DBBroadcast *)broadcast;
 

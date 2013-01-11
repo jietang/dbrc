@@ -79,6 +79,7 @@
         return jQuery.get("" + HOST + "/screens/" + this.screen_id, function(msg) {
           var data, reconnectFails;
           reconnectFails = 0;
+          console.log('message recieved: ', msg);
           if (msg.result === 'ok') {
             data = JSON.parse(msg.data);
             if (data.url) {
