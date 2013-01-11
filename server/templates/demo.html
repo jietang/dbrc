@@ -125,7 +125,8 @@
 	}
 
 	function getScreenId() {
-        SCREEN_ID = 9064;
+	        SCREEN_ID = 9064;
+		onGotScreenId();
 	}
 
 	$(function() {
@@ -136,12 +137,7 @@
 		}
 		$('#device_id').html(DEVICE_ID);
 
-		SCREEN_ID = $.cookie("screen_id");
-		if (SCREEN_ID) {
-			onGotScreenId();
-		} else {
-			getScreenId();
-		}
+		getScreenId();
 
 		autoHeight();
 		$('#content').load(onIframeLoad);
