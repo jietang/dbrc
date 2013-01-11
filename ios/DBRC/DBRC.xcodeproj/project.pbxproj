@@ -15,6 +15,11 @@
 		28004CF5169FFC1D00444D08 /* navbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF1169FFC1D00444D08 /* navbar.png */; };
 		28004CF6169FFC1D00444D08 /* navbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF2169FFC1D00444D08 /* navbar@2x.png */; };
 		28004CFA16A006CA00444D08 /* PasscodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CF916A006CA00444D08 /* PasscodeView.m */; };
+		28004CFF16A0147A00444D08 /* pin_cell_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFB16A0147A00444D08 /* pin_cell_empty.png */; };
+		28004D0016A0147A00444D08 /* pin_cell_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFC16A0147A00444D08 /* pin_cell_empty@2x.png */; };
+		28004D0116A0147A00444D08 /* pin_cell_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFD16A0147A00444D08 /* pin_cell_full.png */; };
+		28004D0216A0147A00444D08 /* pin_cell_full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFE16A0147A00444D08 /* pin_cell_full@2x.png */; };
+		28004D0516A0152D00444D08 /* DBScreenCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004D0416A0152D00444D08 /* DBScreenCodeViewController.m */; };
 		283BE7E0169A6925005277E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7DF169A6925005277E2 /* UIKit.framework */; };
 		283BE7E2169A6925005277E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E1169A6925005277E2 /* Foundation.framework */; };
 		283BE7E4169A6925005277E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E3169A6925005277E2 /* CoreGraphics.framework */; };
@@ -56,6 +61,12 @@
 		28004CF2169FFC1D00444D08 /* navbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar@2x.png"; sourceTree = "<group>"; };
 		28004CF816A006CA00444D08 /* PasscodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasscodeView.h; sourceTree = "<group>"; };
 		28004CF916A006CA00444D08 /* PasscodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasscodeView.m; sourceTree = "<group>"; };
+		28004CFB16A0147A00444D08 /* pin_cell_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_cell_empty.png; sourceTree = "<group>"; };
+		28004CFC16A0147A00444D08 /* pin_cell_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_cell_empty@2x.png"; sourceTree = "<group>"; };
+		28004CFD16A0147A00444D08 /* pin_cell_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_cell_full.png; sourceTree = "<group>"; };
+		28004CFE16A0147A00444D08 /* pin_cell_full@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_cell_full@2x.png"; sourceTree = "<group>"; };
+		28004D0316A0152D00444D08 /* DBScreenCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBScreenCodeViewController.h; path = ViewControllers/DBScreenCodeViewController.h; sourceTree = "<group>"; };
+		28004D0416A0152D00444D08 /* DBScreenCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBScreenCodeViewController.m; path = ViewControllers/DBScreenCodeViewController.m; sourceTree = "<group>"; };
 		283BE7DB169A6925005277E2 /* DBRC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DBRC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		283BE7DF169A6925005277E2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		283BE7E1169A6925005277E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -132,6 +143,10 @@
 		28004CED169FFBCB00444D08 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				28004CFB16A0147A00444D08 /* pin_cell_empty.png */,
+				28004CFC16A0147A00444D08 /* pin_cell_empty@2x.png */,
+				28004CFD16A0147A00444D08 /* pin_cell_full.png */,
+				28004CFE16A0147A00444D08 /* pin_cell_full@2x.png */,
 				28004CEF169FFC1D00444D08 /* blue-button.png */,
 				28004CF0169FFC1D00444D08 /* blue-button@2x.png */,
 				28004CF1169FFC1D00444D08 /* navbar.png */,
@@ -218,6 +233,8 @@
 				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
 				283BE805169A72AD005277E2 /* DBPhotosViewController.h */,
 				283BE806169A72AD005277E2 /* DBPhotosViewController.m */,
+				28004D0316A0152D00444D08 /* DBScreenCodeViewController.h */,
+				28004D0416A0152D00444D08 /* DBScreenCodeViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -324,6 +341,10 @@
 				28004CF4169FFC1D00444D08 /* blue-button@2x.png in Resources */,
 				28004CF5169FFC1D00444D08 /* navbar.png in Resources */,
 				28004CF6169FFC1D00444D08 /* navbar@2x.png in Resources */,
+				28004CFF16A0147A00444D08 /* pin_cell_empty.png in Resources */,
+				28004D0016A0147A00444D08 /* pin_cell_empty@2x.png in Resources */,
+				28004D0116A0147A00444D08 /* pin_cell_full.png in Resources */,
+				28004D0216A0147A00444D08 /* pin_cell_full@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +373,7 @@
 				28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */,
 				28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */,
 				28004CFA16A006CA00444D08 /* PasscodeView.m in Sources */,
+				28004D0516A0152D00444D08 /* DBScreenCodeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

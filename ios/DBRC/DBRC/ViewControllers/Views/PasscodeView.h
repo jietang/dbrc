@@ -13,8 +13,15 @@
 @interface PasscodeView : UIView {
 	NSUInteger filledCellCount;
 	UIImageView *cell[kNumCells];
+	UILabel *cellChars[kNumCells];
 }
 
+- (void)fillNextCellWithChar:(NSString *)character;
+- (void)deleteCellChar;
+
 @property (nonatomic, setter=setFilledCellCount:) NSUInteger filledCellCount;
+
+- (NSInteger)getFilledCount;
+- (NSString *)getPasscode;
 
 @end

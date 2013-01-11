@@ -8,7 +8,6 @@
 
 #import "PasscodeView.h"
 
-#import "FileIcons.h"
 
 @implementation PasscodeView
 
@@ -23,26 +22,41 @@
 	return self;
 }
 
--(void)dealloc
-{
-	for (int i = 0; i < kNumCells; i++) {
-		[cell[i] release];
-		cell[i] = nil;
-	}
-	[super dealloc];
-}
 
 -(void)layoutSubviews
 {
-	UIImage *emptyImage = [FileIcons iconByName: @"pin_cell_empty"];
+	UIImage *emptyImage = [UIImage imageNamed:@"pin_cell_empty.png"];
 	CGFloat centeringOffset = (self.frame.size.width - emptyImage.size.width*kNumCells - 10*(kNumCells-1)) / 2;
 	for (int i = 0; i < kNumCells; i++) {
 		if (cell[i] == nil)
 			cell[i] = [[UIImageView alloc] initWithImage: emptyImage];
 		if (cell[i].superview != self)
 			[self addSubview: cell[i]];
+        
+		if (cellChars[i] == nil) {
+			cellChars[i] = [[UILabel alloc] initWithFrame:CGRectZero];
+            cellChars[i].textAlignment = UITextAlignmentCenter;
+            cellChars[i].backgroundColor = [UIColor clearColor];
+            cellChars[i].text = @"";
+        }
+		if (cellChars[i].superview != self)
+			[self addSubview: cellChars[i]];
+        
 		cell[i].frame = CGRectMake(centeringOffset + i * (emptyImage.size.width + 10), 0, emptyImage.size.width, emptyImage.size.height);
+        cellChars[i].frame = CGRectMake(centeringOffset + i * (emptyImage.size.width + 10), 0, emptyImage.size.width, emptyImage.size.height);
 	}
+}
+
+- (void)fillNextCellWithChar:(NSString *)character {
+    cellChars[filledCellCount].text = character;
+    filledCellCount += 1;
+    [self setNeedsDisplay];
+}
+
+- (void)deleteCellChar {
+    filledCellCount -= 1;
+    cellChars[filledCellCount].text = @"";
+    [self setNeedsDisplay];
 }
 
 -(void)setFilledCellCount:(NSUInteger)aFilledCellCount
@@ -52,8 +66,20 @@
 
 	filledCellCount = aFilledCellCount;
 	for (int i = 0; i < kNumCells; i++)
-		cell[i].image = [FileIcons iconByName: (i < filledCellCount) ? @"pin_cell_full" : @"pin_cell_empty"];
+		cell[i].image = [UIImage imageNamed: (i < filledCellCount) ? @"pin_cell_full.png" : @"pin_cell_empty.png"];
 	[self setNeedsDisplay];
+}
+
+- (NSInteger)getFilledCount {
+    return filledCellCount;
+}
+
+- (NSString *)getPasscode {
+    NSMutableString *code = [NSMutableString string];
+    for (int i = 0; i < kNumCells; i++) {
+        [code appendString:cellChars[i].text];
+    }
+    return code;
 }
 
 @end

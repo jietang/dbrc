@@ -10,6 +10,7 @@
 #import "DBPairingViewController.h"
 #import "DBBroadcast.h"
 #import "DBScreenSwitch.h"
+#import "DBScreenCodeViewController.h"
 
 @interface DBPairingViewController ()
 
@@ -125,6 +126,7 @@
     [newDeviceButton setBackgroundImage:bgImg forState:UIControlStateNormal];
     [newDeviceButton setTitle:@"Add New Device" forState:UIControlStateNormal];
     newDeviceButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [newDeviceButton addTarget:self action:@selector(addNewDevice) forControlEvents:UIControlEventTouchUpInside];
     
     [containterView addSubview:newDeviceButton];
     
@@ -144,6 +146,12 @@
     }
 }
 
+- (void)addNewDevice {
+    DBScreenCodeViewController *vc = [[DBScreenCodeViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    
+    [self.navigationController presentViewController:navController animated:YES completion:NULL];
+}
 
 
 
