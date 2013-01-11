@@ -9,6 +9,7 @@
 
 #import "DBPairingViewController.h"
 #import "DBBroadcast.h"
+#import "DBScreenSwitch.h"
 
 @interface DBPairingViewController ()
 
@@ -23,7 +24,6 @@
         self.broadcastClient = [[DBBroadcastClient alloc] initWithBroadcast:self.broadcast];
         self.broadcastClient.delegate = self;
         self.knownDevices = [NSArray array];
-        [self.broadcastClient fetchKnownScreens];
     }
     return self;
 }
@@ -44,6 +44,9 @@
     self.devicesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 480) style:UITableViewStyleGrouped];
     self.devicesTableView.delegate = self;
     self.devicesTableView.dataSource = self;
+    [self.view addSubview:self.devicesTableView];
+    
+    [self.broadcastClient fetchKnownScreens];
 }
 
 - (void)viewDidLoad
@@ -68,7 +71,14 @@
 
 # pragma mark UITableView DataSource/Delegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+    NSDictionary *screenInfo = [self.knownDevices objectAtIndex:indexPath.row];
+    
+    DBScreenSwitch *screenSwitch = [[DBScreenSwitch alloc] initWithFrame:CGRectZero andScreenInfo:screenInfo];
+    [screenSwitch addTarget:self action:@selector(screenSwitchWasFlipped:) forControlEvents:UIControlEventValueChanged];
+    cell.accessoryView = screenSwitch;
+
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -81,6 +91,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.knownDevices count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"Devices";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
