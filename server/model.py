@@ -142,7 +142,7 @@ def known_screens_for_broadcast(broadcast_id):
         # TODO expiration for known devices?
         # For each device, get its current screen and the device name
         devices_data.append({
-            'screen_id': _rget('device_to_screen_id_%s' % (device_id, )),
+            'screen_id': str(_rget('device_to_screen_id_%s' % (device_id, ))),
             'device_name': _rget('device_to_device_name_%s' % (device_id, )),
             'known': True,
             })
