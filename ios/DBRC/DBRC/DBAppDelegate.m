@@ -24,6 +24,8 @@
     UIViewController *rootViewController = [[DBPhotosViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     
+    [navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar.png"] forBarMetrics:UIBarMetricsDefault];
+    
     [self.window setRootViewController:navController];
     
     return YES;

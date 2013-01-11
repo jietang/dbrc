@@ -10,6 +10,11 @@
 		28004CD2169F686C00444D08 /* DBPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD1169F686C00444D08 /* DBPhotos.m */; };
 		28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD5169FB01C00444D08 /* DBBroadcastClient.m */; };
 		28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CE7169FDDD200444D08 /* DBScreenSwitch.m */; };
+		28004CF3169FFC1D00444D08 /* blue-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CEF169FFC1D00444D08 /* blue-button.png */; };
+		28004CF4169FFC1D00444D08 /* blue-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF0169FFC1D00444D08 /* blue-button@2x.png */; };
+		28004CF5169FFC1D00444D08 /* navbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF1169FFC1D00444D08 /* navbar.png */; };
+		28004CF6169FFC1D00444D08 /* navbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF2169FFC1D00444D08 /* navbar@2x.png */; };
+		28004CFA16A006CA00444D08 /* PasscodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CF916A006CA00444D08 /* PasscodeView.m */; };
 		283BE7E0169A6925005277E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7DF169A6925005277E2 /* UIKit.framework */; };
 		283BE7E2169A6925005277E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E1169A6925005277E2 /* Foundation.framework */; };
 		283BE7E4169A6925005277E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E3169A6925005277E2 /* CoreGraphics.framework */; };
@@ -45,6 +50,12 @@
 		28004CD7169FB08E00444D08 /* DBBroadcastClientProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBBroadcastClientProtocol.h; sourceTree = "<group>"; };
 		28004CE6169FDDD200444D08 /* DBScreenSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBScreenSwitch.h; sourceTree = "<group>"; };
 		28004CE7169FDDD200444D08 /* DBScreenSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBScreenSwitch.m; sourceTree = "<group>"; };
+		28004CEF169FFC1D00444D08 /* blue-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button.png"; sourceTree = "<group>"; };
+		28004CF0169FFC1D00444D08 /* blue-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button@2x.png"; sourceTree = "<group>"; };
+		28004CF1169FFC1D00444D08 /* navbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar.png; sourceTree = "<group>"; };
+		28004CF2169FFC1D00444D08 /* navbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar@2x.png"; sourceTree = "<group>"; };
+		28004CF816A006CA00444D08 /* PasscodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasscodeView.h; sourceTree = "<group>"; };
+		28004CF916A006CA00444D08 /* PasscodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasscodeView.m; sourceTree = "<group>"; };
 		283BE7DB169A6925005277E2 /* DBRC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DBRC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		283BE7DF169A6925005277E2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		283BE7E1169A6925005277E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -118,6 +129,27 @@
 			path = ViewControllers/Controls;
 			sourceTree = "<group>";
 		};
+		28004CED169FFBCB00444D08 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				28004CEF169FFC1D00444D08 /* blue-button.png */,
+				28004CF0169FFC1D00444D08 /* blue-button@2x.png */,
+				28004CF1169FFC1D00444D08 /* navbar.png */,
+				28004CF2169FFC1D00444D08 /* navbar@2x.png */,
+			);
+			name = resources;
+			sourceTree = "<group>";
+		};
+		28004CF716A006CA00444D08 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				28004CF816A006CA00444D08 /* PasscodeView.h */,
+				28004CF916A006CA00444D08 /* PasscodeView.m */,
+			);
+			name = Views;
+			path = ViewControllers/Views;
+			sourceTree = "<group>";
+		};
 		283BE7D0169A6925005277E2 = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +197,7 @@
 		283BE7E6169A6925005277E2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				28004CED169FFBCB00444D08 /* resources */,
 				283BE7E7169A6925005277E2 /* DBRC-Info.plist */,
 				283BE7E8169A6925005277E2 /* InfoPlist.strings */,
 				283BE7EB169A6925005277E2 /* main.m */,
@@ -179,6 +212,7 @@
 		283BE800169A703C005277E2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				28004CF716A006CA00444D08 /* Views */,
 				28004CE4169FDDC500444D08 /* Controls */,
 				28F5F513169BB30500C8854E /* DBPairingViewController.h */,
 				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
@@ -286,6 +320,10 @@
 				283BE7F2169A6925005277E2 /* Default.png in Resources */,
 				283BE7F4169A6925005277E2 /* Default@2x.png in Resources */,
 				283BE7F6169A6925005277E2 /* Default-568h@2x.png in Resources */,
+				28004CF3169FFC1D00444D08 /* blue-button.png in Resources */,
+				28004CF4169FFC1D00444D08 /* blue-button@2x.png in Resources */,
+				28004CF5169FFC1D00444D08 /* navbar.png in Resources */,
+				28004CF6169FFC1D00444D08 /* navbar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +351,7 @@
 				28004CD2169F686C00444D08 /* DBPhotos.m in Sources */,
 				28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */,
 				28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */,
+				28004CFA16A006CA00444D08 /* PasscodeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
