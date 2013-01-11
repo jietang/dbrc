@@ -62,11 +62,11 @@ def non_blocking_listen(channel):
     return myq
 
 def generate_random_id():
-    n = _rget('id_sample_range') or 10
-    while True:
+    n = 9999
+    for i in range(100000):
         candidate_id = random.randrange(0, n, 1)
         if (not _rget('screen_info_%s' % candidate_id) and
             not _rget('broadcast_info_%s' % candidate_id)):
             return candidate_id
-        n *= 10
-        _rset('id_sample_range', n)
+
+    return -1
