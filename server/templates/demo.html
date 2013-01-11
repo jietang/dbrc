@@ -76,7 +76,7 @@
 					var data = JSON.parse(msg.data);
 					if (data.type == 'url') {
 						lastCastUrl = data.url;
-						if (IMG_RX.test(lastCastUrl)) {
+						/*if (IMG_RX.test(lastCastUrl)) {
 							$('.slideshow').show();
 							$('#img_tools').show();
 							$('#content').hide();
@@ -84,7 +84,7 @@
 							$('.slideshow').cycle(SLIDESHOW_OPTIONS);
 							$('.slideshow').cycle('pause');
 							$("#content_div").scrollTop(0);
-						} else {
+						} else */ {
 							$('.slideshow').hide();
 							$('#img_tools').hide();
 							$('#content').show();
