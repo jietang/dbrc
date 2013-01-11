@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28004CD2169F686C00444D08 /* DBPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD1169F686C00444D08 /* DBPhotos.m */; };
+		28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD5169FB01C00444D08 /* DBBroadcastClient.m */; };
 		283BE7E0169A6925005277E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7DF169A6925005277E2 /* UIKit.framework */; };
 		283BE7E2169A6925005277E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E1169A6925005277E2 /* Foundation.framework */; };
 		283BE7E4169A6925005277E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E3169A6925005277E2 /* CoreGraphics.framework */; };
@@ -16,7 +18,7 @@
 		283BE7F2169A6925005277E2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BE7F1169A6925005277E2 /* Default.png */; };
 		283BE7F4169A6925005277E2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BE7F3169A6925005277E2 /* Default@2x.png */; };
 		283BE7F6169A6925005277E2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 283BE7F5169A6925005277E2 /* Default-568h@2x.png */; };
-		283BE807169A72AD005277E2 /* DBSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283BE806169A72AD005277E2 /* DBSearchViewController.m */; };
+		283BE807169A72AD005277E2 /* DBPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283BE806169A72AD005277E2 /* DBPhotosViewController.m */; };
 		28798214169E163000C0EB08 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28798213169E163000C0EB08 /* SystemConfiguration.framework */; };
 		28E712EE169A8033002A56C3 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712ED169A8033002A56C3 /* DropboxSDK.framework */; };
 		28E712F0169A8065002A56C3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E712EF169A8065002A56C3 /* QuartzCore.framework */; };
@@ -35,6 +37,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28004CD0169F686C00444D08 /* DBPhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBPhotos.h; sourceTree = "<group>"; };
+		28004CD1169F686C00444D08 /* DBPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBPhotos.m; sourceTree = "<group>"; };
+		28004CD4169FB01C00444D08 /* DBBroadcastClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcastClient.h; sourceTree = "<group>"; };
+		28004CD5169FB01C00444D08 /* DBBroadcastClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBBroadcastClient.m; sourceTree = "<group>"; };
+		28004CD7169FB08E00444D08 /* DBBroadcastClientProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBBroadcastClientProtocol.h; sourceTree = "<group>"; };
 		283BE7DB169A6925005277E2 /* DBRC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DBRC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		283BE7DF169A6925005277E2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		283BE7E1169A6925005277E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -48,8 +55,8 @@
 		283BE7F1169A6925005277E2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		283BE7F3169A6925005277E2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		283BE7F5169A6925005277E2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		283BE805169A72AD005277E2 /* DBSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBSearchViewController.h; path = ViewControllers/DBSearchViewController.h; sourceTree = "<group>"; };
-		283BE806169A72AD005277E2 /* DBSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBSearchViewController.m; path = ViewControllers/DBSearchViewController.m; sourceTree = "<group>"; };
+		283BE805169A72AD005277E2 /* DBPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBPhotosViewController.h; path = ViewControllers/DBPhotosViewController.h; sourceTree = "<group>"; };
+		283BE806169A72AD005277E2 /* DBPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBPhotosViewController.m; path = ViewControllers/DBPhotosViewController.m; sourceTree = "<group>"; };
 		28798213169E163000C0EB08 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		28E712ED169A8033002A56C3 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		28E712EF169A8065002A56C3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -161,8 +168,8 @@
 			children = (
 				28F5F513169BB30500C8854E /* DBPairingViewController.h */,
 				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
-				283BE805169A72AD005277E2 /* DBSearchViewController.h */,
-				283BE806169A72AD005277E2 /* DBSearchViewController.m */,
+				283BE805169A72AD005277E2 /* DBPhotosViewController.h */,
+				283BE806169A72AD005277E2 /* DBPhotosViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -173,6 +180,11 @@
 				28F5F517169BB31000C8854E /* DBBroadcast.h */,
 				28F5F518169BB31000C8854E /* DBBroadcast.m */,
 				28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */,
+				28004CD0169F686C00444D08 /* DBPhotos.h */,
+				28004CD1169F686C00444D08 /* DBPhotos.m */,
+				28004CD4169FB01C00444D08 /* DBBroadcastClient.h */,
+				28004CD5169FB01C00444D08 /* DBBroadcastClient.m */,
+				28004CD7169FB08E00444D08 /* DBBroadcastClientProtocol.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -273,7 +285,7 @@
 				283BE7EC169A6925005277E2 /* main.m in Sources */,
 				283BE7F0169A6925005277E2 /* DBAppDelegate.m in Sources */,
 				28F5F51B169BB34000C8854E /* DBPairingViewController.m in Sources */,
-				283BE807169A72AD005277E2 /* DBSearchViewController.m in Sources */,
+				283BE807169A72AD005277E2 /* DBPhotosViewController.m in Sources */,
 				28F5F51A169BB31000C8854E /* DBBroadcast.m in Sources */,
 				28F5F530169BB7AA00C8854E /* AFHTTPClient.m in Sources */,
 				28F5F531169BB7AA00C8854E /* AFHTTPRequestOperation.m in Sources */,
@@ -284,6 +296,8 @@
 				28F5F536169BB7AA00C8854E /* AFURLConnectionOperation.m in Sources */,
 				28F5F537169BB7AA00C8854E /* AFXMLRequestOperation.m in Sources */,
 				28F5F538169BB7AA00C8854E /* UIImageView+AFNetworking.m in Sources */,
+				28004CD2169F686C00444D08 /* DBPhotos.m in Sources */,
+				28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
