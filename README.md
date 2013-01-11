@@ -83,7 +83,7 @@ _remove a screen from a broadcast_
 
 data: nothing
 
-response: (status code)
+response: `{"broadcast_id": broadcast_id, "screen_id": screen_id}`
 
 
 .
@@ -165,4 +165,4 @@ _remove a screen from a broadcast_
 
 data: nothing
 
-response: `<status code>`
+response: `{"broadcast_id": broadcast_id, "screen_id": screen_id}`
