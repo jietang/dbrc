@@ -34,10 +34,10 @@ def get_screen_id(device_id):
     return _rget('device_to_screen_id_%s' % device_id)
 
 def screen_listen(screen_id):
-    return blocking_listen('screen_channel_%s' % screen_id, timeout=10)
+    return blocking_listen('screen_channel_%s' % screen_id, timeout=30)
 
 def screen_get_queue(screen_id):
-    return non_blocking_listen('screen_channel_%s' % screen_id, timeout=10)
+    return non_blocking_listen('screen_channel_%s' % screen_id, timeout=30)
 
 def get_screen(screen_id):
     return _rget('screen_info_%s' % screen_id)
