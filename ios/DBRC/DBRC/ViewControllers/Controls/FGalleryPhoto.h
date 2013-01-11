@@ -28,7 +28,6 @@
 	NSURLConnection *_thumbConnection;
 	NSURLConnection *_fullsizeConnection;
 	
-	NSString *_thumbUrl;
 	NSString *_fullsizeUrl;
     NSUInteger _index;
 	
@@ -47,6 +46,8 @@
 
 - (void)unloadFullsize;
 - (void)unloadThumbnail;
+
+@property NSString* thumbUrl;
 
 @property NSUInteger tag;
 

@@ -14,6 +14,7 @@
 
 @property (nonatomic, assign) id<DBBroadcastDelegate> delegate;
 @property (nonatomic, assign) NSInteger broadcastId;
+@property (nonatomic, assign) NSInteger connectedScreens;
 
 - (void)startBroadcast;
 

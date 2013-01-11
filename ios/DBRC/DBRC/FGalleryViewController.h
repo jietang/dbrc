@@ -82,6 +82,7 @@ typedef enum
 @property (nonatomic, retain) DBBroadcastClient *broadcastClient;
 @property (nonatomic, retain) NSArray *currentSearchResults;
 @property (nonatomic, retain) DBPhotos *photos;
+@property (nonatomic) BOOL screenAdded;
 
 @end
 

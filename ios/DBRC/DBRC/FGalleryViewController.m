@@ -7,6 +7,7 @@
 //
 
 #import "FGalleryViewController.h"
+#import "FGalleryPhoto.h"
 #import "DBPhotosViewController.h"
 #import "DBPairingViewController.h"
 #import "DBBroadcast.h"
@@ -225,10 +226,29 @@
 }
 
 - (void)addPair {
-    // depending on whether we are in the thumbnail view or not, and depending on whether we have paired with something 
-    DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:navController animated:YES completion:nil];
+    // if we are in an image view and have a paired screen, send a broadcast
+    // else, bring up the pairing screen.
+    if (!_isThumbViewShowing && self.broadcast.connectedScreens > 0) {
+        DBSession *session = [DBSession sharedSession];
+        if ([[session userIds] count]) {
+            NSString *userId = [session.userIds objectAtIndex:0];
+            MPOAuthCredentialConcreteStore *credentials = [session credentialStoreForUserId:userId];
+            NSMutableString *urlString = [NSMutableString stringWithString:@"https://api-content.dropbox.com/1/thumbnails/dropbox"];
+            FGalleryPhoto *photo = [_photoLoaders objectForKey:[NSString stringWithFormat:@"%i", _currentIndex]];
+            [urlString appendString:[photo.thumbUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [urlString appendString:@"?oauth_signature_method=PLAINTEXT"];
+            [urlString appendFormat:@"&oauth_consumer_key=%@", [DBBroadcast appKey]];
+            [urlString appendFormat:@"&oauth_token=%@", [credentials accessToken]];
+            [urlString appendFormat:@"&oauth_signature=%@%%26%@", [DBBroadcast appSecret], [credentials accessTokenSecret], nil];
+            [urlString appendString:@"&size=1280x960"];
+            
+            [self.broadcastClient push:urlString withParams:nil];
+        }
+    } else {
+        DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [self presentViewController:navController animated:YES completion:nil];
+    }
 }
 
 - (void)unlink {
