@@ -25,6 +25,7 @@
         self.broadcastClient = [[DBBroadcastClient alloc] initWithBroadcast:self.broadcast];
         self.broadcastClient.delegate = self;
         self.knownDevices = [NSArray array];
+        self.connectedDevices = [NSArray array];
     }
     return self;
 }
@@ -50,6 +51,7 @@
     self.devicesTableView.separatorColor = [UIColor colorWithRed:184/255.0 green:200/255.0 blue:212/255.0 alpha:1.0];
     [self.view addSubview:self.devicesTableView];
     
+    // After we fetch known screens, we'll fetch connected screens
     [self.broadcastClient fetchKnownScreens];
 }
 
@@ -69,7 +71,11 @@
 # pragma mark DBBroadcastDelegate/DBBroadcastClientDelegate
 - (void)broadcast:(DBBroadcast *)broadcast receivedKnownScreens:(NSArray *)knownScreens {
     self.knownDevices = knownScreens;
-    [self.devicesTableView reloadData];
+    [self.broadcastClient fetchConnectedScreens];
+}
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient failedToReceiveKnownScreens:(NSError *)error {
+    [self showError];
 }
 
 - (void)broadcast:(DBBroadcastClient *)broadcastClient addedScreen:(NSString *)screen {
@@ -77,7 +83,34 @@
 }
 
 - (void)broadcast:(DBBroadcastClient *)broadcastClient failedToAddScreen:(NSString *)screen withError:(id)error {
+    [self showError];
+}
+
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient removedScreen:(NSString *)screen {
     
+}
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient failedToRemoveScreen:(NSString *)screen withError:error {
+    [self showError];
+}
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient receivedConnectedScreens:(NSDictionary *)connectedHosts {
+    self.connectedDevices = connectedHosts;
+    [self.devicesTableView reloadData];
+}
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient failedToReceiveConnectedScreens:(NSError *)error {
+    [self showError];
+}
+
+- (void)showError {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"Server error! Please try again later."
+                                                   delegate:self
+                                          cancelButtonTitle:@"Dismiss"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 # pragma mark UITableView DataSource/Delegate
@@ -85,10 +118,21 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
     NSDictionary *screenInfo = [self.knownDevices objectAtIndex:indexPath.row];
     
+    // Is this screen connected?
+    BOOL connected = NO;
+    for (NSNumber *connectedScreenId in [self.connectedDevices allKeys]) {
+        if ([[screenInfo objectForKey:@"screen_id"] isEqual:connectedScreenId]) {
+            connected = YES;
+        }
+    }
+    
     DBScreenSwitch *screenSwitch = [[DBScreenSwitch alloc] initWithFrame:CGRectZero andScreenInfo:screenInfo];
     [screenSwitch addTarget:self action:@selector(screenSwitchWasFlipped:) forControlEvents:UIControlEventValueChanged];
-    cell.accessoryView = screenSwitch;
+    if (connected) {
+        [screenSwitch setOn:YES];
+    }
     
+    cell.accessoryView = screenSwitch;
     cell.textLabel.text = [screenInfo objectForKey:@"device_name"];
     cell.textLabel.textColor = [UIColor colorWithRed:60/255.0 green:68/255.0 blue:89/255.0 alpha:1];
     cell.backgroundColor = [UIColor colorWithRed:225/255.0 green:236/255.0 blue:245/255.0 alpha:1];
@@ -140,9 +184,12 @@
 # pragma mark Controls
 - (void)screenSwitchWasFlipped:(id)sender {
     DBScreenSwitch *screenSwitch = (DBScreenSwitch *)sender;
+    NSString *screenId = [NSString stringWithFormat:@"%d", [(NSNumber *)[screenSwitch.screenInfo objectForKey:@"screen_id"] intValue]];
     if ([screenSwitch isOn]) {
-        NSString *screenId = [NSString stringWithFormat:@"%d", [(NSNumber *)[screenSwitch.screenInfo objectForKey:@"screen_id"] intValue]];
         [self.broadcastClient addScreenToBroadcast:screenId];
+    }
+    else {
+        [self.broadcastClient removeScreenFromBroadcast:screenId];
     }
 }
 

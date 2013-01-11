@@ -20,8 +20,9 @@
 - (id)initWithBroadcast:(DBBroadcast *)broadcast;
 
 - (void)addScreenToBroadcast:(NSString *)screenId;
+- (void)removeScreenFromBroadcast:(NSString *)screenId;
 - (void)push:(NSString *)urlStr withParams:(NSDictionary *)params;
-- (void)fetchLikelyScreens;
+- (void)fetchConnectedScreens;
 - (void)fetchKnownScreens;
 - (void)broadcastCredentials;
 

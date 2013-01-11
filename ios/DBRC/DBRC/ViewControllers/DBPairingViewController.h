@@ -21,6 +21,7 @@ UITableViewDataSource, UITableViewDelegate, DBBroadcastClientProtocol>
 @property (nonatomic, retain) DBBroadcastClient *broadcastClient;
 @property (nonatomic, retain) UITableView *devicesTableView;
 @property (nonatomic, retain) NSArray *knownDevices;
+@property (nonatomic, retain) NSDictionary *connectedDevices;
 
 - (id)initWithBroadcast:(DBBroadcast *)broadcast;
 

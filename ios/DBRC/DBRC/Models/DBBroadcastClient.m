@@ -50,6 +50,26 @@
     [op start];
 }
 
+- (void)removeScreenFromBroadcast:(NSString *)screenId {
+    NSURL *url = [NSURL URLWithString:[[DBBroadcast baseUrl] stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/screens/%@", self.broadcast.broadcastId, screenId, nil]]];    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"DELETE"];
+    [request setValue:@"application/x-www-form-urlencoded charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
+                                                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                                                     NSLog(@"Success! Removed screen %@ to broadcast %d", screenId, self.broadcast.broadcastId);
+                                                                                     [self.delegate broadcast:self addedScreen:screenId];
+                                                                                 }
+                                                                                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                                                     NSLog(@"Failure! Couldn't remove screen %@ to broadcast %d", screenId, self.broadcast.broadcastId);
+                                                                                     NSLog(@"%@", [error userInfo]);
+                                                                                     NSLog(@"%@", error);
+                                                                                     [self.delegate broadcast:self failedToAddScreen:screenId withError:nil];
+                                                                                 }];
+    
+    [op start];
+}
+
 - (void)push:(NSString *)urlStr withParams:(NSDictionary *)params {
     NSURL *url = [NSURL URLWithString:[[DBBroadcast baseUrl] stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/", self.broadcast.broadcastId, nil]]];
     // Massaging json into expected format...a mess for now
@@ -93,25 +113,27 @@
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                                                      NSLog(@"%@", [error userInfo]);
                                                                                      NSLog(@"Failure! Couldn't find known screens for broadcast %d", self.broadcast.broadcastId);
+                                                                                     [self.delegate broadcast:self failedToReceiveKnownScreens:nil];
                                                                                  }];
     [op start];
 }
 
-- (void)fetchLikelyScreens {
-    NSURL *url = [NSURL URLWithString:[[DBBroadcast baseUrl] stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/likely_screens/", self.broadcast.broadcastId, nil]]];
+- (void)fetchConnectedScreens {
+    NSURL *url = [NSURL URLWithString:[[DBBroadcast baseUrl] stringByAppendingString:[NSString stringWithFormat:@"broadcasts/%d/screens/", self.broadcast.broadcastId, nil]]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                                                     NSArray *likelyScreens = (NSArray *)JSON;
-                                                                                     NSLog(@"Success! Found %d likely hosts for broadcast %d",
-                                                                                           [likelyScreens count],
+                                                                                     NSDictionary *connectedScreens = (NSDictionary *)JSON;
+                                                                                     NSLog(@"Success! Found %d connected hosts for broadcast %d",
+                                                                                           [connectedScreens count],
                                                                                            self.broadcast.broadcastId, nil);
-                                                                                     [self.delegate broadcast:self receivedLikelyScreens:likelyScreens];
+                                                                                     [self.delegate broadcast:self receivedConnectedScreens:connectedScreens];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                                                      NSLog(@"%@", [error userInfo]);
-                                                                                     NSLog(@"Failure! Couldn't find likely screens for broadcast %d", self.broadcast.broadcastId);
+                                                                                     NSLog(@"Failure! Couldn't find connected screens for broadcast %d", self.broadcast.broadcastId);
+                                                                                     [self.delegate broadcast:self failedToReceiveConnectedScreens:nil];
                                                                                  }];
     [op start];
 }
