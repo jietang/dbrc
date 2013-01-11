@@ -8,6 +8,8 @@
 
 #import "DBScreenCodeViewController.h"
 #import "PasscodeView.h"
+#import "DBBroadcast.h"
+#import "DBBroadcastClient.h"
 
 @interface DBScreenCodeViewController ()
 
@@ -15,12 +17,11 @@
 
 @implementation DBScreenCodeViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        self.title = @"Enter Code";
+- (id)initWithDBBroadcast:(DBBroadcast *)broadcast {
+    if (self = [super init]) {
+        self.broadcast = broadcast;
+        self.broadcastClient = [[DBBroadcastClient alloc] initWithBroadcast:self.broadcast];
+        self.broadcastClient.delegate = self;
     }
     return self;
 }
@@ -71,18 +72,32 @@
     }
     
     if ([self.passcodeView getFilledCount] == 4) {
-        [self performSelector:@selector(submitCode:) withObject:[self.passcodeView getPasscode] afterDelay:.25];
+        [self.broadcastClient addScreenToBroadcast:[self.passcodeView getPasscode]];
     }
    return YES;
 }
 
-- (void)submitCode:(NSString *)passcode {
+- (void)clearCode {
     [self.passcodeView deleteCellChar];
     [self.passcodeView deleteCellChar];
     [self.passcodeView deleteCellChar];
     [self.passcodeView deleteCellChar];
-    [self.passcodeView setNeedsDisplay];
 }
 
+#pragma mark DBBroadcastClientDelegate
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient addedScreen:(NSString *)screen {
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)broadcast:(DBBroadcastClient *)broadcastClient failedToAddScreen:(NSString *)screen withError:error {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"Failed to add device!"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Dismiss"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [self clearCode];
+}
 
 @end

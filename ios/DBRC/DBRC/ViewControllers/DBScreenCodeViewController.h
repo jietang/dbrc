@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@class PasscodeView;
+#import "DBBroadcastClientProtocol.h"
 
-@interface DBScreenCodeViewController : UIViewController <UITextFieldDelegate>
+@class PasscodeView;
+@class DBBroadcastClient;
+@class DBBroadcast;
+
+@interface DBScreenCodeViewController : UIViewController <UITextFieldDelegate, DBBroadcastClientProtocol>
 
 @property (nonatomic, retain) PasscodeView *passcodeView;
 @property (nonatomic, retain) UITextField *invisTextField;
+@property (nonatomic, retain) DBBroadcast *broadcast;
+@property (nonatomic, retain) DBBroadcastClient *broadcastClient;
+
+- (id)initWithDBBroadcast:(DBBroadcast *)broadcast;
 
 @end
