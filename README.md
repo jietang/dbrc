@@ -38,7 +38,7 @@ response: `broadcast_id`
 
 POST
 -
-_post something to a broadcast channel. returns list of screen_ids successfully published to (mostly for debug purposes)_
+_post something to a broadcast channel. returns list of screen_ids successfully published to (mostly for debug purposes).._
 
 uses a message type. valid types: "pairing", "url"
 
