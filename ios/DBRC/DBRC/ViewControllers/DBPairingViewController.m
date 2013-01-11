@@ -79,7 +79,8 @@
 }
 
 - (void)broadcast:(DBBroadcastClient *)broadcastClient addedScreen:(NSString *)screen {
-    
+    [self.broadcastClient broadcastCredentials];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)broadcast:(DBBroadcastClient *)broadcastClient failedToAddScreen:(NSString *)screen withError:(id)error {

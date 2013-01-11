@@ -1040,28 +1040,6 @@
     self.navigationItem.leftBarButtonItem = unlinkButton;
 }
 
-- (void)broadcast:(DBBroadcast *)broadcast failedWithError:(NSError *)err {
-    NSLog(@"%@err", err);
-}
-
-- (void)broadcast:(DBBroadcast *)broadcast addedScreen:(NSString *)screen {
-    NSLog(@"Screen was added!");
-    [self.broadcastClient broadcastCredentials];
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)broadcast:(DBBroadcast *)broadcast failedToAddScreen:(NSString *)screen withError:(id)error {
-    NSLog(@"Failed to add screen");
-}
-
-
-- (void)broadcastPushedCredentials:(DBBroadcast *)broadcast {
-    
-}
-
-- (void)broadcastFailedToPushCredentials:(DBBroadcast *)broadcast withError:(NSError *)error {
-    
-}
 
 #pragma mark DBPhotos delegate
 - (void)dbPhotos:(DBPhotos *)dbPhotos photosWereFetched:(NSArray *)photos {
