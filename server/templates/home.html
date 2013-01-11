@@ -75,7 +75,7 @@ function listenBroadcast() {
 				$('#error').html('');
 				//alert(msg.data);
 				var data = JSON.parse(msg.data);
-				if (data.url) {
+				if (data.type == 'url') {
 					lastCastUrl = data.url;
 					$('#url').html(lastCastUrl);
 					$('#content').attr('src', lastCastUrl);
@@ -83,10 +83,8 @@ function listenBroadcast() {
 					if (lastCastTimer)
 						clearTimeout(lastCastTimer);
 					//lastCastTimer = setTimeout(onIframeFail, 10000);
-				} else if (data.action == 'u') {
-					scrollUp();
-				} else if (data.action == 'd') {
-					scrollDown();
+				} else if (data.type == 'vscroll') {
+					scrollIframe(data.value);
 				}
 				listenBroadcast();
 				
@@ -196,20 +194,15 @@ function testKey() {
 	}, 3000);
 }
 
-function scrollDown() {
+function scrollIframe(percent) {
 	var div = $("#content_div");
-	div.animate({scrollTop: div.scrollTop() + 0.5 * div.height()}, 200);
-}
-
-function scrollUp() {
-	var div = $("#content_div");
-	div.animate({scrollTop: div.scrollTop() - 0.5 * div.height()}, 200);
+	div.animate({scrollTop: div.scrollTop() + percent * div.height()}, 200);
 }
 	</script>
 	</head>
 	<body>
 	<table id=dash width=100%>
-		<tr><td nowrap align=left><a href="javascript:void(0)" onclick="testKey()">Test sim key</a> | <a href="javascript:void(0)" onclick="scrollDown()">Test sim down</a> | <a href="javascript:void(0)" onclick="scrollUp()">Test sim up</a> | Dropcast URL: <span id=url>[None]</span></td><td nowrap align=right>Device ID: <span id=device_id>Unknown</span> Screen ID: <span id=screen_id>Unknown</span></td></tr>
+		<tr><td nowrap align=left><a href="javascript:void(0)" onclick="testKey()">Test sim key</a> | <a href="javascript:void(0)" onclick="scrollIframe(0.5)">Test sim down</a> | <a href="javascript:void(0)" onclick="scrollIframe(-0.5)">Test sim up</a> | Dropcast URL: <span id=url>[None]</span></td><td nowrap align=right>Device ID: <span id=device_id>Unknown</span> Screen ID: <span id=screen_id>Unknown</span></td></tr>
 		<tr><td id=error></td></tr>
 	</table>
 	<div id=content_div style="width: 100%; overflow: auto; border-top: 1px solid #000;">
