@@ -87,8 +87,8 @@ def add_to_broadcast(screen_id, broadcast_id):
     start_time = time.time()
 
     # Update start times for the broadcast and screen info
-    broadcast_info['screens'][screen_id] = start_time
-    screen_info['broadcasts'][broadcast_id] = start_time
+    broadcast_info['screens'][str(screen_id)] = start_time
+    screen_info['broadcasts'][str(broadcast_id)] = start_time
 
     # Create a record of the fact that this device has conencted
     # to this creen
@@ -108,14 +108,14 @@ def remove_from_broadcast(screen_id, broadcast_id):
     screen_info = _rget('screen_info_%s' % screen_id)
 
     try:
-        broadcast_info['screens'].pop(screen_id)
+        broadcast_info['screens'].pop(str(screen_id))
     except KeyError:
         pass
     else:
         _rset('broadcast_info_%s' % broadcast_id, broadcast_info)
 
     try:
-        screen_info['broadcasts'].pop(broadcast_id)
+        screen_info['broadcasts'].pop(str(broadcast_id))
     except KeyError:
         pass
     else:

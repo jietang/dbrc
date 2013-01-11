@@ -34,6 +34,8 @@ while True:
 
     inp = raw_input('Link with one of these (number to link, d<number> to delete, or "" to skip)? ')
     if inp and inp[0] == 'd':
+        r = requests.post('http://%s:%d/broadcasts/%s/screens/' % (HOST, PORT, broadcast_id), data={'screen_id': likely_screens[int(inp[1:])-1]['screen_id']})
+
         # make delete call
         r = requests.delete('http://%s:%d/broadcasts/%s/screens/%s' % (HOST, PORT, broadcast_id, likely_screens[int(inp[1:])-1]['screen_id']))
         continue
