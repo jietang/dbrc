@@ -107,9 +107,6 @@ def remove_from_broadcast(screen_id, broadcast_id):
     broadcast_info = _rget('broadcast_info_%s' % broadcast_id)
     screen_info = _rget('screen_info_%s' % screen_id)
 
-    remote_id = _rget('screen_to_device_id_%s' % (screen_id,))
-    remote_info = _rget('remote_info_%s' % (remote_id,))
-
     ret = None
     try:
         broadcast_info['screens'].pop(screen_id)
@@ -124,13 +121,6 @@ def remove_from_broadcast(screen_id, broadcast_id):
         pass
     else:
         _rset('screen_info_%s' % screen_id, screen_info)
-
-    try:
-        remote_info['devices'].pop(str(remote_id))
-    except KeyError:
-        pass
-    else:
-        _rset("remote_info_%s" % (remote_id,), remote_info)
 
     return ret
 
