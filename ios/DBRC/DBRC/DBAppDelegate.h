@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GalleryDelegate.h"
 
 @interface DBAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, retain) GalleryDelegate *photoSource;
 
 @end

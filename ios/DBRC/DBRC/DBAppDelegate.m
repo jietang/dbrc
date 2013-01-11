@@ -9,6 +9,7 @@
 #import "DBAppDelegate.h"
 #import "DBPhotosViewController.h"
 #import "DBPairingViewController.h"
+#import "GalleryDelegate.h"
 
 @implementation DBAppDelegate
 
@@ -21,12 +22,17 @@
     
     // Basic Search Controller is on bottom of the stack. Slide the Pairing
     // controler on top.
-    UIViewController *rootViewController = [[DBPhotosViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    //UIViewController *rootViewController = [[DBPhotosViewController alloc] init];
+    //UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     
-    [navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar.png"] forBarMetrics:UIBarMetricsDefault];
+    //[self.window setRootViewController:navController];
     
-    [self.window setRootViewController:navController];
+    // new hotness
+    self.photoSource = [[GalleryDelegate alloc] init];
+    FGalleryViewController *gallery = [[FGalleryViewController alloc] initWithPhotoSource:self.photoSource];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:gallery];
+    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.window setRootViewController:nav];
     
     return YES;
 }

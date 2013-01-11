@@ -38,6 +38,7 @@
     AFJSONRequestOperation *op = [AFJSONRequestOperation JSONRequestOperationWithRequest:request
                                                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                                                                      NSLog(@"Success! Added screen %@ to broadcast %d", screenId, self.broadcast.broadcastId);
+                                                                                     self.broadcast.connectedScreens += 1;
                                                                                      [self.delegate broadcast:self addedScreen:screenId];
                                                                                  }
                                                                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18E304E5169FF8B60065C48D /* FGalleryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304E2169FF8B60065C48D /* FGalleryPhoto.m */; };
+		18E304E6169FF8B60065C48D /* FGalleryPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304E4169FF8B60065C48D /* FGalleryPhotoView.m */; };
+		18E304EA169FF8D60065C48D /* FGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304E9169FF8D60065C48D /* FGalleryViewController.m */; };
+		18E304ED169FF8EE0065C48D /* GalleryDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304EC169FF8EE0065C48D /* GalleryDelegate.m */; };
+		18EC5DA716A03213003D0237 /* DBScreenCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EC5DA616A03213003D0237 /* DBScreenCodeViewController.m */; };
+		18EC5DAA16A03227003D0237 /* PasscodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EC5DA916A03227003D0237 /* PasscodeView.m */; };
 		28004CD2169F686C00444D08 /* DBPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD1169F686C00444D08 /* DBPhotos.m */; };
 		28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD5169FB01C00444D08 /* DBBroadcastClient.m */; };
 		28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CE7169FDDD200444D08 /* DBScreenSwitch.m */; };
@@ -14,12 +20,10 @@
 		28004CF4169FFC1D00444D08 /* blue-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF0169FFC1D00444D08 /* blue-button@2x.png */; };
 		28004CF5169FFC1D00444D08 /* navbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF1169FFC1D00444D08 /* navbar.png */; };
 		28004CF6169FFC1D00444D08 /* navbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CF2169FFC1D00444D08 /* navbar@2x.png */; };
-		28004CFA16A006CA00444D08 /* PasscodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CF916A006CA00444D08 /* PasscodeView.m */; };
 		28004CFF16A0147A00444D08 /* pin_cell_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFB16A0147A00444D08 /* pin_cell_empty.png */; };
 		28004D0016A0147A00444D08 /* pin_cell_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFC16A0147A00444D08 /* pin_cell_empty@2x.png */; };
 		28004D0116A0147A00444D08 /* pin_cell_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFD16A0147A00444D08 /* pin_cell_full.png */; };
 		28004D0216A0147A00444D08 /* pin_cell_full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28004CFE16A0147A00444D08 /* pin_cell_full@2x.png */; };
-		28004D0516A0152D00444D08 /* DBScreenCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004D0416A0152D00444D08 /* DBScreenCodeViewController.m */; };
 		283BE7E0169A6925005277E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7DF169A6925005277E2 /* UIKit.framework */; };
 		283BE7E2169A6925005277E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E1169A6925005277E2 /* Foundation.framework */; };
 		283BE7E4169A6925005277E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 283BE7E3169A6925005277E2 /* CoreGraphics.framework */; };
@@ -48,6 +52,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18E304E1169FF8B60065C48D /* FGalleryPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGalleryPhoto.h; sourceTree = "<group>"; };
+		18E304E2169FF8B60065C48D /* FGalleryPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGalleryPhoto.m; sourceTree = "<group>"; };
+		18E304E3169FF8B60065C48D /* FGalleryPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGalleryPhotoView.h; sourceTree = "<group>"; };
+		18E304E4169FF8B60065C48D /* FGalleryPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGalleryPhotoView.m; sourceTree = "<group>"; };
+		18E304E8169FF8CA0065C48D /* FGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGalleryViewController.h; sourceTree = "<group>"; };
+		18E304E9169FF8D60065C48D /* FGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGalleryViewController.m; sourceTree = "<group>"; };
+		18E304EB169FF8EE0065C48D /* GalleryDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryDelegate.h; sourceTree = "<group>"; };
+		18E304EC169FF8EE0065C48D /* GalleryDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryDelegate.m; sourceTree = "<group>"; };
+		18EC5DA516A03213003D0237 /* DBScreenCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBScreenCodeViewController.h; path = ViewControllers/DBScreenCodeViewController.h; sourceTree = "<group>"; };
+		18EC5DA616A03213003D0237 /* DBScreenCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBScreenCodeViewController.m; path = ViewControllers/DBScreenCodeViewController.m; sourceTree = "<group>"; };
+		18EC5DA816A03227003D0237 /* PasscodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasscodeView.h; sourceTree = "<group>"; };
+		18EC5DA916A03227003D0237 /* PasscodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasscodeView.m; sourceTree = "<group>"; };
 		28004CD0169F686C00444D08 /* DBPhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBPhotos.h; sourceTree = "<group>"; };
 		28004CD1169F686C00444D08 /* DBPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBPhotos.m; sourceTree = "<group>"; };
 		28004CD4169FB01C00444D08 /* DBBroadcastClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcastClient.h; sourceTree = "<group>"; };
@@ -59,14 +75,10 @@
 		28004CF0169FFC1D00444D08 /* blue-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button@2x.png"; sourceTree = "<group>"; };
 		28004CF1169FFC1D00444D08 /* navbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar.png; sourceTree = "<group>"; };
 		28004CF2169FFC1D00444D08 /* navbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar@2x.png"; sourceTree = "<group>"; };
-		28004CF816A006CA00444D08 /* PasscodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasscodeView.h; sourceTree = "<group>"; };
-		28004CF916A006CA00444D08 /* PasscodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasscodeView.m; sourceTree = "<group>"; };
 		28004CFB16A0147A00444D08 /* pin_cell_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_cell_empty.png; sourceTree = "<group>"; };
 		28004CFC16A0147A00444D08 /* pin_cell_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_cell_empty@2x.png"; sourceTree = "<group>"; };
 		28004CFD16A0147A00444D08 /* pin_cell_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_cell_full.png; sourceTree = "<group>"; };
 		28004CFE16A0147A00444D08 /* pin_cell_full@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_cell_full@2x.png"; sourceTree = "<group>"; };
-		28004D0316A0152D00444D08 /* DBScreenCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBScreenCodeViewController.h; path = ViewControllers/DBScreenCodeViewController.h; sourceTree = "<group>"; };
-		28004D0416A0152D00444D08 /* DBScreenCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBScreenCodeViewController.m; path = ViewControllers/DBScreenCodeViewController.m; sourceTree = "<group>"; };
 		283BE7DB169A6925005277E2 /* DBRC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DBRC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		283BE7DF169A6925005277E2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		283BE7E1169A6925005277E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -130,9 +142,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18EC5D9C16A031B5003D0237 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18EC5DA816A03227003D0237 /* PasscodeView.h */,
+				18EC5DA916A03227003D0237 /* PasscodeView.m */,
+			);
+			name = Views;
+			path = ViewControllers/Views;
+			sourceTree = "<group>";
+		};
 		28004CE4169FDDC500444D08 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				18E304E1169FF8B60065C48D /* FGalleryPhoto.h */,
+				18E304E2169FF8B60065C48D /* FGalleryPhoto.m */,
+				18E304E3169FF8B60065C48D /* FGalleryPhotoView.h */,
+				18E304E4169FF8B60065C48D /* FGalleryPhotoView.m */,
 				28004CE6169FDDD200444D08 /* DBScreenSwitch.h */,
 				28004CE7169FDDD200444D08 /* DBScreenSwitch.m */,
 			);
@@ -153,16 +179,6 @@
 				28004CF2169FFC1D00444D08 /* navbar@2x.png */,
 			);
 			name = resources;
-			sourceTree = "<group>";
-		};
-		28004CF716A006CA00444D08 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				28004CF816A006CA00444D08 /* PasscodeView.h */,
-				28004CF916A006CA00444D08 /* PasscodeView.m */,
-			);
-			name = Views;
-			path = ViewControllers/Views;
 			sourceTree = "<group>";
 		};
 		283BE7D0169A6925005277E2 = {
@@ -227,14 +243,16 @@
 		283BE800169A703C005277E2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				28004CF716A006CA00444D08 /* Views */,
+				18EC5DA516A03213003D0237 /* DBScreenCodeViewController.h */,
+				18EC5DA616A03213003D0237 /* DBScreenCodeViewController.m */,
+				18EC5D9C16A031B5003D0237 /* Views */,
+				18E304E9169FF8D60065C48D /* FGalleryViewController.m */,
+				18E304E8169FF8CA0065C48D /* FGalleryViewController.h */,
 				28004CE4169FDDC500444D08 /* Controls */,
 				28F5F513169BB30500C8854E /* DBPairingViewController.h */,
 				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
 				283BE805169A72AD005277E2 /* DBPhotosViewController.h */,
 				283BE806169A72AD005277E2 /* DBPhotosViewController.m */,
-				28004D0316A0152D00444D08 /* DBScreenCodeViewController.h */,
-				28004D0416A0152D00444D08 /* DBScreenCodeViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -242,6 +260,8 @@
 		28F5F516169BB31000C8854E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				18E304EB169FF8EE0065C48D /* GalleryDelegate.h */,
+				18E304EC169FF8EE0065C48D /* GalleryDelegate.m */,
 				28F5F517169BB31000C8854E /* DBBroadcast.h */,
 				28F5F518169BB31000C8854E /* DBBroadcast.m */,
 				28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */,
@@ -372,8 +392,12 @@
 				28004CD2169F686C00444D08 /* DBPhotos.m in Sources */,
 				28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */,
 				28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */,
-				28004CFA16A006CA00444D08 /* PasscodeView.m in Sources */,
-				28004D0516A0152D00444D08 /* DBScreenCodeViewController.m in Sources */,
+				18E304E5169FF8B60065C48D /* FGalleryPhoto.m in Sources */,
+				18E304E6169FF8B60065C48D /* FGalleryPhotoView.m in Sources */,
+				18E304EA169FF8D60065C48D /* FGalleryViewController.m in Sources */,
+				18E304ED169FF8EE0065C48D /* GalleryDelegate.m in Sources */,
+				18EC5DA716A03213003D0237 /* DBScreenCodeViewController.m in Sources */,
+				18EC5DAA16A03227003D0237 /* PasscodeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
