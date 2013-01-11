@@ -69,7 +69,7 @@ def post_screen():
     return {"screen_id": model.register_device(device_id, device_name, screen_id, pairing_info)}
 
 def _prepare_device_info(device_id):
-    return dict(screen_id=model.get_screen_id(device_id), device_name=model.get_device_name(device_id),known=False)
+    return dict(screen_id=str(model.get_screen_id(device_id)), device_name=model.get_device_name(device_id),known=False)
 
 def likely_screens(broadcast_id):
     pairing_info = model.get_broadcast_pairing_info(broadcast_id)
