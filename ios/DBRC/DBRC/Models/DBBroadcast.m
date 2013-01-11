@@ -65,7 +65,6 @@
     NSMutableDictionary *infoDict = [NSMutableDictionary dictionary];
     [infoDict setObject:@"111111" forKey:@"remote_id"];
     [infoDict setObject:connectedDict forKey:@"connected"];
-    [infoDict setObject:@"123123" forKey:@"remote_id"];
     [infoDict setObject:[NSArray array] forKey:@"nearby"];
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:infoDict
