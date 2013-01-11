@@ -251,11 +251,6 @@
     }
 }
 
-- (void)unlink {
-    [self.dbSession unlinkAll];
-    [self.dbSession linkFromController:self];
-}
-
 - (void)viewDidUnload {
     
     [self destroyViews];
@@ -1033,11 +1028,6 @@
                                                                                target:self
                                                                                action:@selector(addPair)];
     self.navigationItem.rightBarButtonItem = addButton;
-    
-    UIBarButtonItem *unlinkButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                                                  target:self
-                                                                                  action:@selector(unlink)];
-    self.navigationItem.leftBarButtonItem = unlinkButton;
 }
 
 

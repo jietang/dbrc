@@ -97,11 +97,6 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)unlink {
-    [self.dbSession unlinkAll];
-    [self.dbSession linkFromController:self];
-}
-
 #pragma mark UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSString *searchString = searchBar.text;
@@ -126,10 +121,6 @@
                                                                                action:@selector(addPair)];
     self.navigationItem.rightBarButtonItem = addButton;
     
-    UIBarButtonItem *unlinkButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                                                  target:self
-                                                                                  action:@selector(unlink)];
-    self.navigationItem.leftBarButtonItem = unlinkButton;
 }
 
 - (void)broadcast:(DBBroadcast *)broadcast failedWithError:(NSError *)err {
