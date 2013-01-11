@@ -108,7 +108,7 @@ r = requests.post('http://%s:%d/screens/' % (HOST, PORT),
                   headers={'content-type': 'application/json'},
                   data=json.dumps({
                       'device_id': ID,
-                      'device_name': 'device_%d' % ID,
+                      'device_name': 'Richard\'s Laptop',
                       'pairing_info': {
                           'connected': DUMMY_CONNECTED,
                           'nearby': DUMMY_SSIDS,
