@@ -147,7 +147,7 @@
 }
 
 - (void)addNewDevice {
-    DBScreenCodeViewController *vc = [[DBScreenCodeViewController alloc] init];
+    DBScreenCodeViewController *vc = [[DBScreenCodeViewController alloc] initWithDBBroadcast:self.broadcast];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     
     [self.navigationController presentViewController:navController animated:YES completion:NULL];
