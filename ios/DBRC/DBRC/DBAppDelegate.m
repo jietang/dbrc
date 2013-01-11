@@ -31,6 +31,7 @@
     self.photoSource = [[GalleryDelegate alloc] init];
     FGalleryViewController *gallery = [[FGalleryViewController alloc] initWithPhotoSource:self.photoSource];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:gallery];
+    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar.png"] forBarMetrics:UIBarMetricsDefault];
     [self.window setRootViewController:nav];
     
     return YES;

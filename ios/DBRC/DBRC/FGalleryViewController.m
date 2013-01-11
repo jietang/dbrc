@@ -225,6 +225,7 @@
 }
 
 - (void)addPair {
+    // depending on whether we are in the thumbnail view or not, and depending on whether we have paired with something 
     DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:navController animated:YES completion:nil];
