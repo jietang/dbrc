@@ -44,6 +44,7 @@
     self.devicesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 480) style:UITableViewStyleGrouped];
     self.devicesTableView.delegate = self;
     self.devicesTableView.dataSource = self;
+
 }
 
 - (void)viewDidLoad

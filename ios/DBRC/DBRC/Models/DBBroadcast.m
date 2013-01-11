@@ -14,7 +14,6 @@
 
 
 #define BASE_URL @"http://ec2-54-235-229-59.compute-1.amazonaws.com/"
-
 //#define BASE_URL @"http://127.0.0.1:5000/"
 
 @implementation DBBroadcast
@@ -66,6 +65,7 @@
     NSMutableDictionary *infoDict = [NSMutableDictionary dictionary];
     [infoDict setObject:@"111111" forKey:@"remote_id"];
     [infoDict setObject:connectedDict forKey:@"connected"];
+    [infoDict setObject:@"123123" forKey:@"remote_id"];
     [infoDict setObject:[NSArray array] forKey:@"nearby"];
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:infoDict
