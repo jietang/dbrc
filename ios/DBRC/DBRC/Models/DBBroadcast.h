@@ -16,13 +16,9 @@
 @property (nonatomic, assign) NSInteger broadcastId;
 
 - (void)startBroadcast;
-- (void)addScreenToBroadcast:(NSString *)screenId;
-- (void)push:(NSString *)urlStr withParams:(NSDictionary *)params;
-- (void)fetchLikelyScreens;
-- (void)fetchKnownScreens;
-- (void)broadcastCredentials;
 
 + (NSString *)appKey;
 + (NSString *)appSecret;
++ (NSString *)baseUrl;
 
 @end
