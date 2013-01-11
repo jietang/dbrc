@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18E304E5169FF8B60065C48D /* FGalleryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304E2169FF8B60065C48D /* FGalleryPhoto.m */; };
+		18E304E6169FF8B60065C48D /* FGalleryPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304E4169FF8B60065C48D /* FGalleryPhotoView.m */; };
+		18E304EA169FF8D60065C48D /* FGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304E9169FF8D60065C48D /* FGalleryViewController.m */; };
+		18E304ED169FF8EE0065C48D /* GalleryDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E304EC169FF8EE0065C48D /* GalleryDelegate.m */; };
 		28004CD2169F686C00444D08 /* DBPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD1169F686C00444D08 /* DBPhotos.m */; };
 		28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CD5169FB01C00444D08 /* DBBroadcastClient.m */; };
 		28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28004CE7169FDDD200444D08 /* DBScreenSwitch.m */; };
@@ -38,6 +42,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18E304E1169FF8B60065C48D /* FGalleryPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGalleryPhoto.h; sourceTree = "<group>"; };
+		18E304E2169FF8B60065C48D /* FGalleryPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGalleryPhoto.m; sourceTree = "<group>"; };
+		18E304E3169FF8B60065C48D /* FGalleryPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGalleryPhotoView.h; sourceTree = "<group>"; };
+		18E304E4169FF8B60065C48D /* FGalleryPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGalleryPhotoView.m; sourceTree = "<group>"; };
+		18E304E8169FF8CA0065C48D /* FGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGalleryViewController.h; sourceTree = "<group>"; };
+		18E304E9169FF8D60065C48D /* FGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGalleryViewController.m; sourceTree = "<group>"; };
+		18E304EB169FF8EE0065C48D /* GalleryDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryDelegate.h; sourceTree = "<group>"; };
+		18E304EC169FF8EE0065C48D /* GalleryDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryDelegate.m; sourceTree = "<group>"; };
 		28004CD0169F686C00444D08 /* DBPhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBPhotos.h; sourceTree = "<group>"; };
 		28004CD1169F686C00444D08 /* DBPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBPhotos.m; sourceTree = "<group>"; };
 		28004CD4169FB01C00444D08 /* DBBroadcastClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBroadcastClient.h; sourceTree = "<group>"; };
@@ -111,6 +123,10 @@
 		28004CE4169FDDC500444D08 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				18E304E1169FF8B60065C48D /* FGalleryPhoto.h */,
+				18E304E2169FF8B60065C48D /* FGalleryPhoto.m */,
+				18E304E3169FF8B60065C48D /* FGalleryPhotoView.h */,
+				18E304E4169FF8B60065C48D /* FGalleryPhotoView.m */,
 				28004CE6169FDDD200444D08 /* DBScreenSwitch.h */,
 				28004CE7169FDDD200444D08 /* DBScreenSwitch.m */,
 			);
@@ -179,6 +195,8 @@
 		283BE800169A703C005277E2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				18E304E9169FF8D60065C48D /* FGalleryViewController.m */,
+				18E304E8169FF8CA0065C48D /* FGalleryViewController.h */,
 				28004CE4169FDDC500444D08 /* Controls */,
 				28F5F513169BB30500C8854E /* DBPairingViewController.h */,
 				28F5F514169BB30500C8854E /* DBPairingViewController.m */,
@@ -191,6 +209,8 @@
 		28F5F516169BB31000C8854E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				18E304EB169FF8EE0065C48D /* GalleryDelegate.h */,
+				18E304EC169FF8EE0065C48D /* GalleryDelegate.m */,
 				28F5F517169BB31000C8854E /* DBBroadcast.h */,
 				28F5F518169BB31000C8854E /* DBBroadcast.m */,
 				28F5F519169BB31000C8854E /* DBBroadcastProtocol.h */,
@@ -313,6 +333,10 @@
 				28004CD2169F686C00444D08 /* DBPhotos.m in Sources */,
 				28004CD6169FB01C00444D08 /* DBBroadcastClient.m in Sources */,
 				28004CE8169FDDD200444D08 /* DBScreenSwitch.m in Sources */,
+				18E304E5169FF8B60065C48D /* FGalleryPhoto.m in Sources */,
+				18E304E6169FF8B60065C48D /* FGalleryPhotoView.m in Sources */,
+				18E304EA169FF8D60065C48D /* FGalleryViewController.m in Sources */,
+				18E304ED169FF8EE0065C48D /* GalleryDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
