@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 
 import android.app.ProgressDialog;
@@ -19,23 +20,44 @@ import android.widget.Toast;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-abstract class RegisterAsyncTask extends AsyncTask<Void, Void, Pair<Integer, String>> {
+abstract class RpcAsyncTask extends AsyncTask<Void, Void, Pair<Integer, String>> {
 
     private static final String TAG = RegisterAsyncTask.class.getName();
 
     private ProgressDialog mProgress;
     private Context mCtx;
+    private final boolean mShowProgress;
 
-    RegisterAsyncTask(Context ctx) {
+    RpcAsyncTask(Context ctx) {
+        this(ctx, false);
         mCtx = ctx;
+    }
+
+    RpcAsyncTask(Context ctx, boolean showProgress) {
+        mCtx = ctx;
+        mShowProgress = showProgress;
     }
 
     @Override
     protected void onPreExecute() {
-        mProgress = ProgressDialog.show(mCtx, "Registering", "Registering to broadcast...");
+        if (mShowProgress) {
+            mProgress = ProgressDialog.show(mCtx, "Working", "Working...");
+        }
+    }
+
+    protected abstract HttpUriRequest getRequest() throws IOException;
+
+    protected HttpPost getRequests() throws IOException {
+        HttpPost post = new HttpPost(SERVER_URL + "/broadcasts/");
+        JsonObject jso = new JsonObject();
+        jso.addProperty("remote_id", "Android");
+        post.setEntity(new StringEntity(jso.toString()));
+        post.addHeader("Content-Type", "application/json");
+        return post;
     }
 
     @Override
@@ -44,12 +66,7 @@ abstract class RegisterAsyncTask extends AsyncTask<Void, Void, Pair<Integer, Str
         AndroidHttpClient client = null;
         try {
             client = AndroidHttpClient.newInstance("Android");
-            HttpPost post = new HttpPost(SERVER_URL + "/broadcasts/");
-            JsonObject jso = new JsonObject();
-            jso.addProperty("remote_id", "Android");
-            post.setEntity(new StringEntity(jso.toString()));
-            post.addHeader("Content-Type", "application/json");
-            HttpResponse resp = client.execute(post);
+            HttpResponse resp = client.execute(getRequest());
             int statCode = resp.getStatusLine().getStatusCode();
             if (statCode != 200) {
                 return new Pair<Integer, String>(statCode, resp.getStatusLine().getReasonPhrase());
@@ -69,7 +86,9 @@ abstract class RegisterAsyncTask extends AsyncTask<Void, Void, Pair<Integer, Str
 
     @Override
     protected void onPostExecute(Pair<Integer, String> result) {
-        mProgress.dismiss();
+        if (mProgress != null) {
+            mProgress.dismiss();
+        }
         if (result == null) {
             Log.d(TAG, "doInBackground failed. :(");
         } else if (result.first != 200) {
@@ -80,9 +99,7 @@ abstract class RegisterAsyncTask extends AsyncTask<Void, Void, Pair<Integer, Str
         } else {
             try {
                 Log.d(TAG, "str: " + result.second);
-                JsonObject jso = new JsonParser().parse(result.second).getAsJsonObject();
-                Log.d(TAG, "js: " + jso);
-                onSuccess(jso.get("broadcast_id").getAsInt());
+                onSuccess(new JsonParser().parse(result.second));
 
             } catch (Exception e) {
                 Log.d(TAG, "Got exception ", e);
@@ -90,5 +107,5 @@ abstract class RegisterAsyncTask extends AsyncTask<Void, Void, Pair<Integer, Str
         }
     }
 
-    protected abstract void onSuccess(int broadcastId);
+    protected abstract void onSuccess(JsonElement jse);
 }
