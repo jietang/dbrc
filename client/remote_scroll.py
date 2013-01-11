@@ -35,18 +35,22 @@ print 'added screen %s to broadcast %s' % (screen_id, broadcast_id)
 time.sleep(1.0)
 
 # do loop here
-NUMBER_RX = re.compile(r'^[\.0-9\+\-]+$')
 if True:
     first_url = sys.argv[2] if len(sys.argv) >= 3 else None
     while True:
-        url = first_url if first_url else raw_input('Enter URL, "q" to quit, +0.25/-0.25 to scroll, blank for xkcd: ')
+        url = first_url if first_url else raw_input('Enter URL, "q" to quit, u/d to scroll, n/p to slide, blank for xkcd: ')
         first_url = None
         if url == 'q':
             break
         elif url == '':
             url = 'http://www.xkcd.com'
-        if NUMBER_RX.match(url):
-            data = dict(type='vscroll', value=float(url))
+        if url == 'u':
+            data = dict(type='vscroll', value=float(-0.5))
+        elif url == 'd':
+            data = dict(type='vscroll', value=float(0.5))
+        elif url == 'n' or url == 'p':
+            print "slide!"
+            data = dict(type='slide', value=url)
         else:
             data = dict(type='url', url=url)
 	r = requests.post('http://%s:%d/broadcasts/%s/' % (HOST, PORT, broadcast_id),
