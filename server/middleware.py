@@ -81,11 +81,16 @@ def crossdomain(origin=None, methods=None, headers=None,
 def reg_endpoint(path, method, methods=tuple(["OPTIONS", "GET", "POST", "DELETE"])):
     app.route(path, methods=methods)(crossdomain(origin='*')(dbrc_endpoint(method)))
 
-# the screen webpage
+# the original screen webpage: subscribes with auto-generated device ID
 from flask import render_template
-@app.route('/')
+@app.route('/webscreen/')
 def screen():
-	return render_template('home.html')
+	return render_template('screen.html')
+
+# for demo day: subscribes with device ID of "2"
+@app.route('/')
+def demo():
+	return render_template('demo.html')
 
 # this is necessary for frame-busting-busting
 @app.route('/204/')
