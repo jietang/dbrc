@@ -19,8 +19,8 @@
 }
 
 - (void)fetchPhotos {
-//    [self.rc searchPath:@"/Camera Uploads" forKeyword:@"."];
-    [self.rc loadMetadata:@"/Camera Uploads"];
+    [self.rc searchPath:@"/Camera Uploads" forKeyword:@"2013"];
+//    [self.rc loadMetadata:@"/Camera Uploads"];
 
 }
 

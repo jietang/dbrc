@@ -8,11 +8,24 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "DBRC/ViewControllers/DBPairingViewController.m"
-         timestampString = "379601957.210835"
+         timestampString = "379635172.63865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "221"
-         endingLineNumber = "221">
+         startingLineNumber = "220"
+         endingLineNumber = "220">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "DBRC/ViewControllers/DBPhotosViewController.m"
+         timestampString = "379630108.173493"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "194"
+         endingLineNumber = "194"
+         landmarkName = "-dbPhotos:photosWereFetched:"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

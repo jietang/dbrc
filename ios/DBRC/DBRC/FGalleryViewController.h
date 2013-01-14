@@ -90,6 +90,7 @@ typedef enum
 @protocol FGalleryViewControllerDelegate
 
 @required
+@property (nonatomic, retain) NSArray *networkImages;
 - (int)numberOfPhotosForPhotoGallery:(FGalleryViewController*)gallery;
 - (FGalleryPhotoSourceType)photoGallery:(FGalleryViewController*)gallery sourceTypeForPhotoAtIndex:(NSUInteger)index;
 - (void)processPhotos:(NSArray*)photos;

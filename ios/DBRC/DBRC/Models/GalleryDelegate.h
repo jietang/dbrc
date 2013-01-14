@@ -12,4 +12,6 @@
     NSArray *networkImages;
 }
 
+@property (nonatomic, retain) NSArray *networkImages;
+
 @end

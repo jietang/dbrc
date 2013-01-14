@@ -158,6 +158,7 @@
         self.navigationItem.rightBarButtonItem = nil;
         [self.broadcast startBroadcast];
     }
+    [self.photos fetchPhotos];
 }
 
 
@@ -242,13 +243,19 @@
             [urlString appendFormat:@"&oauth_signature=%@%%26%@", [DBBroadcast appSecret], [credentials accessTokenSecret], nil];
             [urlString appendString:@"&size=1280x960"];
             
-            [self.broadcastClient push:urlString withParams:nil];
+            [self performSelector:@selector(delayedUrlPush:) withObject:urlString afterDelay:0];
+//            [self performSelector:@selector(delayedUrlPush:) withObject:urlString afterDelay:.2];
+//            [self performSelector:@selector(delayedUrlPush:) withObject:urlString afterDelay:.4];
         }
     } else {
         DBPairingViewController *vc = [[DBPairingViewController alloc] initWithBroadcast:self.broadcast];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
         [self presentViewController:navController animated:YES completion:nil];
     }
+}
+
+- (void)delayedUrlPush:(NSString *)urlString {
+    [self.broadcastClient push:urlString withParams:nil];
 }
 
 - (void)viewDidUnload {
@@ -1024,10 +1031,22 @@
 
 #pragma mark DBBroadcastDelegate
 - (void)broadcastWasStarted:(DBBroadcast *)broadcast {
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                               target:self
-                                                                               action:@selector(addPair)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    UIImage *img = [UIImage imageNamed:@"screen-share.png"];
+    UIImage *highlightImg = [UIImage imageNamed:@"screen-share-on.png"];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [btn setBackgroundImage:img forState:UIControlStateNormal];
+    [btn setBackgroundImage:highlightImg forState:UIControlStateHighlighted];
+    btn.frame = CGRectMake(7, 10, img.size.width, img.size.height);
+    [btn addTarget:self action:@selector(addPair) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *container = [UIButton buttonWithType:UIButtonTypeCustom];
+    [container addTarget:self action:@selector(addPair) forControlEvents:UIControlEventTouchUpInside];
+    container.frame = CGRectMake(0, 0, 40, 40);
+    [container addSubview:btn];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:container];
+    
+    self.navigationItem.rightBarButtonItem = settingsButton;
 }
 
 
