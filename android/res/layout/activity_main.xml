@@ -18,22 +18,35 @@
         android:id="@+id/add_screen_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/screen_id_txt"
+        android:layout_alignBottom="@+id/screen_id_txt"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginRight="19dp"
         android:text="+" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/add_screen_btn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+    </ListView>
 
     <EditText
         android:id="@+id/screen_id_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/add_screen_btn"
-        android:layout_alignBottom="@+id/add_screen_btn"
-        android:layout_toLeftOf="@+id/add_screen_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="38dp"
         android:ems="10"
         android:hint="Screen ID"
         android:inputType="number"
-        android:maxLength="6" />
+        android:maxLength="6" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>
