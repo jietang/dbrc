@@ -1,6 +1,8 @@
 DBRC Spec
 =
 
+I'm showing someone git!
+
 The main concept we're using for DBRC are the idea of __remotes__ and __screens__. A remote is a device that sets up a broadcast, a screen can subscribe to one or more broadcasts to be controller by the remote. The API is very straightforward.
 
 connection info refers to: `{'bssid': <bssid>, 'ssid': <ssid>, 'strength': <signal strength>}`
